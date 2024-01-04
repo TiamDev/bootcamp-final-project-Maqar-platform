@@ -260,9 +260,9 @@ h6 {
 }
 
 .card-title {
-  padding: 20px 0 15px 0;
-  /* font-size: 18px; */
-  font-weight: 600;
+  /* padding: 20px 0 15px 0; */
+  font-size: 20px !important;
+  font-weight: 600 !important;
   color: var(--darkColor);
   font-family: 'Tajawal';
 }
@@ -1550,7 +1550,7 @@ padding-inline: 0;
   content: "\2713";
   position: absolute;
   right : -1.0em;
-  color: gray;
+  color: var(--mainColor);
 }
 /* image uploade */
 
@@ -1770,13 +1770,9 @@ client
   }
   .offer-box {
     text-align: end;
-    padding: 10px;
+    /* padding: 10px; */
 }
-.offer-box h6{
-  font-size: 18px;
-  padding: 0 20px;
-  padding-bottom: 10px;
-}
+
 .offer-box i{
 color: var(--mainColor);
 font-size: 16px;
@@ -2105,4 +2101,117 @@ margin: 0;
 /* 
 
 */
+.booking-table td{
+  vertical-align: middle;
+}
 
+.main-title{
+  font-size: 23px;
+  color:#0c0c0d;
+  padding-block: 16px;
+}
+
+.sub-title{
+  /* font-weight: 600; */
+color: var(--mainColor);
+}
+/* th{
+  color: var(--mainColor) !important;
+} */
+
+
+
+/* 
+service edit
+*/
+.group-edit {
+  /* background: #eee; */
+  /* width: 400px; */
+  /* border-radius: 20px; */
+  overflow: hidden;
+}
+
+.title-edit {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  font-size: x-large;
+  font-weight: 500;
+}
+
+.title-edit img {
+  width: 40px;
+  margin-right: 10px;
+}
+
+.des-edit {
+  padding: 0 20px;
+  color: #555;
+}
+
+.tags-input-edit {
+  /* margin: 20px; */
+  border: 1px solid #DFE5EF;
+  box-shadow: inset 0 1px 2px rgba(var(--bs-body-color-rgb),0.075);
+  border-radius: 10px;
+  background-color: #fff;
+  padding: 10px;
+}
+
+.tags-input-edit ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tags-input-edit li {
+  padding: 5px;
+  margin: 0 5px 5px 0;
+  border: 1px solid var(--mainColor);
+  background-color: var(--mainColor);
+  color: white;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.tags-input-edit li .remove {
+  width: 12px;
+  height: 12px;
+  background-image: url(../img/delete.png);
+  background-size: cover;
+  /* margin-left: 10px; */
+  margin-right: 8px;
+}
+
+.tags-input-edit input {
+  padding-right: 10px;
+  order: 1;
+  border: none;
+  outline: none;
+}
+
+.removeAll-edit {
+  padding: 8px 0;
+  text-align: right;
+}
+
+input:not([type="checkbox"]):not([type="radio"]) {
+  height: 45px !important;
+}
+
+.myrow-edit {
+  justify-content: center;
+  align-items: baseline;
+  text-align: center;
+}
+
+.myrow-edit span {
+  font-size: bold;
+}
+
+section {
+  margin-block: 30px;
+}

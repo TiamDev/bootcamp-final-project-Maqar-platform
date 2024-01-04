@@ -85,7 +85,7 @@
           <div class="text-center">
             <button type="submit" class="btn-dasMain ">انشاء حساب</button>
             <div class="sign-footer">
-                <p> لديك حساب ?</p><a href="{{route('login')}}" class="toggle"> تسجيل دخول</a>
+                <p> لديك حساب ?</p><a href="{{route('site.signin')}}" class="toggle"> تسجيل دخول</a>
             </div>
           </div>
         </form>

@@ -207,6 +207,13 @@ Route::get('/tenant/content/information', function () {
 Route::get('/tenant/content/subInfo', function () {
     return view('tenant.content.subInfo');
 })->name('tenant.content.stepTwo');
+Route::get('/tenant/booking/index', function () {
+    return view('tenant.booking.index');
+})->name('tenant.booking');
+Route::get('/tenant/booking/view', function () {
+    return view('tenant.booking.view');
+})->name('tenant.booking.view');
+
 // Route::get('/tenant/messages/view', function () {
 //     return view('tenant.messages.view');
 // })->name('tenant.messages.view');
@@ -252,9 +259,9 @@ Route::get('/client/bill/view', function () {
 
 
 
-Route::get('/site/login', function () {
-    return view('site.login');
-})->name('login');
+Route::get('/site/signin', function () {
+    return view('site.signin');
+})->name('signin');
 
 
 Route::get('/site/signup', function () {

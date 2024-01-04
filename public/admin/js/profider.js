@@ -23,6 +23,32 @@ function addFields() {
   // counter++;
   container.appendChild(newTitleField);
 }
+// bank
+function addFields2() {
+  var container = document.getElementById("fields-container2");
+
+  var newTitleField = document.createElement("div");
+  newTitleField.classList.add("form-group");
+  newTitleField.innerHTML = `
+    <div class="row myrow">
+
+    <div class="col-8">
+    <div class="form-group pb-3">
+        <input type="text" class="form-control" name="bank[]"
+            placeholder="البنك">
+    </div>
+</div>
+<div class="col-4">
+    <div class="form-group pb-3">
+        <input type="number" class="form-control" name="PIN[]"
+            placeholder="رقم الحساب">
+    </div>
+</div>
+    </div>
+  `;
+  // counter++;
+  container.appendChild(newTitleField);
+}
 
 
 let ul = document.querySelector('.tags-input ul');

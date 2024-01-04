@@ -378,9 +378,9 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-contact.html">
+        <a class="nav-link collapsed" href="{{route('tenant.booking')}}">
           <i class="bi bi-person-lines-fill"></i>
-          <span>المستأجرين</span>
+          <span>الحجوزات</span>
         </a>
       </li>
       <li class="nav-item">
