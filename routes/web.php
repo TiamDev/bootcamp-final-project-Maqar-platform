@@ -2,6 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Account\SigninController;
+use App\Http\Controllers\Account\SignupController;
+use App\Http\Controllers\Account\SignoutController;
+use App\Http\Controllers\Message\MessageController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,12 +22,41 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('site.home');
 });
+Route::get('/tenant/home', function () {
+    return view('tenant.home');
+})->name('tenant.home');
+
 Route::get('/providers', function () {
     return view('site.providers');
 });
 Route::get('/providers/alfba', function () {
     return view('site.provider');
 });
+Route::get('/signin', [SigninController::class, 'view'])->name('signin');
+Route::post('/signin', [SigninController::class, 'authenticate'])->name('signin.submit');
+//
+Route::get('/signup', [SignupController::class, 'view'])->name('signup');
+Route::post('/signup', [SignupController::class, 'store']);
+//
+Route::middleware('auth')->group(function () {
+    // Route::get('/user/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard.user');
+    Route::post('/signout', [SignoutController::class, 'signout'])->name('account.back.signout');
+});
+
+Route::controller(MessageController::class)->group(function () {
+    Route::post('/message', 'send')->name('message.send');
+});
+// Route::resource('/message', MessageController::class);
+
+Route::get('/platform', function () {
+    return view('platform.dashboard');
+})->name('platform.dashboard');
+Route::get('/tenant', function () {
+    return view('tenant.dashboard');
+})->name('tenant.dashboard');
+Route::get('/client', function () {
+    return view('client.dashboard');
+})->name('client.dashboard');
 
 //admin route*******************************************************************
 Route::get('/platform', function () {
@@ -112,6 +146,7 @@ Route::get('/tenant', function () {
 Route::get('/tenant/home', function () {
     return view('tenant.home');
 })->name('tenant.home');
+
 
 Route::get('/tenant/users', function () {
     return view('tenant.users.index');
@@ -259,11 +294,11 @@ Route::get('/client/bill/view', function () {
 
 
 
-Route::get('/site/signin', function () {
-    return view('site.signin');
-})->name('signin');
+// Route::get('/site/account/sin', function () {
+//     return view('site.signin');
+// })->name('signin');
 
 
-Route::get('/site/signup', function () {
-    return view('site.signup');
-})->name('signup');
+// Route::get('/site/signup', function () {
+//     return view('site.signup');
+// })->name('signup');

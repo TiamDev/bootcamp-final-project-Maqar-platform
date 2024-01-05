@@ -11,27 +11,27 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('providers', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('parent_id')->nullable();
-
+            $table->unsignedBigInteger('user-id');
             $table->string('name');
+            $table->string('title');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->integer('phone');
-            // $table->string('address');
-            // $table->boolean('isActive');
-            $table->rememberToken();
-
+            $table->string('address');
+            $table->string('currency');
+            $table->bigInteger('phone');
+            $table->enum('state', ['register', 'step1', 'step2', 'approved', 'complete', 'reject']);
+            $table->time('startWorkHour');
+            $table->time('endWorkHour');
             $table->timestamps();
         });
     }
+
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('providers');
     }
 };

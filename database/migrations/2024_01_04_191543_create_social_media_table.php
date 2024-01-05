@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('setting', function (Blueprint $table) {
+        Schema::create('social_media', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->string('target_type');
-            $table->string('target_type_Id');
-            $table->string('setting_key');
-            $table->string('setting_value');
+            $table->unsignedBigInteger('user_id');
+            $table->string('link');
+            $table->enum('type', ['facebook', 'instagram', 'twitter', 'linkedin']);
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('social_media');
     }
 };
