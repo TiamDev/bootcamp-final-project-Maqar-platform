@@ -126,13 +126,22 @@ class RoleUsersAndPermissionsTableSeeder extends Seeder
         $user1 = User::where('email', $email1)->first();
         $user1->roles()->attach(Role::where('name', 'super-admin')->first()->id);
         $user1->save();
+        $email3 = 'ragad@example.com';
+        $user3 = User::where('email', $email3)->first();
+        $user3->roles()->attach(Role::where('name', 'client')->first()->id);
+        $user3->save();
+        //مزودي خدمة
         $email2 = 'rawaa@example.com';
         $user2 = User::where('email', $email2)->first();
         $user2->roles()->attach(Role::where('name', 'admin')->first()->id);
         $user2->save();
-        $email3 = 'ragad@example.com';
+        $email3 = 'fofo1@example.com';
         $user3 = User::where('email', $email3)->first();
-        $user3->roles()->attach(Role::where('name', 'client')->first()->id);
+        $user3->roles()->attach(Role::where('name', 'admin')->first()->id);
+        $user3->save();
+        $email3 = 'soso1@example.com';
+        $user3 = User::where('email', $email3)->first();
+        $user3->roles()->attach(Role::where('name', 'admin')->first()->id);
         $user3->save();
     }
 

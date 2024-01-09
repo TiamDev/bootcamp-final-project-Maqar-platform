@@ -1069,7 +1069,7 @@ h6 {
 
 .profile .profile-overview .row {
   margin-bottom: 20px;
-  font-size: 15px;
+  font-size: 16px;
 }
 
 .profile .profile-overview .card-title {
@@ -1592,7 +1592,7 @@ background: #dfe3f259;
 display: flex;
 justify-content: center;
 align-items: center;
-user-select: none;
+/* user-select: none; */
 margin-top:20px;
 }
 .img-card form .img-select{
@@ -1736,7 +1736,9 @@ client
   box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;;
 
 }
-
+search-box-m{
+  margin-inline: 100px;
+}
 .search-form {
   margin: 0px !important;
 }

@@ -8,7 +8,9 @@
   font-family: 'Tajawal';
   src: url(/site/fonts/Tajawal-Regular.ttf) ;
 }
-
+p{
+  margin: 0;
+}
 body {
   font-family: 'Tajawal';
   color: #444444;
@@ -2604,7 +2606,9 @@ padding-inline: 10%;
   box-shadow: -1px 0px 2px 2px #c6cec8;
 
 }
-
+.search-box-m{
+  margin-inline:200px;
+}
 .search-form {
   margin: 0px !important;
 }
@@ -2867,3 +2871,11 @@ clinet
   transform: translate(-50%, -50%);
   padding: 20px;
 }
+.form-control{
+  height: 55px;
+}
+.d-f{
+  display: flex;
+  align-items: center;
+}
+

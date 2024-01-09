@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Http\Controllers\Maqar\WorkspaceTypeController;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,7 +15,6 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // \App\Models\User::factory(10)->create();
-
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
@@ -22,5 +23,13 @@ class DatabaseSeeder extends Seeder
         $this->call(UsersTableSeeder::class);
         $this->call(RolesTableSeeder::class);
         $this->call(RoleUsersAndPermissionsTableSeeder::class);
+        $this->call(GovernoratesTableSeeder::class);
+        $this->call(DirectoratesTableSeeder::class);
+        $this->call(WorkspaceTypesTableSeeder::class);
+        $this->call(ProvidersTableSeeder::class);
+        $this->call(WorkSpacesTableSeeder::class);
+        $this->call(ServicesTableSeeder::class);
+        $this->call(WorkspaceDurationsTableSeeder::class);
+        $this->call(WorkspaceOffersTableSeeder::class);
     }
 }

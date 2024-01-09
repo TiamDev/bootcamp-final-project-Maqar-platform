@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('social_media', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
             $table->string('link');
             $table->enum('type', ['facebook', 'instagram', 'twitter', 'linkedin']);
             $table->timestamps();

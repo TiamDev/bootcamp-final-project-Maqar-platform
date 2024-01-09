@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('provider_id');
             $table->string('name');
             $table->float('price');
+            $table->foreign('provider_id')->references('id')->on('providers')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -27,6 +27,8 @@
     <link href="{{ asset('/site/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
     <!-- Template Main CSS File -->
     <link href="{{ asset('/site/css/style.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('/site/css/card.css') }}" rel="stylesheet"> --}}
+
 </head>
 
 <body dir="rtl">

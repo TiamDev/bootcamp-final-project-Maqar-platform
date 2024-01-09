@@ -42,13 +42,35 @@
                 </div>
                 <form method="POST" action="{{ route('signin.submit') }}">
                     @csrf
+                    <input type="hidden" name="_method" value="POST">
+                    {{-- {{
+                        if ($request->filled('route')) {
+                            print '<input type="hidden" name="route" value="'.$request->inpue('route').'">';
+                        }
+                        if ($request->filled('name')) {
+                            print '<input type="hidden" name="name" value="'.$request->inpue('name').'">';
+                        }
+                    }} --}}
+                    @if ($request->filled('route'))
+                        <input type="hidden" name="route" value="{{ $request->input('route') }}">
+                    @endif
+
+                    @if ($request->filled('name'))
+                        <input type="hidden" name="name" value="{{ $request->input('name') }}">
+                    @endif
                     <div class="form-group pb-3">
                         <label for="email">البريد الإلكتروني</label>
-                        <input type="email" class="form-control" id="email" placeholder="">
+                        <input type="email" class="form-control" id="email" name="email" placeholder="">
+                        @error('email')
+                            <div class="error-message">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="form-group pb-3">
                         <label for="password">كلمة المرور</label>
-                        <input type="password" class="form-control" id="password" placeholder="">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="">
+                        @error('password')
+                            <div class="error-message">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="text-center">
                         <button type="submit" class="btn-dasMain ">تسجيل الدخول</button>

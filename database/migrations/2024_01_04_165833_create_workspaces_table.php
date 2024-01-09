@@ -21,6 +21,8 @@ return new class extends Migration
             $table->integer('maxPeople');
             $table->integer('area');
             $table->timestamps();
+            $table->foreign('provider_id')->references('id')->on('providers')->onDelete('cascade');
+            $table->foreign('workspaceType_id')->references('id')->on('workspace_types')->onDelete('cascade');
         });
     }
 

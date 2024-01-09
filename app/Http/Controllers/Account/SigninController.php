@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Account;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
-
+use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use App\Models\Account\User;
+use App\Models\maqar\Provider;
+use App\Models\Role;
+
 use App\Services\Account\AccountService;
 
 class SigninController extends Controller
@@ -22,36 +24,90 @@ class SigninController extends Controller
             // User is already signed in, redirect to a different page
             return redirect()->route('platform.dashboard');
         }
-        return view('site/account/signin');
+        return view('site/account/signin')->with('request', $request);;
     }
 
     public function authenticate(Request $request)
     {
-        // $request->validate([
-        //     'email' => 'required|email|max:250|unique:users',
-        //     'password' => 'required|min:8'
-        // ]);
+        $rules = [
+            'email' => 'required|email',
+            'password' => 'required|min:6',
+        ];
+        // Define custom error messages
+        $messages = [
+            'email.required' => 'الحقل مطلوب',
+            'email.email' => 'عنوان بريد إلكتروني غير صحيح',
+            'password.required' => 'الحقل مطلوب',
+            'password.min' => 'يجب أن لا يقل عن 6 أحرف',
+        ];
 
-        // $email = $request->email;
-        // $password = $request->password;
+        // Validate the request data
+        $validator = Validator::make($request->all(), $rules, $messages);
 
+        // Check if validation fails
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
+        $email = $request->email;
+        $password = $request->password;
 
-        // // Find the user by email
-        // $user = User::where('email', $email)->first();
-        // dd($user);exit;
+        $user = User::where('email', $email)->first();
 
-        // // Check the given password against the hashed password
-        // if (!Hash::check($password, $user->password)) {
-        //     return null;
-        // }
+        if (!$user) {
+            return redirect()->back()->withErrors(['email' => 'المستخدم غير موجود'])->withInput();
+        }
 
-        $credentials = $request->only('name', 'password');
+        if (!Hash::check($password, $user->password)) {
+            return redirect()->back()->withErrors(['password' => 'كلمة المرور غير صحيحة'])->withInput();
+        }
+
+        $credentials = $request->only('email', 'password');
+        // dd($request->filled('route'));
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            //
-            return redirect()->route('dashboard.user')
-                ->withSuccess('You have successfully signed in!');
+            if ($request->filled('route')) {
+                if ($request->filled('name')) {
+                    return redirect()->route($request->input('route'), ['name' => $request->input('name')]);
+                } else {
+                    return redirect()->route($request->filled('route'));
+                }
+            }
+            $user = Auth::user();
+            if ($user->roles->contains('name', 'super-admin')) {
+                // User has the 'super-admin' role, allow access to the admin dashboard
+                return view('platform.dashboard');
+            } else if ($user->roles->contains('name', 'admin')) {
+                $exists = Provider::where('user_id', Auth::id())->exists();
+                if (!$exists) {
+                    return redirect()->route('providerInfo');
+                } else {
+                    $user = User::find(Auth::id());
+                    $providerStatus = $user->provider->state;
+                    if ($providerStatus == 'step1') {
+                        return "طلبك قيد المراجعة";
+                    } elseif ($providerStatus == 'approved') {
+                        return redirect()->route('providerDetails');
+                    } elseif ($providerStatus == 'reject') {
+                        return "تم رفض طلبك ارجو مراجعة الايميل";
+                    } elseif ($providerStatus == 'complete') {
+                        return redirect()->route('tenant.dashboard');
+                    }
+                }
+            } else if ($user->roles->contains('name', 'reception')) {
+                // User has the 'admin' role, show an error message or redirect
+                return view('tenant.dashboard');
+            } else if ($user->roles->contains('name', 'content-admin')) {
+                // User has the 'admin' role, show an error message or redirect
+                return view('tenant.dashboard');
+            } else if ($user->roles->contains('name', 'client')) {
+                // User has the 'admin' role, show an error message or redirect
+                return view('client.dashboard');
+            } else {
+                return redirect()->route('signup')->with('error', 'You do not have permission to access this page.');
+            }
         }
+        //يرجعني للداشبورد
+        return redirect()->back()->withErrors(['email' => 'حدثت مشكلة أثناء تسجيل الدخول'])->withInput();
     }
 }

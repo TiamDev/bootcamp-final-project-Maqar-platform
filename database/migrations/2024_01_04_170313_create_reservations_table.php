@@ -16,9 +16,13 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('workspaceoffer_id');
             $table->unsignedBigInteger('state_id');
-            $table->unsignedBigInteger('voucher_id');
-            $table->date('start-date');
-            $table->date('end-date');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('workspaceoffer_id')->references('id')->on('workspace_offers')->onDelete('cascade');
+            // $table->foreign('state_id')->references('id')->on('states')->onDelete('cascade');
+            $table->float('officPrice')->nullable();
+            $table->string('voucher')->nullable();
+            $table->timestamp('start_date')->nullable();
+            $table->timestamp('end_date')->nullable();
             $table->timestamps();
         });
     }

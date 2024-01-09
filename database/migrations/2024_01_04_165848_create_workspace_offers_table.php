@@ -17,6 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('workspaceDuration_id');
             $table->float('price');
             $table->timestamps();
+            $table->foreign('workspace_id')->references('id')->on('workspaces')->onDelete('cascade');
+            $table->foreign('workspaceDuration_id')->references('id')->on('workspace_durations')->onDelete('cascade');
         });
     }
 

@@ -16,10 +16,11 @@ return new class extends Migration
             $table->unsignedBigInteger('provider_id');
             $table->string('name');
             $table->timestamps();
+            $table->foreign('provider_id')->references('id')->on('providers')->onDelete('cascade');
         });
     }
 
-    /**
+    /** 
      * Reverse the migrations.
      */
     public function down(): void

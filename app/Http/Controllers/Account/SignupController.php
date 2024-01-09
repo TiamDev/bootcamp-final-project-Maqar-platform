@@ -6,8 +6,11 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
+use App\Http\Requests\SignupRequest;
 use App\Models\Account\User;
+use App\Models\Account\Role;
+
+
 
 class SignupController extends Controller
 {
@@ -20,7 +23,7 @@ class SignupController extends Controller
      */
     public function view()
     {
-        return view('front.account.signup');
+        return view('site/account/signup');
     }
 
     /**
@@ -29,24 +32,21 @@ class SignupController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SignupRequest $request)
     {
-        $request->validate([
-            'username' => 'required|string|max:250',
-            'email' => 'required|email|max:250|unique:users',
-            'password' => 'required|min:8|confirmed'
-        ]);
-
         User::create([
-            'username' => $request->name,
+            'name' => $request->name,
             'email' => $request->email,
+            'phone' => $request->phone,
             'password' => Hash::make($request->password)
         ]);
-
-        $credentials = $request->only('email', 'password');
-        Auth::attempt($credentials);
-        $request->session()->regenerate();
-        return redirect()->route('dashboard')
-        ->withSuccess('You have successfully signuped & signed in!');
+        $email = $request->email;
+        $user = User::where('email', $email)->first();
+        $roleName = $request->input('role');
+        $role = Role::where('name', $roleName)->first();
+        $roleId = $role->id;
+        $user->roles()->attach($roleId);
+        $user->save();
+        return redirect()->route('signin');
     }
 }

@@ -5,7 +5,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Account\SigninController;
 use App\Http\Controllers\Account\SignupController;
 use App\Http\Controllers\Account\SignoutController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\JoinRequest\JoinRequestController;
+
+
 use App\Http\Controllers\Message\MessageController;
+use App\Http\Controllers\Maqar\WorkspaceTypeController;
+use App\Http\Controllers\Reservation\ReservationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,19 +25,42 @@ use App\Http\Controllers\Message\MessageController;
 */
 
 
-Route::get('/', function () {
-    return view('site.home');
-});
-Route::get('/tenant/home', function () {
-    return view('tenant.home');
-})->name('tenant.home');
+// Route::get('/', function () {
+//     return view('site.home');
+// })->name('home');
+// Route::get('/tenant/home', function () {
+//     return view('tenant.home');
+// })->name('tenant.home');
 
-Route::get('/providers', function () {
-    return view('site.providers');
+// Route::get('/providers', function () {
+//     return view('site.providers');
+// });
+// Route::get('/providers/alfba', function () {
+//     return view('site.provider');
+// });
+//**********************\*Home*/************************* */
+
+Route::controller(HomeController::class)->group(function () {
+    Route::get('/', 'index')->name('home');
+    Route::post('/offers', 'search')->name('offers');
+    Route::post('/{name}/details', 'details')->name('offer.details');
+    // Route::match(['get', 'post'], '/site/{name}/workspaceDetiles', 'WorkspaceController@workspaceDetiles')->name('site.workspaceDetiles');
+
+    // Route::get('/site/home', 'workspaces')->name('site.workspaces');
+
+    Route::get('/getDirectorates', 'getDirectorates');
 });
-Route::get('/providers/alfba', function () {
-    return view('site.provider');
+// **********************Reservation****************************
+
+// Route::controller(ReservationController::class)->group(function () {
+//     // Route::post('/site/{name}/reservationCheck', 'reservationCheck')->name('site.reservationCheck');
+
+// });
+Route::controller(ReservationController::class)->group(function () {
+    Route::get('/site/{name}/reservationCheck', 'reservationCheck')->name('site.reservationCheck');
+    Route::match(['get', 'post'], '/site/reservationCheck2', 'reservationCheck2')->name('site.reservationCheck2');
 });
+// **********************Account****************************
 Route::get('/signin', [SigninController::class, 'view'])->name('signin');
 Route::post('/signin', [SigninController::class, 'authenticate'])->name('signin.submit');
 //
@@ -39,13 +68,48 @@ Route::get('/signup', [SignupController::class, 'view'])->name('signup');
 Route::post('/signup', [SignupController::class, 'store']);
 //
 Route::middleware('auth')->group(function () {
-    // Route::get('/user/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard.user');
-    Route::post('/signout', [SignoutController::class, 'signout'])->name('account.back.signout');
+    Route::post('/signout', [SignoutController::class, 'signout'])->name('account.signout');
 });
+// ***********************joinRequest***********************************
 
+
+Route::controller(JoinRequestController::class)->group(function () {
+    Route::get('/joinRequest/providerInfo', 'viewInformation')->name('providerInfo');
+    Route::post('/joinRequest/providerInfo', 'storeInformation');
+
+    Route::get('/joinRequest/providerDetails', 'viewDetails')->name('providerDetails');
+    Route::post('/joinRequest/providerDetails',  'storeDetails');
+
+    Route::get('/platform/joinRequest/index', 'index')->name('platform.joinRequest');
+    Route::get('/platform/joinRequest/{name}/view', 'view')->name('platform.joinRequest.view');
+
+    Route::post('/platform/joinRequest/{name}/confirm', 'confirm')->name('platform.joinRequest.confirm');
+
+    Route::post('/platform/joinRequest/{name}/reject', 'reject')->name('platform.joinRequest.reject');
+});
+//**********************Message************************* */
 Route::controller(MessageController::class)->group(function () {
     Route::post('/message', 'send')->name('message.send');
 });
+//***********************Maqar************************** */
+
+Route::controller(WorkspaceTypeController::class)->group(function () {
+    Route::get('/platform/workspaceType', 'index')->name('WorkspaceType');
+    Route::get('/platform/workspaceType/add', 'add')->name('WorkspaceType.add');
+    Route::post('/platform/workspaceType/create', 'create')->name('workspaceType.create');
+    Route::get('/platform/workspaceType/{name}', 'view')->name('WorkspaceType.view');
+    Route::get('/platform/workspaceType/edit/{name}', 'edit')->name('WorkspaceType.edit');
+    Route::post('/platform/workspaceType/edit', 'update')->name('WorkspaceType.update');
+    Route::delete('/platform/workspaceType/delete/{id}', 'delete')->name('WorkspaceType.delete');
+});
+// Route::get('/workspaceType', [WorkspaceTypeController::class, 'index'])->name('WorkspaceType');
+// Route::get('/workspaceType/{name}', [WorkspaceTypeController::class, 'view'])->name('WorkspaceType.view');
+// Route::get('/workspaceType/edit/{name}', [WorkspaceTypeController::class, 'edit'])->name('WorkspaceType.edit');
+
+
+
+
+
 // Route::resource('/message', MessageController::class);
 
 Route::get('/platform', function () {
@@ -235,13 +299,13 @@ Route::get('/tenant/content', function () {
     return view('tenant.content.index');
 })->name('tenant.content');
 
-Route::get('/tenant/content/information', function () {
-    return view('tenant.content.information');
-})->name('tenant.content.information');
+// Route::get('/tenant/content/information', function () {
+//     return view('tenant.content.information');
+// })->name('tenant.content.information');
 
-Route::get('/tenant/content/subInfo', function () {
-    return view('tenant.content.subInfo');
-})->name('tenant.content.stepTwo');
+// Route::get('/tenant/content/subInfo', function () {
+//     return view('tenant.content.subInfo');
+// })->name('tenant.content.stepTwo');
 Route::get('/tenant/booking/index', function () {
     return view('tenant.booking.index');
 })->name('tenant.booking');

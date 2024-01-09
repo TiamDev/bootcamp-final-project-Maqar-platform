@@ -193,7 +193,6 @@
                     </div>
                 </section>
                 <form action="" method="">
-
                     <a href="{{ route('tenant.dashboard') }}" class="btn-dasMain" type="submit">التالي</a>
                 </form>
             </div>

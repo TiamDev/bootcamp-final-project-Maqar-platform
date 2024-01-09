@@ -41,31 +41,52 @@
                     <img src="{{ asset('admin/img/logo.png') }}" width="200" alt="">
                     <h5 class="card-title">انشاء حساب</h5>
                 </div>
-                <form>
+                <form method="POST" action="{{ route('signup') }}">
+                    @csrf
                     <div class="form-group pb-3">
                         <label for="text">الاسم كاملا</label>
-                        <input type="text" class="form-control" id="name" placeholder="  ">
+                        <input type="text" name="name" class="form-control" id="name" placeholder="  "
+                            value="{{ old('name') }}">
+                        @error('name')
+                            <div class="error-message">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="form-group pb-3">
                         <label for="email">البريد الإلكتروني</label>
-                        <input type="email" class="form-control" id="email" placeholder="  ">
+                        <input type="email" class="form-control" id="email" name="email" placeholder="  "
+                            value="{{ old('email') }}">
+                        @error('email')
+                            <div class="error-message">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="form-group pb-3">
                         <label for="text">رقم الهاتف</label>
-                        <input type="text" class="form-control" id="phone" placeholder="  ">
+                        <input type="text" class="form-control" id="phone" name="phone" placeholder="  "
+                            value="{{ old('phone') }}">
+                        @error('phone')
+                            <div class="error-message">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="form-group pb-3">
                         <label for="password">كلمة المرور</label>
-                        <input type="password" class="form-control" id="password" placeholder="أدخل كلمة المرور">
+                        <input type="password" class="form-control" id="password" name="password"
+                            placeholder="أدخل كلمة المرور">
+                        @error('password')
+                            <div class="error-message">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="form-group pb-3">
                         <label for="password"> تاكيد كلمة المرور </label>
-                        <input type="password" class="form-control" id="conform-password"
+                        <input type="password" class="form-control" id="conform-password" name="password_confirmation"
                             placeholder="أدخل كلمة المرور">
+                        @error('password_confirmation')
+                            <div class="error-message">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="row">
                         <div class="col-6">
-                            <input type="radio" name="pasta" id="spaghetti" class="checkbox-input-over" />
+                            <input type="radio" name="role" value="client" id="spaghetti"
+                                class="checkbox-input-over" checked />
                             <label for="spaghetti" class="checkbox-label-over2">
                                 <div class="checkbox-text-over">
                                     <p class="checkbox-text--title"> </p>
@@ -74,7 +95,8 @@
                             </label>
                         </div>
                         <div class="col-6 ">
-                            <input type="radio" name="pasta" id="tonnarelli" class="checkbox-input-over" />
+                            <input type="radio" name="role" value="admin" id="tonnarelli"
+                                class="checkbox-input-over" />
                             <label for="tonnarelli" class="checkbox-label-over2">
                                 <div class="checkbox-text-over">
                                     <p class="checkbox-text--title"> </i></p>
@@ -88,7 +110,7 @@
                     <div class="text-center">
                         <button type="submit" class="btn-dasMain ">انشاء حساب</button>
                         <div class="sign-footer">
-                            <p> لديك حساب ?</p><a href="{{ route('account.signin') }}" class="toggle"> تسجيل دخول</a>
+                            <p> لديك حساب ?</p><a href="{{ route('signin') }}" class="toggle"> تسجيل دخول</a>
                         </div>
                     </div>
                 </form>

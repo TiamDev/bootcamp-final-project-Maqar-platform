@@ -13,16 +13,21 @@ return new class extends Migration
     {
         Schema::create('providers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user-id');
-            $table->string('name');
-            $table->string('title');
+            $table->unsignedBigInteger('user_id')->unique();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('directorate_id');
+            $table->string('name')->unique();
+            $table->string('title')->unique();
             $table->string('email')->unique();
             $table->string('address');
-            $table->string('currency');
+            $table->string('currency')->nullable();
             $table->bigInteger('phone');
-            $table->enum('state', ['register', 'step1', 'step2', 'approved', 'complete', 'reject']);
-            $table->time('startWorkHour');
-            $table->time('endWorkHour');
+            $table->string('tradeDocument');
+            $table->string('logo');
+            $table->bigInteger('identity_NO');
+            $table->enum('state', ['step1', 'approved', 'complete', 'reject']);
+            $table->integer('startWorkHour')->nullable();
+            $table->integer('endWorkHour')->nullable();
             $table->timestamps();
         });
     }
