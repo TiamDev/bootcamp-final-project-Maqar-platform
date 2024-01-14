@@ -50,13 +50,14 @@
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="pills-advantage-tab" data-bs-toggle="pill"
                                 data-bs-target="#pills-advantage" type="button" role="tab"
-                                aria-controls="pills-advantage" aria-selected="false"> مميزاتنا </button>
+                                aria-controls="pills-advantage" aria-selected="false"> خدماتنا </button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="pills-address-tab" data-bs-toggle="pill"
                                 data-bs-target="#pills-address" type="button" role="tab" aria-controls="pills-address"
-                                aria-selected="false"> العنوان </button>
+                                aria-selected="false"> العنوان و العملة</button>
                         </li>
+
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill"
                                 data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact"
@@ -73,7 +74,7 @@
                             aria-labelledby="logo-tab">
                             <h3 class="tab-heading">الرئيسية</h3>
                             <p class="paragraph">
-                                يمكنك تغيير محتوى صفحتك التي يراها مستخدمي منصة مقر
+                                يمكنك اضافة و تغيير محتوى صفحتك التي يراها مستخدمي منصة مقر
                             </p>
                         </div>
                         <div class="tab-pane fade" id="pills-logo" role="tabpanel" aria-labelledby="logo-tab">
@@ -142,95 +143,129 @@
                         </div>
                         <div class="tab-pane fade" id="pills-service" role="tabpanel" aria-labelledby="service-tab">
                             {{-- <form> --}}
-                            <div class="row">
-                                <div class="col-8">
-                                    <h3 class="tab-heading">تعديل المرافق </h3>
-                                    <p class="paragraph">
-                                        الخدمات التي توفرها شركتك لعملائك
-                                    </p>
+
+                            <div class="">
+                                <div class="col-8 w-100">
+                                    <div class="d-flex justify-content-between">
+                                        <h3 class="tab-heading"> مرافق مقر {{ $provider->title }}</h3>
+                                        <a href="{{ route('content.addFeature') }}" class="dash-btn das-show"><i
+                                                class="bi bi-plus-square fs-4"></i></a>
+                                        </a>
+                                    </div>
+                                    <p class="paragraph text-secondary">
+                                        يمكن توضيح المزايا الإضافية التي تمتلكها مثل وجود مواقف للسيارات، والمواقع المركزية
+                                        في
+                                        المدينة،والمطاعم ووسائل النقل العام... </p>
                                     <div class="row">
-                                        <div class="col-12">
-                                            <div id="fields-container">
-                                                <div class="row myrow">
-                                                    <div class="col-8">
-                                                        <div class="form-group pb-3">
-                                                            <input type="text" class="form-control" name="title[]"
-                                                                placeholder="أدخل  المرفق">
+                                        @if (count($features) > 0)
+                                            @foreach ($features as $feature)
+                                                <div class="col-lg-4">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <div class="d-flex justify-content-between">
+                                                                <h5> {{ $feature->name }}</h5>
+                                                                <a href=""><i
+                                                                        class="bi bi-x-octagon text-danger"></i></a>
+                                                            </div>
                                                         </div>
                                                     </div>
-
                                                 </div>
-                                            </div>
-                                            <button onclick="addFields() " class="btn-dasSecond">جديد</button>
-                                        </div>
+                                            @endforeach
+                                        @else
+                                            <a href="{{ route('workspaces.add') }}" class="mainColor">يرجى اضافة مرافق</a>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
-                            <a href="" class="btn-dasMain">حفظ التغييرات</a>
                             {{-- </form> --}}
                         </div>
                         <div class="tab-pane fade" id="pills-advantage" role="tabpanel" aria-labelledby="advantage-tab">
                             {{-- <form> --}}
-                            <div class="row">
-                                <div class="col-8">
-                                    <h3 class="tab-heading">تعديل الخدمات الاضافية </h3>
-                                    <p class="paragraph">
-                                        الخدمات الاضافية التي توفرها لعملائك
+                            <div class="">
+                                <div class="col-8 w-100">
+                                    <div class="d-flex justify-content-between">
+                                        <h3 class="tab-heading"> خدمات مقر {{ $provider->title }}</h3>
+                                        <a href="{{ route('content.addService') }}" class="dash-btn das-show"><i
+                                                class="bi bi-plus-square fs-4"></i></a>
+                                        </a>
+                                    </div>
+                                    <p class="paragraph text-secondary">تعزز تجربة العملاء وتوفر لهم راحة وسهولة أكبر أثناء
+                                        استخدام الخدمات المدفوعة مثل تقديم وجبة الافطار."
                                     </p>
                                     <div class="row">
-                                        <div class="col-12">
-                                            <div id="fields-container2">
-                                                <div class="row myrow">
+                                        @if (count($services) > 0)
+                                            @foreach ($services as $service)
+                                                <div class="col-lg-4">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <div class="d-flex justify-content-between">
+                                                                <div>
+                                                                    <h5> {{ $service->name }} </h5>
+                                                                    <p class="m-0 mainColor">
+                                                                        {{ $service->price }}
+                                                                        {{ $provider->currency }}</p>
+                                                                </div>
 
-                                                    <div class="col-8">
-                                                        <div class="form-group pb-3">
-                                                            <input type="text" class="form-control" name="bank[]"
-                                                                placeholder="عنوان الخدمة الاضافية">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-4">
-                                                        <div class="form-group pb-3">
-                                                            <input type="number" class="form-control" name="PIN[]"
-                                                                placeholder="السعر ">
+                                                                <a href=""><i
+                                                                        class="bi bi-x-octagon text-danger"></i></a>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <button onclick="addFields2() " class="btn-dasSecond">جديد</button>
-                                        </div>
+                                            @endforeach
+                                        @else
+                                            <a href="{{ route('workspaces.add') }}" class="mainColor">يرجى اضافة
+                                                مرافق</a>
+                                        @endif
                                     </div>
                                 </div>
-                            </div>
-                            <a href="" class="btn-dasMain">حفظ التغييرات</a>
-                            {{-- </form> --}}
+                            </div> {{-- </form> --}}
                         </div>
                         <div class="tab-pane fade" id="pills-address" role="tabpanel" aria-labelledby="address-tab">
                             <form>
                                 <div class="row">
-                                    <div class="col-8">
-                                        <h3 class="tab-heading">تعديل عنوان الشركة </h3>
+                                    <div class="col-12">
+                                        <h3 class="tab-heading"> عنوان الشركة و العملة</h3>
                                         <p class="paragraph">
-                                            يجب تحديد المكان بدقة
-                                        </p>
+                                            يُرجى تحديد الموقع بدقة وكذلك العملة التي ترغب في عرضها للمستخدمين </p>
                                         <div class="row">
-                                            <div class="col-4">
-                                                <label for="inputState" class="form-label">الدولة</label>
-                                                <select id="inputState" class="form-select" fdprocessedid="1dsoq">
-                                                    <option selected="">اليمن</option>
-                                                    <option>المملكة العربية السعودية</option>
+                                            <div class="col-3">
+                                                <label for="inputState" class="form-label"> المحافظة</label>
+                                                <select class="form-select" id="governorateSelect"
+                                                    onchange="getDirectorates()">
+                                                    <option selected disabled>اختر المحافظة</option>
+                                                    @foreach ($governorates as $governorate)
+                                                        <option value="{{ $governorate->id }}">{{ $governorate->name }}
+                                                        </option>
+                                                    @endforeach
                                                 </select>
                                             </div>
-                                            <div class="col-4">
-                                                <label for="inputState" class="form-label">المدينة/المحافظة </label>
-                                                <select id="inputState" class="form-select" fdprocessedid="1dsoq">
-                                                    <option selected="">حضرموت</option>
-                                                    <option>صنعاء</option>
+                                            <div class="col-lg-3">
+                                                <label for="inputState" class="form-label">المديرية</label>
+
+                                                <select class="form-select" id="directorateSelect" aria-label="State"
+                                                    name="directorate_id" name="directorate_id">
+                                                    <option selected disabled>اختر المحافظة اولا</option>
+
                                                 </select>
+                                                @error('directorate_id')
+                                                    <p>يجب اختيار المديريه</p>
+                                                @enderror
                                             </div>
-                                            <div class="col-4">
+                                            <div class="col-lg-3">
                                                 <label for="inputState" class="form-label">الشارع</label>
                                                 <input type="text" class="form-control" id="inputName5"
-                                                    fdprocessedid="tpewl" placeholder="فوة - الاربعين شقة">
+                                                    name="address" name="address" fdprocessedid="tpewl"
+                                                    placeholder="فوة - الاربعين شقة">
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label for="inputState" class="form-label">العملة</label>
+                                                <select class="form-select" name="currency" onchange="getDirectorates()">
+                                                    <option value="ري">ري</option>
+                                                    <option value="رس">رس</option>
+                                                    <option value="دولار">دولار</option>
+
+                                                </select>
                                             </div>
                                         </div>
 
@@ -240,7 +275,7 @@
                             </form>
                         </div>
                         <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="contact-tab">
-                            <form>
+                            <form action="content.contactus" method="POST">
                                 <div class="row">
                                     <div class="col-8">
                                         <h3 class="tab-heading">تعديل معلومات التواصل </h3>
@@ -249,13 +284,13 @@
                                         </p>
                                         <div class="col-6">
                                             <label for="inputState" class="form-label">الايميل</label>
-                                            <input type="text" class="form-control" id="inputName5"
-                                                fdprocessedid="tpewl" value="sanad@gmail.com">
+                                            <input type="text" class="form-control" name="email"
+                                                fdprocessedid="tpewl" value="{{ $provider->email }}">
                                         </div>
                                         <div class="col-6">
                                             <label for="inputState" class="form-label">رقم التواصل</label>
-                                            <input type="text" class="form-control" id="inputName5"
-                                                fdprocessedid="tpewl" value="73595325">
+                                            <input type="text" class="form-control" name="phone"
+                                                fdprocessedid="tpewl" value="{{ $provider->phone }}">
                                         </div>
                                     </div>
                                 </div>
@@ -344,7 +379,33 @@
     </main><!-- End #main -->
 
 
+    <script>
+        function getDirectorates() {
+            var governorateId = document.getElementById('governorateSelect').value;
+            var xhr = new XMLHttpRequest();
 
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        var directorates = JSON.parse(xhr.responseText);
+                        var directorateSelect = document.getElementById('directorateSelect');
+                        directorateSelect.innerHTML = '';
+
+                        for (var i = 0; i < directorates.length; i++) {
+                            var option = document.createElement('option');
+                            option.value = directorates[i].id;
+                            option.text = directorates[i].name;
+                            directorateSelect.appendChild(option);
+                        }
+                    } else {
+                        console.log('حدث خطأ أثناء استرداد البيانات');
+                    }
+                }
+            };
+            xhr.open('GET', '/getDirectorates?governorate_id=' + governorateId, true);
+            xhr.send();
+        }
+    </script>
     <script>
         const maxImages = 5;
 
@@ -446,5 +507,6 @@
             // counter++;
             container.appendChild(newTitleField);
         }
+        ///
     </script>
 @endsection

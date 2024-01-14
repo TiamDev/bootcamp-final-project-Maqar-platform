@@ -261,10 +261,11 @@ h6 {
 
 .card-title {
   /* padding: 20px 0 15px 0; */
-  font-size: 20px !important;
+  /* font-size: 20px !important; */
   font-weight: 600 !important;
   color: var(--darkColor);
   font-family: 'Tajawal';
+  margin-bottom: 20px;
 }
 
 .card-title span {
@@ -670,7 +671,7 @@ h6 {
 
   #main,
   #footer {
-    margin-right: 265px;
+    margin-right: 240px;
   }
 }
 
@@ -1366,7 +1367,7 @@ card office
 */
 
 .mycontainer {
-  height: 50vh;
+  height: 60vh;
   margin-inline: 1.5rem;
   display: grid;
   place-items: center;
@@ -1375,7 +1376,7 @@ card office
 
 .mycard {
   position: relative;
-  width: 256px;
+  width: 286px;
   background-color:white;
   padding: 1.25rem 2rem 3rem;
   border-radius: 1.5rem;
@@ -1399,8 +1400,8 @@ card office
   position: relative;
   width: 330px;
   background-color:white;
-  padding: 1.25rem 2rem 3rem;
-  border-radius: 1.5rem;
+  padding: 0rem 0.5rem 4rem;
+  border-radius: 10px;
     /* border-radius: 0.5rem; */
 
   text-align: center;
@@ -1408,7 +1409,7 @@ card office
 }
 .card__border2 {
   width:100%;
-  height: 190px;
+  height: 229px;
   margin: 0 ;
   display: grid;
   place-items: center;
@@ -1419,13 +1420,13 @@ card office
   width: 100%;
 }
 .card__name {
-  color: var(--darkColor);
-  font-size: var(--h3-font-size);
+  color:black;
+  font-size:20px;
   font-weight: 600;
 }
 .card__profession {
-  color: var(--text-color);
-  font-size: var(--smalle-font-size);
+  color: var(--darkColor);
+  font-size:16;
   font-weight: 500;
 }
 .card__social {
@@ -1447,7 +1448,7 @@ card office
   position: relative;
   transform-origin: 18px 18px;
   transition: transform 0.45s ease;
-  height: 50px;
+  height: 110px;
   display:flex;
   align-items: center;
   justify-content: center;
@@ -1465,18 +1466,19 @@ card office
   justify-content: center;
   column-gap: 0.75rem;
   margin: 0;
+  padding-left: 0 !important;
 }
 .card__social-link {
   display: inline-flex;
   background-color: var(--mainColor);
   color: rgb(250, 250, 250);
   font-size: 1.25rem;
- width: 50px;
-height: 50px; 
+ width: 45px;
+height: 40px; 
 display: flex;
 justify-content: center;
 align-items: center;
-  border-radius: 50%;
+  border-radius: 5px;
 
 }
 .card__social-link:hover {
@@ -1488,7 +1490,7 @@ align-items: center;
   top: 0;
   left: 0;
   right: 0;
-  padding-left: 3.1rem;
+  /* padding-left: 3.1rem; */
 }
 .card__social-text {
   top: 0.5rem;
@@ -1539,7 +1541,11 @@ align-items: center;
 padding-inline: 0;
   position: relative;
 }
-
+@media (max-width: 600px) {
+  .myul{
+    column-count: 1;
+  }
+  }
 .myul li {
   line-height: 1.5;
   padding: 0.5em 0;
@@ -1579,7 +1585,7 @@ font-weight: 600;
 /* font-size: 0.9rem;
 font-weight: 600; */
 }
-.img-card form{
+.img-card>form{
 width: 100%;
 height: 100px;
 border-radius: 5px;
@@ -1595,12 +1601,12 @@ align-items: center;
 /* user-select: none; */
 margin-top:20px;
 }
-.img-card form .img-select{
+.img-card .form-img .img-select{
 color:var(--darkCplor);
 margin-left: 7px;
 cursor: pointer;
 }
-.img-card form input{
+.img-card .form-img input{
 display: none;
 }
 .dragover{
@@ -1655,7 +1661,10 @@ width: 100%;
 .img-container .image-dw span:hover{
   opacity: 0.8;
 }
-
+.error-message{
+  font-size: 14px;
+  color:#d196a9
+ }
 
 
 /*  */
@@ -1668,6 +1677,7 @@ width: 100%;
 }
 .form-label{
   font-weight: 600;
+  margin-top: 15px;
 }
 
 
@@ -2216,4 +2226,13 @@ input:not([type="checkbox"]):not([type="radio"]) {
 
 section {
   margin-block: 30px;
+}
+.tx-center{
+  text-align: center;
+}
+.price-offer-detiales{
+  /* color:gray !important; */
+  padding-right:10px; 
+  font-size:16px;
+  font-weight: 600;
 }

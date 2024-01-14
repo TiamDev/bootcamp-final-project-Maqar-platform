@@ -114,6 +114,12 @@ return [
     | of the emails. Or, you may simply stick with the Laravel defaults!
     |
     */
+    // 'stream' => [
+    //     'ssl' => [
+    //         'verify_peer' => false,
+    //         'verify_peer_name' => false,
+    //     ],
+    // ],
 
     'markdown' => [
         'theme' => 'default',

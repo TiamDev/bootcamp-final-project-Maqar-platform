@@ -42,7 +42,7 @@ class HomeController extends Controller
         // $workspace = Workspace::where('name', $request->name)->first();
         // $workspaceDuration = WorkspaceDuration::where('id', $request->duration)->first()->name;
         // session()->put('workspaceDuration', $workspaceDuration);
-        dd($workspaceOffer->workspace->name);
+        // dd($workspaceOffer->workspace->name);
         return view('site.workspaceDetiles', compact('workspaceOffer'));
     }
 

@@ -66,13 +66,7 @@ class SigninController extends Controller
         // dd($request->filled('route'));
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            if ($request->filled('route')) {
-                if ($request->filled('name')) {
-                    return redirect()->route($request->input('route'), ['name' => $request->input('name')]);
-                } else {
-                    return redirect()->route($request->filled('route'));
-                }
-            }
+
             $user = Auth::user();
             if ($user->roles->contains('name', 'super-admin')) {
                 // User has the 'super-admin' role, allow access to the admin dashboard
@@ -85,7 +79,7 @@ class SigninController extends Controller
                     $user = User::find(Auth::id());
                     $providerStatus = $user->provider->state;
                     if ($providerStatus == 'step1') {
-                        return "طلبك قيد المراجعة";
+                        return redirect()->route('platform.joinRequest.underReview');
                     } elseif ($providerStatus == 'approved') {
                         return redirect()->route('providerDetails');
                     } elseif ($providerStatus == 'reject') {

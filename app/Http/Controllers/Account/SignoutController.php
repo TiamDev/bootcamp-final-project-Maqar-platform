@@ -12,6 +12,6 @@ class SignoutController extends Controller
     public function signOut()
     {
         Auth::logout();
-        return redirect()->route('site.home');
+        return redirect()->route('home');
     }
 }

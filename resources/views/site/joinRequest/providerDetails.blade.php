@@ -52,7 +52,6 @@
                         <div class="col-12">
                             <div id="fields-container">
                                 <div class="row myrow">
-
                                     <div class="col-8">
                                         <div class="form-group pb-3">
                                             <input type="text" class="form-control" name="title[]"

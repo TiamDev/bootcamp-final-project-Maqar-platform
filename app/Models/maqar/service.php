@@ -9,6 +9,12 @@ use App\Models\Maqar\Provider;
 class Service extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'name',
+        'provider_id',
+        'price'
+    ];
+
     public function provider()
     {
         return $this->belongsTo(Provider::class, 'provider_id');

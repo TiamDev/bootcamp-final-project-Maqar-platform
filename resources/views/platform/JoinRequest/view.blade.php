@@ -95,14 +95,14 @@
                                                             <div class="col-lg-8 col-md-8">
                                                                 {{ $viewModel->provider->email }}</div>
                                                         </div>
-                                                        <div class="row">
-                                                            <form
+                                                        <div class="d-flex">
+                                                            <form class=""
                                                                 action="{{ route('platform.joinRequest.confirm', ['name' => $viewModel->provider->name]) }}"
                                                                 method="post">
                                                                 @csrf
-                                                                <button type="submit" class="btn-dasSecond">قبول</button>
+                                                                <button type="submit" class=" btn-dasMain">قبول</button>
                                                             </form>
-                                                            <a href="#" class="btn-dasMain" data-toggle="modal"
+                                                            <a href="#" class="btn-dasSecond" data-toggle="modal"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#exampleModal">رفض</a>
                                                             <div class="modal fade" id="exampleModal" tabindex="-1"

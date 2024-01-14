@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Account\SigninController;
 use App\Http\Controllers\Account\SignupController;
 use App\Http\Controllers\Account\SignoutController;
+use App\Http\Controllers\Content\ContentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JoinRequest\JoinRequestController;
 
@@ -12,6 +13,8 @@ use App\Http\Controllers\JoinRequest\JoinRequestController;
 use App\Http\Controllers\Message\MessageController;
 use App\Http\Controllers\Maqar\WorkspaceTypeController;
 use App\Http\Controllers\Reservation\ReservationController;
+use App\Http\Controllers\Maqar\WorkspaceController;
+use App\Models\maqar\workspace;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,7 +46,8 @@ use App\Http\Controllers\Reservation\ReservationController;
 Route::controller(HomeController::class)->group(function () {
     Route::get('/', 'index')->name('home');
     Route::post('/offers', 'search')->name('offers');
-    Route::post('/{name}/details', 'details')->name('offer.details');
+    Route::post('/offers/{name}/details', 'details')->name('offer.details');
+
     // Route::match(['get', 'post'], '/site/{name}/workspaceDetiles', 'WorkspaceController@workspaceDetiles')->name('site.workspaceDetiles');
 
     // Route::get('/site/home', 'workspaces')->name('site.workspaces');
@@ -57,8 +61,8 @@ Route::controller(HomeController::class)->group(function () {
 
 // });
 Route::controller(ReservationController::class)->group(function () {
-    Route::get('/site/{name}/reservationCheck', 'reservationCheck')->name('site.reservationCheck');
-    Route::match(['get', 'post'], '/site/reservationCheck2', 'reservationCheck2')->name('site.reservationCheck2');
+    Route::post('/offers/{name}/details/booking', 'reservationCheck')->name('offer.booking');
+    // Route::match(['get', 'post'], '/site/reservationCheck2', 'reservationCheck2')->name('site.reservationCheck2');
 });
 // **********************Account****************************
 Route::get('/signin', [SigninController::class, 'view'])->name('signin');
@@ -82,6 +86,8 @@ Route::controller(JoinRequestController::class)->group(function () {
 
     Route::get('/platform/joinRequest/index', 'index')->name('platform.joinRequest');
     Route::get('/platform/joinRequest/{name}/view', 'view')->name('platform.joinRequest.view');
+    Route::get('/platform/joinRequest/joinMessage', 'joinMessage')->name('platform.joinRequest.joinMessage');
+    Route::get('/platform/joinRequest/underReview', 'underReview')->name('platform.joinRequest.underReview');
 
     Route::post('/platform/joinRequest/{name}/confirm', 'confirm')->name('platform.joinRequest.confirm');
 
@@ -105,10 +111,35 @@ Route::controller(WorkspaceTypeController::class)->group(function () {
 // Route::get('/workspaceType', [WorkspaceTypeController::class, 'index'])->name('WorkspaceType');
 // Route::get('/workspaceType/{name}', [WorkspaceTypeController::class, 'view'])->name('WorkspaceType.view');
 // Route::get('/workspaceType/edit/{name}', [WorkspaceTypeController::class, 'edit'])->name('WorkspaceType.edit');
+//***********************Tenant Workspaces************************** */
+
+Route::controller(WorkspaceController::class)->group(function () {
+    Route::get('/tenant/workspaces/index', 'index')->name('workspaces');
+    Route::get('/tenant/workspaces/add', 'add')->name('workspaces.add');
+    Route::post('/tenant/workspaces/create', 'create')->name('workspaces.create');
+
+    Route::get('/tenant/workspaces/{name}', 'view')->name('workspaces.view');
+    Route::get('/tenant/workspaces/{name}/edit', 'edit')->name('workspaces.edit');
+    Route::post('/tenant/workspaces/update', 'update')->name('workspaces.update');
+    Route::delete('/tenant/workspaces/{name}/delete', 'delete')->name('workspaces.delete');
+});
 
 
+//***********************Tenant Content************************** */
 
+Route::controller(ContentController::class)->group(function () {
+    Route::get('/tenant/content/index', 'index')->name('content');
+    Route::get('/tenant/content/addFeature', 'addFeature')->name('content.addFeature');
+    Route::post('/tenant/content/createFeature', 'createFeature')->name('content.createFeature');
+    Route::get('/tenant/content/addService', 'addService')->name('content.addService');
+    Route::post('/tenant/content/createService', 'createService')->name('content.createService');
+    Route::post('/tenant/content/contactus', 'contactus')->name('content.contactus');
 
+    // Route::get('/tenant/content/{name}', 'view')->name('content.view');
+    // Route::get('/tenant/content/{name}/edit', 'edit')->name('content.edit');
+    // Route::post('/tenant/content/update', 'update')->name('content.update');
+    // Route::delete('/tenant/content/{name}/delete', 'delete')->name('content.delete');
+});
 
 // Route::resource('/message', MessageController::class);
 
@@ -272,25 +303,25 @@ Route::get('/tenant/messages/delete', function () {
 })->name('tenant.messages.delete');
 
 // office cred
-Route::get('/tenant/spaces', function () {
-    return view('tenant.spaces.index');
-})->name('tenant.spaces');
+// Route::get('/tenant/spaces', function () {
+//     return view('tenant.spaces.index');
+// })->name('tenant.spaces');
 
-Route::get('/tenant/spaces/view', function () {
-    return view('tenant.spaces.view');
-})->name('tenant.spaces.view');
+// Route::get('/tenant/spaces/view', function () {
+//     return view('tenant.spaces.view');
+// })->name('tenant.spaces.view');
 
-Route::get('/tenant/spaces/add', function () {
-    return view('tenant.spaces.add');
-})->name('tenant.spaces.add');
+// Route::get('/tenant/spaces/add', function () {
+//     return view('tenant.spaces.add');
+// })->name('tenant.spaces.add');
 
-Route::get('/tenant/spaces/edit', function () {
-    return view('tenant.spaces.edit');
-})->name('tenant.spaces.edit');
+// Route::get('/tenant/spaces/edit', function () {
+//     return view('tenant.spaces.edit');
+// })->name('tenant.spaces.edit');
 
-Route::get('/tenant/spaces/delete', function () {
-    return view('tenant.spaces.delete');
-})->name('tenant.spaces.delete');
+// Route::get('/tenant/spaces/delete', function () {
+//     return view('tenant.spaces.delete');
+// })->name('tenant.spaces.delete');
 
 
 

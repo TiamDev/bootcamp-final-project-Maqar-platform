@@ -13,12 +13,16 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use App\ViewModels\JoinRequest as joinVM;
+use App\Mail\WelcomeEmail;
+use APP\Mail\RejectMail;
+
+use Illuminate\Support\Facades\Mail;
 
 class JoinRequestController extends Controller
 {
     public function index()
     {
-        $providers = Provider::paginate(1);
+        $providers = Provider::paginate(5);
         return view('platform.JoinRequest.index', compact('providers'));
     }
     public function view(string $name)
@@ -34,8 +38,11 @@ class JoinRequestController extends Controller
     public function confirm($name)
     {
         $provider = Provider::where('name', $name)->update(['state' => 'approved']);
+        $provider_obj = Provider::where('name', $name)->first();
+        $user = User::where("id", $provider_obj->user_id)->first();
         if ($provider > 0) {
-            return redirect()->route('platform.joinRequest')->with('success', 'تم قبول الطلب بنجاح ');
+            // return redirect()->route('platform.joinRequest')->with('success', 'تم قبول الطلب بنجاح ');
+            Mail::to($user->email)->send(new WelcomeEmail($user));
         } elseif ($provider === 0) {
             return redirect()->route('platform.joinRequest')->with('error', 'هناك خطا ما');
         } else {
@@ -45,8 +52,11 @@ class JoinRequestController extends Controller
     public function reject(Request $request, $name)
     {
         $provider = Provider::where('name', $name)->update(['state' => 'reject']);
+        $provider_obj = Provider::where('name', $name)->first();
+        $user = User::where("id", $provider_obj->user_id)->first();
         if ($provider > 0) {
-            return redirect()->route('platform.joinRequest')->with('success', 'تم رفض الطلب بنجاح ');
+            // return redirect()->route('platform.joinRequest')->with('success', 'تم رفض الطلب بنجاح ');
+            Mail::to($user->email)->send(new RejectMail($request->rejectMessage));
         } elseif ($provider === 0) {
             return redirect()->route('platform.joinRequest')->with('error', 'هناك خطا ما');
         } else {
@@ -131,17 +141,25 @@ class JoinRequestController extends Controller
             'address' => $request->address,
             'identity_NO' => $request->identity_NO,
             'phone' => $request->phone,
-            'tradeDocument' => $request->file('tradeDocument')->getClientOriginalName(),
+            'tradeDocument' => "", // $request->file('tradeDocument')->getClientOriginalName(),
             'user_id' => Auth::id(),
-            'logo' => $request->file('logo')->getClientOriginalName(),
+            'logo' => "", //$request->file('logo')->getClientOriginalName(),
             'directorate_id' => $request->input('directorate'),
             'state' => "step1",
 
         ]);
         Auth::logout();
-        return redirect()->route('providerDetails');
+        return redirect()->route('platform.joinRequest.joinMessage');
         // $file = $request->file('logo')->getClientOriginalName();
         //  return $file;
+    }
+    public function joinMessage()
+    {
+        return view('site.joinRequest.joinMessage');
+    }
+    public function underReview()
+    {
+        return view('site.joinRequest.underReview');
     }
     public function viewDetails()
     {

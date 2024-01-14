@@ -3,7 +3,7 @@
     <link href="{{ asset('/site/css/card.css') }}" rel="stylesheet">
 
     <main id="main " class="mt-5 container" dir="ltr">
-        <form action="{{ route('offer.details', ['name' => $workspaceOffer->workspace->name]) }}" method="post">
+        <form action="{{ route('offer.booking', ['name' => $workspaceOffer->workspace->name]) }}" method="post">
             @csrf
             <input type="hidden" name="_method" value="POST">
             <div class="row">
@@ -53,6 +53,7 @@
                                             $startWorkHour = (int) $workspaceOffer->workspace->provider->startWorkHour;
                                         @endphp
 
+
                                         <select class="form-control" name="timeStart">
                                             <option value="{{ $startWorkHour }}" selected>
                                                 {{ $startWorkHour }}
@@ -72,7 +73,10 @@
                                     </div>
                                 </div>
                             @else
-                                <input type="hidden" class="form-control" name="timeStart">
+                                <input type="hidden" class="form-control" name="timeStart"
+                                    value="{{ $workspaceOffer->workspace->provider->startWorkHour }}">
+                                <input type="hidden" class="form-control" name="name"
+                                    value="{{ $workspaceOffer->workspace->name }}">
                             @endif
                             <div class="row mb-2">
                                 <div class="col-3 d-f">
@@ -141,8 +145,9 @@
                             <!-- Slides with indicators -->
                             <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                                 <div class="carousel-indicators">
-                                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
-                                        class="active" aria-current="true" aria-label="Slide 1"></button>
+                                    <button type="button" data-bs-target="#carouselExampleIndicators"
+                                        data-bs-slide-to="0" class="active" aria-current="true"
+                                        aria-label="Slide 1"></button>
                                     <button type="button" data-bs-target="#carouselExampleIndicators"
                                         data-bs-slide-to="1" aria-label="Slide 2"></button>
                                     <button type="button" data-bs-target="#carouselExampleIndicators"
@@ -209,8 +214,6 @@
     </main>
     <script>
         function checkData() {
-            const url =
-                `{{ route('site.reservationCheck2') }}`; // استبدل بالرابط الفعلي للمسار الذي يقابل الوظيفة في الكونترولر
 
             fetch(url, {
                     method: 'POST',

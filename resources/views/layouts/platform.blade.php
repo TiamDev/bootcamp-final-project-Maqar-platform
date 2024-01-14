@@ -414,18 +414,18 @@
             </li><!-- End Components Nav -->
             <li class="nav-item">
                 <a class="nav-link collapsed @if (Route::currentRouteName() === 'tenant.content') active @endif"
-                    href="{{ route('tenant.content') }}">
+                    href="{{ route('content') }}">
                     <i class="bi bi-layout-text-sidebar-reverse"></i>
                     <span> ادارة المحتوى</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link collapsed @if (Route::currentRouteName() === 'tenant.roles' ||
-                        Route::currentRouteName() === 'tenant.spaces.add' ||
-                        Route::currentRouteName() === 'tenant.spaces.edit' ||
-                        Route::currentRouteName() === 'tenant.spaces.view' ||
-                        Route::currentRouteName() === 'tenant.spaces.delete') active @endif"
-                    href="{{ route('tenant.spaces') }}">
+                <a class="nav-link collapsed @if (Route::currentRouteName() === 'workspaces' ||
+                        Route::currentRouteName() === 'workspace.add' ||
+                        Route::currentRouteName() === 'workspace.edit' ||
+                        Route::currentRouteName() === 'workspace.view' ||
+                        Route::currentRouteName() === 'workspace.delete') active @endif"
+                    href="{{ route('workspaces') }}">
                     <i class="bi bi-building-gear"></i>
                     <span>المساحات</span>
                 </a>

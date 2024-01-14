@@ -9,7 +9,11 @@ class WorkspaceDuration extends Model
 {
     use HasFactory;
     protected $table = 'workspace_durations';
-
+    protected $fillable = [
+        'name',
+        'title',
+        'description',
+    ];
     public function workspaceOffers()
     {
         return $this->hasMany(WorkspaceOffer::class);

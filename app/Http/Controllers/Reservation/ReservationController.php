@@ -17,7 +17,6 @@ class ReservationController extends Controller
 {
     public function reservationCheck(Request $request)
     {
-
         // $rules = [
         //     'dateStart' => 'required',
         //     'dateEnd' => 'required',
@@ -38,15 +37,11 @@ class ReservationController extends Controller
         $services = $request->input('services');
         $dateStart = $request->input('dateStart');
         $timeStart = $request->timeStart;
-
-        // $timeStart = 8 . ':00';
-
-        // dd($timeStart);
         $repeatDuration = $request->input('repeatDuration');
-        dd($request);
         $selectedServicesop = $request->input('servises');
         if (auth()->check()) {
             if (!empty($dateStart) && !empty($timeStart)) {
+                // dd($timeStart);
                 $dateTimeStart = Carbon::createFromFormat('Y-m-d H:i', $dateStart . ' ' . $timeStart . ':00');
                 if ($request->duration == 'hour') {
                     $dateTimeEnd = $dateTimeStart->copy()->addHours($repeatDuration);
@@ -57,7 +52,7 @@ class ReservationController extends Controller
                 } elseif ($request->duration == 'month') {
                     $dateTimeEnd = $dateTimeStart->copy()->addMonths($repeatDuration);
                 }
-
+                //التحقق من التاريخ  ************************************** 
                 $reservations = DB::table('reservations')
                     ->where('workspaceoffer_id', $request->workspaceOffer_id)
                     ->where(function ($query) use ($dateTimeStart, $dateTimeEnd) {
@@ -75,15 +70,14 @@ class ReservationController extends Controller
                     ->get();
                 if ($reservations->count() > 0) {
                     // المساحة محجوزة خلال الفترة المحددة
-                    return redirect()->route('offer.details')->withErrors(['error' => 'الفترة محجوزة ارجو اختيار فترة اخرى ']);
-                    // اتخذ الإجراء المناسب هنا
+                    // return redirect()->route('offer.details', ['name' => $request->workspace->name])->withErrors(['error' => 'الفترة محجوزة ارجو اختيار فترة اخرى ']);
+                    return redirect()->back()->with('error', 'الفترة محجوزة ارجو اختيار فترة اخرى')->with('name', $request->workspace->name);
                 } else {
                     // المساحة غير محجوزة خلال الفترة المحددة
                     $repeatDuration = floatval($request->repeatDuration);
                     $Offer = workspaceOffer::where('id', $request->workspaceOffer_id)->first();
                     $offerPrice = floatval($Offer->price);
                     $totalOfferPrice = $offerPrice * $repeatDuration;
-
                     $reservation = Reservation::create([
                         'user_id' => Auth()->id(), // قم بتعيين قيمة user_id هنا
                         'workspaceoffer_id' => $request->workspaceOffer_id, // قم بتعيين قيمة workspaceoffer_id هنا

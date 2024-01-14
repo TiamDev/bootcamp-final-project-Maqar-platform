@@ -9,6 +9,15 @@ class workspace extends Model
 {
     use HasFactory;
     protected $table = 'workspaces';
+    protected $fillable = [
+        'name',
+        'title',
+        'provider_id',
+        'workspaceType_id',
+        'description',
+        'maxPeople',
+        'area',
+    ];
 
     public function provider()
     {

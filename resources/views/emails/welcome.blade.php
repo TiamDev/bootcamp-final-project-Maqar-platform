@@ -38,32 +38,21 @@
             <div class="card-body">
                 <div class="text-center">
                     <img src="{{ asset('admin/img/logo.png') }}" width="200" alt="">
-                    <h5 class="card-title">تسجيل الدخول</h5>
+                    <h5 class="card-title"></h5>
                 </div>
-                <form method="POST" action="{{ route('signin.submit') }}">
-                    @csrf
-                    <input type="hidden" name="_method" value="POST">
-                    <div class="form-group pb-3">
-                        <label for="email">البريد الإلكتروني</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="">
-                        @error('email')
-                            <div class="error-message">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="form-group pb-3">
-                        <label for="password">كلمة المرور</label>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="">
-                        @error('password')
-                            <div class="error-message">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="text-center">
-                        <button type="submit" class="btn-dasMain ">تسجيل الدخول</button>
-                        <div class="sign-footer">
-                            <p>ليس لديك حساب ?</p><a href="{{ route('signup') }}" class="toggle">إنشاء حساب</a>
-                        </div>
-                    </div>
-                </form>
+                <h3> </h3>
+                <p class="text-center">
+                    نحن سعداء بإبلاغك أن طلب الانضمام الخاص بك إلى منصة مقر قد تم قبوله.
+                    شكراً لثقتكم بنا، ونتطلع إلى تحقيق تجربة رائعة معنا.
+                </p>
+                <p>
+
+                    باطيب التحيات،
+                </p>
+                <p> فريق منصة مقر
+                </p>
+                <a href="{{ route('signin') }}" class="btn-dashMain">تسجيل الدخول
+                </a>
             </div>
         </div>
     </div>

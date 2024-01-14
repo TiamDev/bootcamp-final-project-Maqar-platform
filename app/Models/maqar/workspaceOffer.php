@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class workspaceOffer extends Model
 {
     use HasFactory;
+    protected  $fillable = [
+        'workspace_id',
+        'workspaceDuration_id',
+        'price',
+    ];
     protected $table = 'workspace_offers';
 
     public function workspace()
