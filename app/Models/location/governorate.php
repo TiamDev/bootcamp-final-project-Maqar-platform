@@ -11,4 +11,8 @@ class governorate extends Model
         'name',
     ];
     use HasFactory;
+    public function directorates()
+    {
+        return $this->hasMany(Directorate::class, 'governorate_id');
+    }
 }

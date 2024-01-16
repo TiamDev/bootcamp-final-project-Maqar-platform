@@ -5,6 +5,9 @@ namespace App\Models\maqar;
 use App\Models\Account\User;
 use App\Models\maqar\service;
 use App\Models\maqar\feature;
+use App\Models\content\content;
+
+use App\Models\Location\directorate;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -34,6 +37,10 @@ class Provider extends Model
     {
         return $this->hasOne(User::class);
     }
+    public function directorate()
+    {
+        return $this->belongsTo(directorate::class, 'directorate_id');
+    }
     // protected $table = 'providers';
 
     public function workspaces()
@@ -47,5 +54,9 @@ class Provider extends Model
     public function features()
     {
         return $this->hasMany(feature::class);
+    }
+    public function contents()
+    {
+        return $this->hasMany(Content::class, 'provider_id');
     }
 }

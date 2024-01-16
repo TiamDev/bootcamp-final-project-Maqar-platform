@@ -3,16 +3,21 @@
 
 namespace App\Http\Controllers\Content;
 
+use App\Models\content\content as ProviderContent;
+use Illuminate\Support\Carbon;
+
 use App\Http\Controllers\Controller;
 use App\Models\Location\governorate;
 use App\Models\Maqar\Feature;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Maqar\Provider;
+use App\Models\maqar\Provider as MaqarProvider;
 use App\Models\maqar\Service;
 use App\Models\Maqar\Workspace;
 use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Http\Request;
+use Illuminate\Mail\Mailables\Content;
 
 class ContentController extends Controller
 {
@@ -27,7 +32,8 @@ class ContentController extends Controller
         $features = Feature::where('provider_id', $provider->id)->get();
         $services = Service::where('provider_id', $provider->id)->get();
         $governorates = Governorate::all();
-        return view('tenant.content.index', compact('provider', 'features', 'services', 'governorates'));
+        $contents = ProviderContent::where('provider_id', $provider->id)->get();
+        return view('tenant.content.index', compact('provider', 'features', 'services', 'governorates', 'contents'));
     }
 
 
@@ -119,5 +125,39 @@ class ContentController extends Controller
             'email' => $request->input('email')
         ]);
         return redirect()->back()->with('success', 'تمت اضافة الخدمة بنجاح');
+    }
+    public function aboutus(Request $request)
+    {
+        $existingcontent = ProviderContent::where('type', 'aboutus')->where('provider_id', $request->provider_id) // قم بتعيين $providerId بالقيمة المناسبة
+            ->first();
+
+        if ($existingcontent) {
+            $existingcontent->description = $request->input('aboutus');
+            $existingcontent->save();
+            return redirect()->back()->with('success', 'تم تعديل من نحن بنجاح');
+        } else {
+            ProviderContent::create([
+                'provider_id' => $request->provider_id,
+                'title' => '',
+                'description' =>  $request->input('aboutus'),
+                'type' => 'aboutus',
+            ]);
+            return redirect()->back()->with('success', 'تم اضافة من نحن بنجاح');
+        }
+    }
+    public function logo(Request $request)
+    {
+        if ($request->hasFile('logo')) {
+            $provider = Provider::where('id', $request->provider_id)->first();
+            $logo = $request->file();
+            $currentDate = Carbon::now()->format('Ymd_His');
+            $newImageName = $currentDate . '_' . $logo->getClientOriginalName();
+
+            $logo->storeAs('logo', $newImageName, 'public');
+            $provider->logo = $request->input('image');
+            $provider->save();
+
+            return redirect()->back()->with('success', 'تم حفظ الشعار بنجاح');
+        }
     }
 }

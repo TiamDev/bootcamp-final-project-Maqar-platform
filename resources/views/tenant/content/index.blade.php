@@ -1,7 +1,6 @@
 @extends('layouts.platform')
 @section('content')
     <main id="main" class="main">
-
         <div class="pagetitle">
             <h1>ادارة المحتوى</h1>
             <nav>
@@ -52,11 +51,11 @@
                                 data-bs-target="#pills-advantage" type="button" role="tab"
                                 aria-controls="pills-advantage" aria-selected="false"> خدماتنا </button>
                         </li>
-                        <li class="nav-item" role="presentation">
+                        {{-- <li class="nav-item" role="presentation">
                             <button class="nav-link" id="pills-address-tab" data-bs-toggle="pill"
                                 data-bs-target="#pills-address" type="button" role="tab" aria-controls="pills-address"
                                 aria-selected="false"> العنوان و العملة</button>
-                        </li>
+                        </li> --}}
 
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill"
@@ -70,15 +69,21 @@
                         </li>
                     </ul>
                     <div class="card tab-content pt-2" id="myTabContent">
-                        <div class="tab-pane fade show active" id="pills-home" role="tabpanel"
-                            aria-labelledby="logo-tab">
+                        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="logo-tab">
                             <h3 class="tab-heading">الرئيسية</h3>
                             <p class="paragraph">
                                 يمكنك اضافة و تغيير محتوى صفحتك التي يراها مستخدمي منصة مقر
                             </p>
+                            @if (session('success'))
+                                <div class="alert alert-success">
+                                    {{ session('success') }}
+                                </div>
+                            @endif
                         </div>
                         <div class="tab-pane fade" id="pills-logo" role="tabpanel" aria-labelledby="logo-tab">
-                            <form>
+                            <form action="{{ route('content.logo') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="provider_id" value="{{ $provider->id }}">
                                 <div class="row">
                                     <div class="col-lg-8 ps-5">
                                         <h3 class="tab-heading"> تغيير شعار شركتك </h3>
@@ -86,7 +91,7 @@
                                             صورة الشعار يجب أن تكون واضحة، ذات دقة عالية وقابلة للتحجيم، مع خلفية شفافة،
                                             تعكس هوية وقيم العلامة التجارية، وتكون مرتبطة بها.</p>
                                         <div class="form-group">
-                                            <input type="file" class="form-control" name="meal_image" value=""
+                                            <input type="file" class="form-control" name="logo"
                                                 onchange="previewImage(event)" id="meal_image" required="">
                                         </div>
                                         <a href="" class="btn-dasMain">حفظ التغييرات</a>
@@ -132,11 +137,18 @@
                                     تاريخ الشركة، والرؤية والرسالة، والقيم الأساسية التي تستند إليها الشركة. يساعد هذا القسم
                                     على بناء الثقة والتواصل مع الزوار والعملاء المحتملين.
                                 </p>
-                                <form>
-                                    <textarea class="mytextarea">
-                  يتميز بموقعه المحوري. عزِّز من مكانة أعمالك من خلال امتلاك مقر في هذا المبنى المرموق الذي يخطف الأبصار على الفور ويجمع بين التصميم المعماري العصري المذهل والعناصر الكلاسيكية. ازرع الثقة في نفوس عملائك من خلال الموقع المتميز لهذا المبنى، واعقد اجتماعاتك في قاعات عصرية ومتطورة، وامنح عملاءك المتعة والترفيه من خلال زيارة معالم محلية، مثل "المتحف الوطني الأردني للفنون الجميلة". استمتع أيضًا بسهولة التنقل؛ فهذا الموقع تربطه شبكة طرق جيدة وبه موقف آمن لانتظار السيارات تحت الأرض.
-                </textarea>
-                                    <a href="" class="btn-dasMain">حفظ التغييرات</a>
+                                <form action="{{ route('content.aboutus') }}" method="post">
+                                    @csrf
+                                    <input type="hidden" name="provider_id" value="{{ $provider->id }}">
+                                    <textarea class="mytextarea" name="aboutus">
+                                        {{ $provider->id }}
+                                        @foreach ($contents as $content)
+@if ($content && $content->type === 'aboutus')
+{{ $content->description }}
+@endif
+@endforeach
+</textarea>
+                                    <button class="btn-dasMain" type="submit">حفظ التغييرات</button>
                                 </form>
                             </div>
 
@@ -172,7 +184,8 @@
                                                 </div>
                                             @endforeach
                                         @else
-                                            <a href="{{ route('workspaces.add') }}" class="mainColor">يرجى اضافة مرافق</a>
+                                            <a href="{{ route('workspaces.add') }}" class="mainColor">يرجى اضافة
+                                                مرافق</a>
                                         @endif
                                     </div>
                                 </div>
@@ -221,7 +234,7 @@
                                 </div>
                             </div> {{-- </form> --}}
                         </div>
-                        <div class="tab-pane fade" id="pills-address" role="tabpanel" aria-labelledby="address-tab">
+                        {{-- <div class="tab-pane fade" id="pills-address" role="tabpanel" aria-labelledby="address-tab">
                             <form>
                                 <div class="row">
                                     <div class="col-12">
@@ -235,18 +248,22 @@
                                                     onchange="getDirectorates()">
                                                     <option selected disabled>اختر المحافظة</option>
                                                     @foreach ($governorates as $governorate)
-                                                        <option value="{{ $governorate->id }}">{{ $governorate->name }}
+                                                        <option value="{{ $governorate->id }}"
+                                                            @if (old('directorate_id', $provider->directorate->governorate_id) == $governorate->id) selected @endif>
+                                                            {{ $governorate->name }}
                                                         </option>
                                                     @endforeach
                                                 </select>
+
+                                                @error('directorate_id')
+                                                    <p>يجب اختيار المديرية</p>
+                                                @enderror
                                             </div>
                                             <div class="col-lg-3">
                                                 <label for="inputState" class="form-label">المديرية</label>
-
                                                 <select class="form-select" id="directorateSelect" aria-label="State"
                                                     name="directorate_id" name="directorate_id">
                                                     <option selected disabled>اختر المحافظة اولا</option>
-
                                                 </select>
                                                 @error('directorate_id')
                                                     <p>يجب اختيار المديريه</p>
@@ -273,12 +290,12 @@
                                 </div>
                                 <a href="" class="btn-dasMain">حفظ التغييرات</a>
                             </form>
-                        </div>
+                        </div> --}}
                         <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="contact-tab">
                             <form action="content.contactus" method="POST">
                                 <div class="row">
                                     <div class="col-8">
-                                        <h3 class="tab-heading">تعديل معلومات التواصل </h3>
+                                        <h3 class="tab-heading"> معلومات التواصل </h3>
                                         <p class="paragraph">
                                             معلومات التواصل مهمة لتيسير للعملاء عملية التواصل والوصول إلى الشركة
                                         </p>

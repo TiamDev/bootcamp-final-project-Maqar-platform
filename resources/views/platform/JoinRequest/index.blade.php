@@ -52,7 +52,7 @@
                                     @foreach ($providers as $provider)
                                         <tr>
                                             <td>{{ $counter }}</td>
-                                            <td>{{ $provider->name }}</td>
+                                            <td>{{ $provider->title }}</td>
                                             <td>{{ $provider->email }}</td>
                                             <td>{{ $provider->state }}</td>
                                             <!-- operation -->

@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Reservation;
 
 use App\Http\Controllers\Controller;
+use App\Models\maqar\Provider;
 use App\Models\maqar\Service;
+use App\Models\maqar\workspace;
 use App\Models\maqar\workspaceOffer;
+use App\Models\Maqar\WorkspaceType;
 use App\Models\reservation\order;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -12,6 +15,8 @@ use App\Models\Reservation\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
 
 class ReservationController extends Controller
 {
@@ -39,6 +44,22 @@ class ReservationController extends Controller
         $timeStart = $request->timeStart;
         $repeatDuration = $request->input('repeatDuration');
         $selectedServicesop = $request->input('servises');
+        $workspaceOffer = workspaceOffer::find($request->workspaceOffer_id);
+        $workspace = Workspace::find($workspaceOffer->workspace_id);
+        $provider = Provider::find($workspace->provider_id);
+        $checkAllowed = (($provider->endWorkHour - $timeStart) > $request->input('repeatDuration')) ? true : false;
+        // // if (!$checkAllowed) {
+        // //     return redirect()->back()->withInput()->with('error', 'الفترة أكبر من وقت الإغلاق الخاص بنا ارجو اختيار فترة اخرى')->with('workspaceOffer', $workspaceOffer);
+        // // }
+        // if (!$checkAllowed) {
+        //     $redirectUrl = redirect()->back()->getTargetUrl();
+        //     $postData = [
+        //         'error' => 'الفترة أكبر من وقت الإغلاق الخاص بنا ارجو اختيار فترة اخرى',
+        //         'workspaceOffer' => $workspaceOffer
+        //     ];
+
+        //     return new RedirectResponse($redirectUrl, 200, ['Content-Type' => 'application/x-www-form-urlencoded'], http_build_query($postData));
+        // }
         if (auth()->check()) {
             if (!empty($dateStart) && !empty($timeStart)) {
                 // dd($timeStart);
@@ -71,7 +92,7 @@ class ReservationController extends Controller
                 if ($reservations->count() > 0) {
                     // المساحة محجوزة خلال الفترة المحددة
                     // return redirect()->route('offer.details', ['name' => $request->workspace->name])->withErrors(['error' => 'الفترة محجوزة ارجو اختيار فترة اخرى ']);
-                    return redirect()->back()->with('error', 'الفترة محجوزة ارجو اختيار فترة اخرى')->with('name', $request->workspace->name);
+                    return redirect()->back()->with('error', 'الفترة محجوزة ارجو اختيار فترة اخرى')->with('workspaceOffer', $workspaceOffer);
                 } else {
                     // المساحة غير محجوزة خلال الفترة المحددة
                     $repeatDuration = floatval($request->repeatDuration);

@@ -12,4 +12,8 @@ class directorate extends Model
         'governorate_id',
     ];
     use HasFactory;
+    public function governorate()
+    {
+        return $this->belongsTo(Governorate::class, 'governorate_id');
+    }
 }

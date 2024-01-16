@@ -21,10 +21,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('address');
             $table->string('currency')->nullable();
-            $table->bigInteger('phone');
+            $table->string('phone');
             $table->string('tradeDocument');
             $table->string('logo');
-            $table->bigInteger('identity_NO');
+            $table->string('identity_NO');
             $table->enum('state', ['step1', 'approved', 'complete', 'reject']);
             $table->integer('startWorkHour')->nullable();
             $table->integer('endWorkHour')->nullable();

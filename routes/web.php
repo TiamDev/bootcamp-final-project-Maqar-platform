@@ -73,73 +73,87 @@ Route::post('/signup', [SignupController::class, 'store']);
 //
 Route::middleware('auth')->group(function () {
     Route::post('/signout', [SignoutController::class, 'signout'])->name('account.signout');
+
+
+    // ***********************joinRequest***********************************
+    Route::controller(JoinRequestController::class)->group(function () {
+
+        Route::get('/platform/joinRequest/index', 'index')->name('platform.joinRequest');
+        Route::get('/platform/joinRequest/{name}/view', 'view')->name('platform.joinRequest.view');
+        Route::get('/platform/joinRequest/joinMessage', 'joinMessage')->name('platform.joinRequest.joinMessage');
+        Route::get('/platform/joinRequest/underReview', 'underReview')->name('platform.joinRequest.underReview');
+
+        Route::post('/platform/joinRequest/{name}/confirm', 'confirm')->name('platform.joinRequest.confirm');
+
+        Route::post('/platform/joinRequest/{name}/reject', 'reject')->name('platform.joinRequest.reject');
+    });
+
+
+    //***********************Maqar************************** */
+    Route::controller(WorkspaceTypeController::class)->group(function () {
+        Route::get('/platform/workspaceType', 'index')->name('WorkspaceType');
+        Route::get('/platform/workspaceType/add', 'add')->name('WorkspaceType.add');
+        Route::post('/platform/workspaceType/create', 'create')->name('workspaceType.create');
+        Route::get('/platform/workspaceType/{name}', 'view')->name('WorkspaceType.view');
+        Route::get('/platform/workspaceType/edit/{name}', 'edit')->name('WorkspaceType.edit');
+        Route::post('/platform/workspaceType/edit', 'update')->name('WorkspaceType.update');
+        Route::delete('/platform/workspaceType/delete/{id}', 'delete')->name('WorkspaceType.delete');
+    });
+    Route::controller(WorkspaceController::class)->group(function () {
+        Route::get('/tenant/workspaces/index', 'index')->name('workspaces');
+        Route::get('/tenant/workspaces/add', 'add')->name('workspaces.add');
+        Route::post('/tenant/workspaces/create', 'create')->name('workspaces.create');
+
+        Route::get('/tenant/workspaces/{name}', 'view')->name('workspaces.view');
+        Route::get('/tenant/workspaces/{name}/edit', 'edit')->name('workspaces.edit');
+        Route::post('/tenant/workspaces/update', 'update')->name('workspaces.update');
+        Route::delete('/tenant/workspaces/{name}/delete', 'delete')->name('workspaces.delete');
+    });
+
+    //***********************Tenant Content************************** */
+    Route::controller(ContentController::class)->group(function () {
+        Route::get('/tenant/content/index', 'index')->name('content');
+        Route::get('/tenant/content/addFeature', 'addFeature')->name('content.addFeature');
+        Route::post('/tenant/content/createFeature', 'createFeature')->name('content.createFeature');
+        Route::get('/tenant/content/addService', 'addService')->name('content.addService');
+        Route::post('/tenant/content/createService', 'createService')->name('content.createService');
+        Route::post('/tenant/content/contactus', 'contactus')->name('content.contactus');
+        Route::post('/tenant/content/aboutus', 'aboutus')->name('content.aboutus');
+        Route::post('/tenant/content/logo', 'logo')->name('content.logo');
+        Route::post('/tenant/content/images', 'images')->name('content.images');
+
+        // Route::get('/tenant/content/{name}', 'view')->name('content.view');
+        // Route::get('/tenant/content/{name}/edit', 'edit')->name('content.edit');
+        // Route::post('/tenant/content/update', 'update')->name('content.update');
+        // Route::delete('/tenant/content/{name}/delete', 'delete')->name('content.delete');
+    });
+
+    //**********************Message************************* */
+    Route::controller(MessageController::class)->group(function () {
+        Route::post('/message', 'send')->name('message.send');
+    });
 });
+
 // ***********************joinRequest***********************************
-
-
 Route::controller(JoinRequestController::class)->group(function () {
     Route::get('/joinRequest/providerInfo', 'viewInformation')->name('providerInfo');
     Route::post('/joinRequest/providerInfo', 'storeInformation');
 
     Route::get('/joinRequest/providerDetails', 'viewDetails')->name('providerDetails');
     Route::post('/joinRequest/providerDetails',  'storeDetails');
-
-    Route::get('/platform/joinRequest/index', 'index')->name('platform.joinRequest');
-    Route::get('/platform/joinRequest/{name}/view', 'view')->name('platform.joinRequest.view');
-    Route::get('/platform/joinRequest/joinMessage', 'joinMessage')->name('platform.joinRequest.joinMessage');
-    Route::get('/platform/joinRequest/underReview', 'underReview')->name('platform.joinRequest.underReview');
-
-    Route::post('/platform/joinRequest/{name}/confirm', 'confirm')->name('platform.joinRequest.confirm');
-
-    Route::post('/platform/joinRequest/{name}/reject', 'reject')->name('platform.joinRequest.reject');
 });
-//**********************Message************************* */
-Route::controller(MessageController::class)->group(function () {
-    Route::post('/message', 'send')->name('message.send');
-});
-//***********************Maqar************************** */
 
-Route::controller(WorkspaceTypeController::class)->group(function () {
-    Route::get('/platform/workspaceType', 'index')->name('WorkspaceType');
-    Route::get('/platform/workspaceType/add', 'add')->name('WorkspaceType.add');
-    Route::post('/platform/workspaceType/create', 'create')->name('workspaceType.create');
-    Route::get('/platform/workspaceType/{name}', 'view')->name('WorkspaceType.view');
-    Route::get('/platform/workspaceType/edit/{name}', 'edit')->name('WorkspaceType.edit');
-    Route::post('/platform/workspaceType/edit', 'update')->name('WorkspaceType.update');
-    Route::delete('/platform/workspaceType/delete/{id}', 'delete')->name('WorkspaceType.delete');
-});
+
+
 // Route::get('/workspaceType', [WorkspaceTypeController::class, 'index'])->name('WorkspaceType');
 // Route::get('/workspaceType/{name}', [WorkspaceTypeController::class, 'view'])->name('WorkspaceType.view');
 // Route::get('/workspaceType/edit/{name}', [WorkspaceTypeController::class, 'edit'])->name('WorkspaceType.edit');
 //***********************Tenant Workspaces************************** */
 
-Route::controller(WorkspaceController::class)->group(function () {
-    Route::get('/tenant/workspaces/index', 'index')->name('workspaces');
-    Route::get('/tenant/workspaces/add', 'add')->name('workspaces.add');
-    Route::post('/tenant/workspaces/create', 'create')->name('workspaces.create');
-
-    Route::get('/tenant/workspaces/{name}', 'view')->name('workspaces.view');
-    Route::get('/tenant/workspaces/{name}/edit', 'edit')->name('workspaces.edit');
-    Route::post('/tenant/workspaces/update', 'update')->name('workspaces.update');
-    Route::delete('/tenant/workspaces/{name}/delete', 'delete')->name('workspaces.delete');
-});
 
 
-//***********************Tenant Content************************** */
 
-Route::controller(ContentController::class)->group(function () {
-    Route::get('/tenant/content/index', 'index')->name('content');
-    Route::get('/tenant/content/addFeature', 'addFeature')->name('content.addFeature');
-    Route::post('/tenant/content/createFeature', 'createFeature')->name('content.createFeature');
-    Route::get('/tenant/content/addService', 'addService')->name('content.addService');
-    Route::post('/tenant/content/createService', 'createService')->name('content.createService');
-    Route::post('/tenant/content/contactus', 'contactus')->name('content.contactus');
 
-    // Route::get('/tenant/content/{name}', 'view')->name('content.view');
-    // Route::get('/tenant/content/{name}/edit', 'edit')->name('content.edit');
-    // Route::post('/tenant/content/update', 'update')->name('content.update');
-    // Route::delete('/tenant/content/{name}/delete', 'delete')->name('content.delete');
-});
 
 // Route::resource('/message', MessageController::class);
 

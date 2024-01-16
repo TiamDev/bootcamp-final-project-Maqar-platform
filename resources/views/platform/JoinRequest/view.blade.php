@@ -95,50 +95,62 @@
                                                             <div class="col-lg-8 col-md-8">
                                                                 {{ $viewModel->provider->email }}</div>
                                                         </div>
-                                                        <div class="d-flex">
-                                                            <form class=""
-                                                                action="{{ route('platform.joinRequest.confirm', ['name' => $viewModel->provider->name]) }}"
-                                                                method="post">
-                                                                @csrf
-                                                                <button type="submit" class=" btn-dasMain">قبول</button>
-                                                            </form>
-                                                            <a href="#" class="btn-dasSecond" data-toggle="modal"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#exampleModal">رفض</a>
-                                                            <div class="modal fade" id="exampleModal" tabindex="-1"
-                                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                                <div class="modal-dialog modal-lg">
-                                                                    <div class="modal-content">
-                                                                        <div class="modal-header">
-                                                                            <h1 class="modal-title fs-5"
-                                                                                id="exampleModalLabel">
-                                                                                سبب الرفض </h1>
-                                                                            <button type="button" class="btn-close"
-                                                                                data-bs-dismiss="modal"
-                                                                                aria-label="Close"></button>
+                                                        @if ($viewModel->provider->state == 'reject' || $viewModel->provider->state == 'complete')
+                                                            <a href="{{ route('platform.joinRequest') }}"
+                                                                class="btn-dasMain mt-3">الرجوع
+                                                                الى
+                                                                الرئيسية<i class="bi bi-arrow-left-short "></i>
+                                                            </a>
+                                                        @else
+                                                            <div class="d-flex">
+                                                                <form class=""
+                                                                    action="{{ route('platform.joinRequest.confirm', ['name' => $viewModel->provider->name]) }}"
+                                                                    method="post">
+                                                                    @csrf
+                                                                    <button type="submit"
+                                                                        class=" btn-dasMain">قبول</button>
+                                                                </form>
+                                                                <a href="#" class="btn-dasSecond" data-toggle="modal"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#exampleModal">رفض</a>
+                                                                <div class="modal fade" id="exampleModal" tabindex="-1"
+                                                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                    <div class="modal-dialog modal-lg">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h1 class="modal-title fs-5"
+                                                                                    id="exampleModalLabel">
+                                                                                    سبب الرفض </h1>
+                                                                                <button type="button" class="btn-close"
+                                                                                    data-bs-dismiss="modal"
+                                                                                    aria-label="Close"></button>
+                                                                            </div>
+                                                                            <form method="post"
+                                                                                action="{{ route('platform.joinRequest.reject', ['name' => $viewModel->provider->name]) }}">
+                                                                                @csrf
+                                                                                <div class="modal-body mainColor">
+
+                                                                                    <textarea class="form-control" name="rejectMessage" id="" cols="30" rows="10" required name="message"
+                                                                                        placeholder="ادخل سبب الرفض ..."></textarea>
+                                                                                    <!-- Use the message ID to display relevant message content -->
+                                                                                </div>
+                                                                                <div
+                                                                                    class="modal-footer justify-content-start">
+
+                                                                                    <button type="submit"
+                                                                                        class="btn-dasMain">ارسال</button>
+                                                                                    <button type="button"
+                                                                                        class="btn-dasSecond"
+                                                                                        data-bs-dismiss="modal">الغاء</button>
+                                                                                </div>
+                                                                            </form>
                                                                         </div>
-                                                                        <form method="post"
-                                                                            action="{{ route('platform.joinRequest.reject', ['name' => $viewModel->provider->name]) }}">
-                                                                            @csrf
-                                                                            <div class="modal-body mainColor">
-
-                                                                                <textarea class="form-control" name="rejectMessage" id="" cols="30" rows="10" required name="message"
-                                                                                    placeholder="ادخل سبب الرفض ..."></textarea>
-                                                                                <!-- Use the message ID to display relevant message content -->
-                                                                            </div>
-                                                                            <div class="modal-footer justify-content-start">
-
-                                                                                <button type="submit"
-                                                                                    class="btn-dasMain">ارسال</button>
-                                                                                <button type="button" class="btn-dasSecond"
-                                                                                    data-bs-dismiss="modal">الغاء</button>
-                                                                            </div>
-                                                                        </form>
                                                                     </div>
-                                                                </div>
 
+                                                                </div>
                                                             </div>
-                                                        </div>
+                                                        @endif
+
                                                     </div>
                                                 </div><!-- End Bordered Tabs -->
 
@@ -151,8 +163,8 @@
                                         <div class="card">
                                             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-                                                <img src="{{ asset('admin/img/office-company/sanad.jpg') }}" alt="Profile"
-                                                    class="rounded-circle">
+                                                <img src="{{ asset('admin/img/office-company/sanad.jpg') }}"
+                                                    alt="Profile" class="rounded-circle">
                                                 <h2>اسم الشركة</h2>
                                                 <h3>{{ $viewModel->provider->title }}</h3>
                                             </div>
