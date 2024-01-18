@@ -844,8 +844,8 @@ h6 {
 }
 
 .dashboard .info-card h6 {
-  font-size: 28px;
-  color: #012970;
+  font-size: 25px;
+  color: #010305;
   font-weight: 700;
   margin: 0;
   padding: 0;
@@ -871,8 +871,8 @@ h6 {
 }
 
 .dashboard .customers-card .card-icon {
-  color: #ff771d;
-  background: #ffecdf;
+  color: #76b2fe;
+  background: #bfdafe84;
 }
 
 /* Activity */
@@ -1296,6 +1296,7 @@ font-size: 18px;
 }
 .das-show{
   color: var(--mainColor) !important;
+  margin-inline:5px;
 }
 
 .das-delete{
@@ -1722,7 +1723,11 @@ width: 100%;
 .logo-img-edit{
   width: 100%;
 }
-
+.voucher-img{
+  width: 100%;
+  height: 200px;
+  margin-bottom: 10px;
+}
 /* 
 client
 */
@@ -1914,7 +1919,7 @@ add service
 
 @media screen and (min-width: 540px) {
   .checkbox-label-over {
-    width: 80%;
+    width: 95%;
     margin: 16px;
   }
 }
@@ -2235,4 +2240,50 @@ section {
   padding-right:10px; 
   font-size:16px;
   font-weight: 600;
+}
+#image-preview img {
+  height: 200px;
+  width: 200px;
+  object-fit: cover;
+  display: flex;
+}
+#image-preview  {
+  display: flex;
+}
+.image-preview img {
+  height: 150px;
+  width: 150px;
+  object-fit: cover;
+  display: flex;
+}
+.image-preview  {
+  display: flex;
+  flex-wrap: wrap;
+}
+.custom-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 50vh; 
+}
+
+.custom-card img {
+  width: 250px; 
+  height: auto; 
+  margin-left: 80px;
+}
+
+.custom-card p {
+  margin-top: 10px; 
+}
+.img-box-container {
+  position: relative;
+  margin-top: 50px;
+}
+.cancel-btn{
+  background-color: transparent;
+  border: none;
+  color: #f883a0;
 }

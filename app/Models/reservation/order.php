@@ -4,6 +4,7 @@ namespace App\Models\reservation;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\maqar\Service;
 
 class order extends Model
 {
@@ -14,4 +15,12 @@ class order extends Model
         'quantity',
         'price'
     ];
+    public function reservation()
+    {
+        return $this->belongsTo(Reservation::class);
+    }
+    public function service()
+    {
+        return $this->belongsTo(Service::class);
+    }
 }

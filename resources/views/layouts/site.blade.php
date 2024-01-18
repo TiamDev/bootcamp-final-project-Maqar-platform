@@ -5,18 +5,12 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>FlexStart Bootstrap Template - Index</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
+    <title>منصة مقر لمساحات الاعمال</title>
+    <meta content="workspaces" name="description">
+    <meta content="magar" name="keywords">
 
     <!-- Favicons -->
-    <link href="{{ asset('/site/img/favicon.png') }}" rel="icon">
-    <link href="{{ asset('/site/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
-
-    <!-- Google Fonts -->
-    {{-- <link
-    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-    rel="stylesheet"> --}}
+    <link href="{{ asset('/site/img/logo/logo2.png') }}" rel="icon">
 
     <!-- Vendor CSS Files -->
     <link href="{{ asset('/site/vendor/aos/aos.css') }}" rel="stylesheet">
@@ -27,7 +21,6 @@
     <link href="{{ asset('/site/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
     <!-- Template Main CSS File -->
     <link href="{{ asset('/site/css/style.css') }}" rel="stylesheet">
-    {{-- <link href="{{ asset('/site/css/card.css') }}" rel="stylesheet"> --}}
 
 </head>
 
@@ -36,44 +29,103 @@
     <!-- ======= Header ======= -->
     <header id="header" class="header fixed-top">
         <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
-
-            <a href="index.html" class="logo d-flex align-items-center">
+            <a href="{{ route('home') }}" class="logo d-flex align-items-center">
                 <img src="{{ asset('/site/img/logo/logo2.png') }}" alt="">
-                <!-- <span>مقر</span> -->
+                <span>مقر</span>
             </a>
-
             <nav id="navbar" class="navbar">
                 <ul dir="ltr" style="padding-left:300px">
-                    <li><a class="nav-link scrollto" href="#services">نبذه عن مقر</a></li>
-                    <li><a class="nav-link scrollto" href="#team">تواصل معنا</a></li>
-                    <li class="dropdown megamenu"><a href="#">
-                            <i class="bi bi-chevron-down pe-2"></i>
-                            <span>خدماتنا</span>
-                        </a>
-                        <ul dir="rtl">
-                            <li>
-                                <a href="#">مكتب خاص</a>
-                            </li>
-                            <li>
-                                <a href="#">مكتب مشترك</a>
-                            </li>
-                            <li>
-                                <a href="#">غرفة مؤتمرات</a>
-                            </li>
-                        </ul>
-                    </li>
+                    <li><a class="nav-link scrollto active" href="#hero"> ملاك المساحات</a></li>
+                    <li><a class="nav-link scrollto active" href="#hero">ماتقدمه مقر</a></li>
+                    <li><a class="nav-link scrollto" href="#contact">تواصل معنا</a></li>
+                    <li><a class="nav-link scrollto" href="{{ route('aboutMagar') }}">نبذه عن مقر</a></li>
                     <li><a class="nav-link scrollto active" href="#hero">الرئيسية</a></li>
                 </ul>
-                <!-- <div class="dropdown">
-          <a href="#"><i class="fs-4 bi bi-person-fill"></i></a>
-          <ul>
-            <li><a href="#">تسجيل دخول</a></li>
-            <li><a href="#">إنشاء حساب</a></li>
-          </ul>
-        </div> -->
-                <!-- <a class="" href="#about"><i class="fs-4 bi bi-person-fill"></i> </a> -->
-                <a class="getstarted scrollto" href="{{ route('signin') }}"> تسجيل دخول</a>
+                @php
+                    $user = auth()->user();
 
+                    if ($user) {
+                        $rolelabel = $user->roles()->first()->label;
+                        $roleName = $user->roles()->first()->name;
+                    }
+                @endphp
+
+                @if ($user)
+                    {{-- <div class="dropdown">
+                        <a href="#"><i class="fs-4 bi bi-person-fill mx-5"></i></a>
+                        <ul>
+                            @if ($roleName === 'admin')
+                                <li><a href="{{ route('tenant.dashboard') }}">لوحة التحكم</a></li>
+                            @elseif ($roleName === 'client')
+                                <li><a href="{{ route('client.dashboard') }}">لوحة التحكم</a></li>
+                            @endif
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <form action="{{ route('account.signout') }}" method="post">
+                                    @csrf
+                                    <button type="submit" class="btn-dasMain w-100">تسجيل
+                                        خروج</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div> --}}
+                    <li class="nav-item nav-item-site dropdown p-0 " dir="rtl">
+
+                        <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#"
+                            data-bs-toggle="dropdown">
+                            @if ($roleName === 'admin')
+                                <img src="{{ asset('storage/logo/' . $user->provider->logo) }}" width="40"
+                                    alt="Profile" class="rounded-circle">
+                            @else
+                                <img src="{{ asset('site/img/user2.jpg') }}" alt="Profile" class="rounded-circle"
+                                    width="40">
+                            @endif
+                            <span class="d-none d-md-block dropdown-toggle ps-3"> </span>
+                        </a><!-- End Profile Iamge Icon -->
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                            <li class="dropdown-header text-center">
+                                <h6>{{ $user->name }}</h6>
+                                <span>{{ $rolelabel }}</span>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                                    @if ($roleName === 'admin')
+                                        <i class="bi  bi-buildings ps-2"></i>
+                                        <span>ملف مقر {{ $user->provider->title }} </span>
+                                    @else
+                                        <span class="text-end">
+                                            <a href="{{ route('client.dashboard') }}" class="justify-content-start">
+                                                <i class="bi bi-person ps-1"></i>
+                                                لوحة التحكم
+                                            </a>
+                                        </span>
+                                    @endif
+                                </a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <form action="{{ route('account.signout') }}" method="post">
+                                    @csrf
+                                    <button class="dropdown-item d-flex align-items-center" type="submit">
+                                        <i class="bi bi-box-arrow-right ps-2"></i>
+                                        <span>تسجيل خروج</span>
+                                    </button>
+                                </form>
+                            </li>
+
+                        </ul><!-- End Profile Dropdown Items -->
+                    </li><!-- End Profile Nav -->
+                @else
+                    <a class="getstarted scrollto" href="{{ route('signin') }}"> تسجيل دخول</a>
+                @endif
+                <!-- <a class="" href="#about"><i class="fs-4 bi bi-person-fill"></i> </a> -->
                 <i class="bi bi-list mobile-nav-toggle">
                 </i>
 
@@ -113,15 +165,15 @@
                                 <i class="bi bi-chevron-left"></i>
                             </li>
                             <li>
-                                <a href="#">نبذة عن مقر</a>
+                                <a href="{{ route('aboutMagar') }}">نبذة عن مقر</a>
                                 <i class="bi bi-chevron-left"></i>
                             </li>
                             <li>
-                                <a href="#">مميزاتنا</a>
+                                <a href="#">ما تقدمه مقر</a>
                                 <i class="bi bi-chevron-left"></i>
                             </li>
                             <li>
-                                <a href="#">خدماتنا</a>
+                                <a href="#">مالكي المساحات</a>
                                 <i class="bi bi-chevron-left"></i>
                             </li>
                             <li>
@@ -132,7 +184,7 @@
                     </div>
 
                     <div class="col-lg-2 col-6 footer-links">
-                        <h4>خدماتنا</h4>
+                        <h4>ما يقدمه ملاك المساحات</h4>
                         <ul>
                             <li>
                                 <a href="#">مكاتب مخصصه</a>
@@ -166,7 +218,7 @@
 
         <div class="container">
             <div class="copyright">
-                &copy; حقوق النشر <strong><span>منصة مقر</span></strong> جميع الحقوق محفوظة .
+                &copy; <strong><span>منصة مقر</span></strong> جميع الحقوق محفوظة .
             </div>
             <div class="credits">
                 Designed by <a href="#">Fatima Bakran</a>

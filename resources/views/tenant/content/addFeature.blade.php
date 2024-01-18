@@ -21,9 +21,11 @@
 
                             <div class="card-body">
                                 <h4 class="card-title">إضافة مرفق</h4>
-                                @error('name')
-                                    <div class="error-message">{{ $message }}</div>
-                                @enderror
+                                @if (session('success'))
+                                    <div class="alert alert-success">
+                                        {{ session('success') }}
+                                    </div>
+                                @endif
                                 <!-- Multi Columns Form -->
                                 <div class="row">
                                     <div class="col-12">

@@ -7,6 +7,7 @@ use App\Models\content\content as ProviderContent;
 use Illuminate\Support\Carbon;
 
 use App\Http\Controllers\Controller;
+use App\Models\content\socialMedia;
 use App\Models\Location\governorate;
 use App\Models\Maqar\Feature;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +16,7 @@ use App\Models\maqar\Provider as MaqarProvider;
 use App\Models\maqar\Service;
 use App\Models\Maqar\Workspace;
 use Illuminate\Support\Facades\Validator;
-
+use App\Models\File\File;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Mailables\Content;
 
@@ -32,8 +33,15 @@ class ContentController extends Controller
         $features = Feature::where('provider_id', $provider->id)->get();
         $services = Service::where('provider_id', $provider->id)->get();
         $governorates = Governorate::all();
+        $socialAccounts = SocialMedia::where('user_id', $id)->get();
         $contents = ProviderContent::where('provider_id', $provider->id)->get();
-        return view('tenant.content.index', compact('provider', 'features', 'services', 'governorates', 'contents'));
+        $Galary = File::where('target_id', $provider->id)
+            ->where('type', 'provider')
+            ->get();
+        $logo = File::where('target_id', $provider->id)
+            ->where('type', 'logo')
+            ->first();
+        return view('tenant.content.index', compact('provider', 'features', 'services', 'governorates', 'contents', 'Galary', 'logo', 'socialAccounts'));
     }
 
 
@@ -147,17 +155,91 @@ class ContentController extends Controller
     }
     public function logo(Request $request)
     {
+
+        $provider = Provider::where('id', $request->provider_id)->first();
         if ($request->hasFile('logo')) {
-            $provider = Provider::where('id', $request->provider_id)->first();
-            $logo = $request->file();
+            $logo = $request->file('logo');
+            $extension = $logo->getClientOriginalExtension();
             $currentDate = Carbon::now()->format('Ymd_His');
             $newImageName = $currentDate . '_' . $logo->getClientOriginalName();
-
             $logo->storeAs('logo', $newImageName, 'public');
-            $provider->logo = $request->input('image');
+            $provider->logo = $newImageName; // Update the logo field with the new image name
             $provider->save();
+            // dd($provider->logo);
 
             return redirect()->back()->with('success', 'تم حفظ الشعار بنجاح');
         }
+    }
+    public function Galary(Request $request)
+    {
+
+        $provider = Provider::where('id', $request->provider_id)->first();
+
+        if ($request->hasFile('images')) {
+            // حذف الصور السابقة
+            File::where('Target_id', $provider->id)->where('type', 'provider')->delete();
+
+            foreach ($request->file('images') as $image) {
+                $extension = $image->getClientOriginalExtension();
+                $currentDate = Carbon::now()->format('Ymd_His');
+                $newImageName = $currentDate . '_' . $image->getClientOriginalName();
+                $image->storeAs('galary', $newImageName, 'public');
+                $file = File::create([
+                    'path' => $newImageName,
+                    'fileType_id' => 1,
+                    'Target_id' => $provider->id,
+                    'type' => 'provider',
+                ]);
+            }
+
+            return redirect()->back()->with('success', 'تم حفظ الصور بنجاح');
+        }
+    }
+    public function social(Request $request)
+    {
+        if ($request->has('Twitter_check')) {
+            $socialAccount = SocialMedia::firstOrCreate([
+                'user_id' => auth()->user()->id,
+                'type' => 'twitter',
+            ], [
+                'link' => $request->input('Twitter'),
+            ]);
+        }
+
+        if ($request->has('Instagram_check')) {
+            $socialAccount = SocialMedia::firstOrCreate([
+                'user_id' => auth()->user()->id,
+                'type' => 'instagram',
+            ], [
+                'link' => $request->input('Instagram'),
+            ]);
+        }
+
+        if ($request->has('Linkedin_check')) {
+            $socialAccount = SocialMedia::firstOrCreate([
+                'user_id' => auth()->user()->id,
+                'type' => 'Linkedin',
+            ], [
+                'link' => $request->input('Linkedin'),
+            ]);
+        }
+
+        if ($request->has('Facebook_check')) {
+            $socialAccount = SocialMedia::firstOrCreate([
+                'user_id' => auth()->user()->id,
+                'type' => 'facebook',
+            ], [
+                'link' => $request->input('Facebook'),
+            ]);
+        }
+        // dd($request);
+        return redirect()->back()->with('success', 'تمت إضافة الرابط بنجاح.');
+    }
+    public function publish(Request $request)
+    {
+        $provider = Provider::where('user_id', auth()->user()->id)->first();
+        $provider->state = 'complete';
+        $provider->save();
+        return redirect()->back()->with('success', 'تمت نشر الموقع بنجاح.');
     }
 }

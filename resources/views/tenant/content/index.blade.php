@@ -2,11 +2,10 @@
 @section('content')
     <main id="main" class="main">
         <div class="pagetitle">
-            <h1>ادارة المحتوى</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item active">ادارة المحتوى</li>
-                    <li class="breadcrumb-item"><a href="index.html">الرئيسية</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('tenant.dashboard') }}">الرئيسية</a></li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
@@ -51,12 +50,6 @@
                                 data-bs-target="#pills-advantage" type="button" role="tab"
                                 aria-controls="pills-advantage" aria-selected="false"> خدماتنا </button>
                         </li>
-                        {{-- <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="pills-address-tab" data-bs-toggle="pill"
-                                data-bs-target="#pills-address" type="button" role="tab" aria-controls="pills-address"
-                                aria-selected="false"> العنوان و العملة</button>
-                        </li> --}}
-
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill"
                                 data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact"
@@ -79,9 +72,16 @@
                                     {{ session('success') }}
                                 </div>
                             @endif
+                            <form action="{{ route('content.publish') }}" method="post">
+                                @csrf
+                                @if ($provider->state == 'approved')
+                                    <button class="btn-dasMain">نشر الموقع </button>
+                                @endif
+                            </form>
+
                         </div>
                         <div class="tab-pane fade" id="pills-logo" role="tabpanel" aria-labelledby="logo-tab">
-                            <form action="{{ route('content.logo') }}" method="POST">
+                            <form action="{{ route('content.logo') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <input type="hidden" name="provider_id" value="{{ $provider->id }}">
                                 <div class="row">
@@ -89,48 +89,50 @@
                                         <h3 class="tab-heading"> تغيير شعار شركتك </h3>
                                         <p class="paragraph">
                                             صورة الشعار يجب أن تكون واضحة، ذات دقة عالية وقابلة للتحجيم، مع خلفية شفافة،
-                                            تعكس هوية وقيم العلامة التجارية، وتكون مرتبطة بها.</p>
+                                            تعكس هوية وقيم العلامة التجارية، وتكون مرتبطة بها.
+                                        </p>
                                         <div class="form-group">
-                                            <input type="file" class="form-control" name="logo"
-                                                onchange="previewImage(event)" id="meal_image" required="">
+                                            <input type="file" class="form-control" name="logo" required=""
+                                                id="logo-input1">
                                         </div>
-                                        <a href="" class="btn-dasMain">حفظ التغييرات</a>
+                                        <button type="submit" class="btn-dasMain">حفظ التغييرات</button>
                                     </div>
                                     <div class="col-lg-4 my-auto">
-                                        <img src="{{ asset('admin/img/clients/client-5.png') }}" class="logo-img-edit" />
+                                        <img src="{{ asset('storage/logo/' . $provider->logo) }}" class="logo-img-edit"
+                                            id="logo-image1">
                                     </div>
                                 </div>
                             </form>
                         </div>
                         <div class="tab-pane fade" id="pills-slider" role="tabpanel" aria-labelledby="slider-tab">
-                            <form action="">
+                            <form action="{{ route('content.Galary') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <input type="hidden" name="provider_id" value="{{ $provider->id }}">
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <h3 class="tab-heading"> معرض الصور</h3>
                                         <p class="paragraph">
-                                            معرض الصور هو ما يمثل شركتك ويعرض مكاتبك والمساحات التي لديك
+                                            معرض الصور هو ما يمثل شركتك ويعرض مكاتبك والمساحات التي لديك (5 صور )
                                         </p>
-                                        <a href="" class="btn-dasMain">حفظ التغييرات</a>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="img-card">
-                                            <div class="top ">
-                                                <p> معرض الصور</p>
-                                            </div>
-                                            <form action="/upload" method="post" class="">
-                                                <span class="img-inner"> <span class="img-select">اختر الصور</span></span>
-                                                <input type="file" name="file" class="img-file" multiple>
-                                            </form>
-                                            <div class="img-container">
-
-                                            </div>
+                                        <div class="form-group">
+                                            <input type="file" class="form-control galary-input" name="images[]"
+                                                required="" multiple>
                                         </div>
+                                        <button type="submit" class="btn-dasMain">حفظ التغييرات</button>
                                     </div>
+
+                                    <div class="col-lg-12 my-auto" id="image-preview">
+                                        @foreach ($Galary as $image)
+                                            <img src="{{ asset('storage/galary/' . $image->path) }}"
+                                                class="d-block  img-spase">
+                                        @endforeach
+                                    </div>
+
                                 </div>
                             </form>
                         </div>
                         <div class="tab-pane fade" id="pills-aboutus" role="tabpanel" aria-labelledby="aboutus-tab">
-                            <div class="col-lg-12 ps-5">
+                            <div class="col-lg-12 ps-5 card">
                                 <h3 class="tab-heading"> محتوى من نحن </h3>
                                 <p class="paragraph">
                                     تساعد صفحة "من نحن" على توضيح هوية الشركة وتعريفها بشكل شامل. يتم توفير معلومات حول
@@ -141,17 +143,15 @@
                                     @csrf
                                     <input type="hidden" name="provider_id" value="{{ $provider->id }}">
                                     <textarea class="mytextarea" name="aboutus">
-                                        {{ $provider->id }}
-                                        @foreach ($contents as $content)
+                            @foreach ($contents as $content)
 @if ($content && $content->type === 'aboutus')
 {{ $content->description }}
 @endif
 @endforeach
-</textarea>
+                                        </textarea>
                                     <button class="btn-dasMain" type="submit">حفظ التغييرات</button>
                                 </form>
                             </div>
-
                         </div>
                         <div class="tab-pane fade" id="pills-service" role="tabpanel" aria-labelledby="service-tab">
                             {{-- <form> --}}
@@ -184,7 +184,7 @@
                                                 </div>
                                             @endforeach
                                         @else
-                                            <a href="{{ route('workspaces.add') }}" class="mainColor">يرجى اضافة
+                                            <a href="{{ route('content') }}" class="mainColor">يرجى اضافة
                                                 مرافق</a>
                                         @endif
                                     </div>
@@ -234,63 +234,6 @@
                                 </div>
                             </div> {{-- </form> --}}
                         </div>
-                        {{-- <div class="tab-pane fade" id="pills-address" role="tabpanel" aria-labelledby="address-tab">
-                            <form>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <h3 class="tab-heading"> عنوان الشركة و العملة</h3>
-                                        <p class="paragraph">
-                                            يُرجى تحديد الموقع بدقة وكذلك العملة التي ترغب في عرضها للمستخدمين </p>
-                                        <div class="row">
-                                            <div class="col-3">
-                                                <label for="inputState" class="form-label"> المحافظة</label>
-                                                <select class="form-select" id="governorateSelect"
-                                                    onchange="getDirectorates()">
-                                                    <option selected disabled>اختر المحافظة</option>
-                                                    @foreach ($governorates as $governorate)
-                                                        <option value="{{ $governorate->id }}"
-                                                            @if (old('directorate_id', $provider->directorate->governorate_id) == $governorate->id) selected @endif>
-                                                            {{ $governorate->name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-
-                                                @error('directorate_id')
-                                                    <p>يجب اختيار المديرية</p>
-                                                @enderror
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <label for="inputState" class="form-label">المديرية</label>
-                                                <select class="form-select" id="directorateSelect" aria-label="State"
-                                                    name="directorate_id" name="directorate_id">
-                                                    <option selected disabled>اختر المحافظة اولا</option>
-                                                </select>
-                                                @error('directorate_id')
-                                                    <p>يجب اختيار المديريه</p>
-                                                @enderror
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <label for="inputState" class="form-label">الشارع</label>
-                                                <input type="text" class="form-control" id="inputName5"
-                                                    name="address" name="address" fdprocessedid="tpewl"
-                                                    placeholder="فوة - الاربعين شقة">
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <label for="inputState" class="form-label">العملة</label>
-                                                <select class="form-select" name="currency" onchange="getDirectorates()">
-                                                    <option value="ري">ري</option>
-                                                    <option value="رس">رس</option>
-                                                    <option value="دولار">دولار</option>
-
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <a href="" class="btn-dasMain">حفظ التغييرات</a>
-                            </form>
-                        </div> --}}
                         <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="contact-tab">
                             <form action="content.contactus" method="POST">
                                 <div class="row">
@@ -315,86 +258,44 @@
                             </form>
                         </div>
                         <div class="tab-pane fade" id="pills-links" role="tabpanel" aria-labelledby="links-tab">
+                            <h3 class="tab-heading"> حسابات التواصل الاجتماعي </h3>
+                            <p class="paragraph"> وسائل التواصل الاجتماعي يمكن العملاء من الاطلاع على أحدث الأخبار والعروض
+                                المساحات الجديدة، وتقديم استفساراتهم وملاحظاتهم بسهولة.
+                            </p>
+                            <form action="{{ route('content.social') }}" method="POST">
+                                @csrf
+                                @foreach (['Facebook', 'Instagram', 'Twitter', 'Linkedin'] as $type)
+                                    <div class="input-group mb-3" dir="ltr">
+                                        <input type="text" class="form-control social" name="{{ $type }}"
+                                            placeholder="ادخل الرابط " aria-label="Recipient's username"
+                                            aria-describedby="basic-addon3" fdprocessedid="agqgdm"
+                                            value="{{ optional($socialAccounts->where('type', $type)->first())->link }}">
+                                        <div class="input-group-text" id="basic-addon3">
+                                            <label class="form-check-label" for="{{ $type }}_check">
 
-                            <form>
-                                <div class="row">
-                                    <div class="col-8">
-                                        <h3 class="tab-heading">حسابات التواصل الاجتماعي</h3>
-                                        <p class="paragraph">
-                                            يمكنك اختيار وسائل التواصل الاجتماعي التي تريد عرضها ليصل عملائك بشكل اسرع
-                                        </p>
-                                        <div class="input-group mb-3" dir="ltr">
-
-                                            <input type="text" class="form-control price" disabled
-                                                placeholder="ادخل الرابط " aria-label="Recipient's username"
-                                                aria-describedby="basic-addon3" fdprocessedid="agqgdm">
-                                            <div class="input-group-text" id="basic-addon3">
-                                                <label class="form-check-label" for="gridCheck1">
-                                                    تويتر
-                                                </label>
-                                                <input class="form-check-input ms-1" type="checkbox" id="gridCheck1">
-                                            </div>
-                                        </div>
-                                        <div class="input-group mb-3" dir="ltr">
-                                            <input type="text" class="form-control price" disabled
-                                                placeholder="ادخل الرابط " aria-label="Recipient's username"
-                                                aria-describedby="basic-addon3" fdprocessedid="agqgdm">
-                                            <div class="input-group-text" id="basic-addon3">
-                                                <label class="form-check-label" for="gridCheck1">
-                                                    انستقرام
-                                                </label>
-                                                <input class="form-check-input ms-1" type="checkbox" id="gridCheck1">
-                                            </div>
-                                        </div>
-                                        <div class="input-group mb-3" dir="ltr">
-                                            <input type="text" class="form-control price" disabled
-                                                placeholder="ادخل الرابط " aria-label="Recipient's username"
-                                                aria-describedby="basic-addon3" fdprocessedid="agqgdm">
-                                            <div class="input-group-text" id="basic-addon3">
-                                                <label class="form-check-label" for="gridCheck1">
-                                                    لينكدان
-                                                </label>
-                                                <input class="form-check-input ms-1" type="checkbox" id="gridCheck1">
-                                            </div>
-                                        </div>
-                                        <div class="input-group mb-3" dir="ltr">
-                                            <input type="text" class="form-control price" disabled
-                                                placeholder="ادخل الرابط " aria-label="Recipient's username"
-                                                aria-describedby="basic-addon3" fdprocessedid="agqgdm">
-                                            <div class="input-group-text" id="basic-addon3">
-                                                <label class="form-check-label" for="gridCheck1">
-                                                    فيسبوك
-                                                </label>
-                                                <input class="form-check-input ms-1" type="checkbox" id="gridCheck1">
-                                            </div>
+                                                {{ $type }}
+                                            </label>
+                                            <input class="form-check-input ms-1" type="checkbox"
+                                                name="{{ $type }}_check" id="{{ $type }}_check"
+                                                @if ($socialAccounts->where('type', $type)->isNotEmpty()) checked @endif>
                                         </div>
                                     </div>
-                                </div>
-                                <a href="" class="btn-dasMain">حفظ التغييرات</a>
+                                @endforeach
+                                <button type="submit" class="btn-dasMain">حفظ التغييرات</button>
                             </form>
                         </div>
-                    </div><!-- End Pills Tabs -->
 
+                    </div>
                 </div>
+
             </div>
 
 
+            </div><!-- End Pills Tabs -->
 
-
-
-
-
-
-
-
-
-
-
-
-        </section>
-
+            </div>
+            </div>
     </main><!-- End #main -->
-
 
     <script>
         function getDirectorates() {
@@ -424,106 +325,85 @@
         }
     </script>
     <script>
-        const maxImages = 5;
+        // استهدف العنصرين باستخدام معرفاتهما
+        var logoInput = document.getElementById('logo-input1');
+        var logoImage = document.getElementById('logo-image1');
 
-        let files = [];
-        imgButton = document.querySelector('.top button');
-        imgForm = document.querySelector('.img-card form');
-        imgContainer = document.querySelector('.img-container');
-        imgBrowse = document.querySelector('.img-select');
-        imgInner = document.querySelector('.img-inner');
-        imgInput = document.querySelector('.img-file');
+        // استمع إلى حدث تغيير الملف في حقل الإدخال
+        logoInput.addEventListener('change', function(event) {
+            // التأكد من وجود ملف محدد
+            if (event.target.files.length > 0) {
+                // الحصول على الملف المحدد
+                var file = event.target.files[0];
 
-        imgBrowse.addEventListener('click', () => imgInput.click());
-        imgInput.addEventListener('change', () => {
-            let file = imgInput.files;
-            for (let i = 0; i < file.length; i++) {
-                if (files.length < maxImages && files.every(e => e.name !== file[i].name)) {
-                    files.push(file[i]);
-                }
+                // إنشاء كائن FileReader لقراءة محتوى الملف
+                var reader = new FileReader();
+
+                // استمع إلى حدث استكمال قراءة الملف
+                reader.onload = function(e) {
+                    // تحديث مصدر الصورة (src) بمحتوى الملف المحدد
+                    logoImage.src = e.target.result;
+                };
+
+                // قراءة محتوى الملف كـ URL
+                reader.readAsDataURL(file);
             }
-            if (files.length > maxImages) {
-                files = files.slice(0, maxImages);
+        });
+    </script>
+    <script>
+        function previewImages() {
+            var preview = document.querySelector('#image-preview');
+            var files = document.querySelector('.galary-input[type=file]').files;
+
+            function readAndPreview(file) {
+                // Create a FileReader
+                var reader = new FileReader();
+
+                // When the image is loaded successfully
+                reader.onload = function(e) {
+                    var image = new Image();
+                    image.src = e.target.result;
+
+                    // Add the preview image to the div
+                    preview.appendChild(image);
+                };
+
+                // Read the file as a DataURL
+                reader.readAsDataURL(file);
             }
 
-            imgForm.reset();
-            showImages();
-        })
+            if (files && files.length === 4) { // Check if 5 files are selected
+                // Remove current images from the div
+                preview.innerHTML = '';
 
-        const showImages = () => {
-            let images = '';
-            console.log('ddddd');
-            files.forEach((e, i) => {
-                images += ` <div class="image-dw">
-      <img src="${URL.createObjectURL(e)}" alt="image">
-      <span onclick="delImage(${i})">&times;</span></div>`;
-            })
-            imgContainer.innerHTML = images;
+                // Read and preview the selected images
+                Array.from(files).forEach(readAndPreview);
+            } else {
+                // Clear the file input field
+                document.querySelector('.galary-input[type=file]').value = '';
 
+                // Remove current images from the div
+                preview.innerHTML = '';
+
+                // Display an error message
+                var errorMessage = document.createElement('p');
+                errorMessage.textContent = 'يرجى اختيار 4 صور';
+                preview.appendChild(errorMessage);
+            }
         }
-        const delImage = index => {
-            files.splice(index, 1)
-            showImages();
-        }
-
-
-
+        // Call the function when the file input changes
+        document.querySelector('.galary-input[type=file]').addEventListener('change', previewImages);
+        // Call the function when the file input changes
+    </script>
+    <script>
         const checkboxes = document.querySelectorAll('.form-check-input');
-        const inputTexts = document.querySelectorAll('.price');
+        const inputTexts = document.querySelectorAll('.social');
 
         checkboxes.forEach((checkbox, index) => {
             checkbox.addEventListener('change', function() {
                 inputTexts[index].disabled = !this.checked;
             });
         });
-
-        // service
-
-        function addFields() {
-            var container = document.getElementById("fields-container");
-
-            var newTitleField = document.createElement("div");
-            newTitleField.classList.add("form-group");
-            newTitleField.innerHTML = `
-    <div class="row myrow">
-
-      <div class="col-8">
-        <div class="form-group pb-3">
-          <input type="text" class="form-control" name="title[]" placeholder="أدخل مرفق ">
-        </div>
-      </div>
-
-    </div>
-  `;
-            // counter++;
-            container.appendChild(newTitleField);
-        }
-        // bank
-        function addFields2() {
-            var container = document.getElementById("fields-container2");
-
-            var newTitleField = document.createElement("div");
-            newTitleField.classList.add("form-group");
-            newTitleField.innerHTML = `
-    <div class="row myrow">
-
-    <div class="col-8">
-    <div class="form-group pb-3">
-        <input type="text" class="form-control" name="bank[]"
-            placeholder="البنك">
-    </div>
-</div>
-<div class="col-4">
-    <div class="form-group pb-3">
-        <input type="number" class="form-control" name="PIN[]"
-            placeholder="رقم الحساب">
-    </div>
-</div>
-    </div>
-  `;
-            // counter++;
-            container.appendChild(newTitleField);
-        }
-        ///
     </script>
+
 @endsection

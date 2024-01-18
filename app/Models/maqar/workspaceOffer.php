@@ -2,6 +2,7 @@
 
 namespace App\Models\maqar;
 
+use App\Models\reservation\reservation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,5 +24,9 @@ class workspaceOffer extends Model
     public function workspaceDuration()
     {
         return $this->belongsTo(WorkspaceDuration::class, 'workspaceDuration_id');
+    }
+    public function reservations()
+    {
+        return $this->hasMany(reservation::class, 'workspaceoffer_id');
     }
 }

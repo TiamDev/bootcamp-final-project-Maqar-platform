@@ -40,7 +40,7 @@
             <form action="{{ route('offers') }}" method="post">
                 @csrf
                 <div class="row  justify-content-center align-items-center">
-                    <div class="col-3">
+                    <div class="col-lg-3 col-md-3">
                         <div class="form-floating search-form">
                             <select class="form-select period-select" id="floatingSelect" name="workspace_type"
                                 aria-label="Floating label select example">
@@ -51,7 +51,7 @@
                             <label for="floatingSelect">نوع المساحة:</label>
                         </div>
                     </div>
-                    <div class="col-2">
+                    <div class="col-lg-2 col-md-2">
                         <div class="form-floating">
                             <select class="form-select" id="workspaceDurationSelect" aria-label="State"
                                 name="workspaceDuration_id">
@@ -65,7 +65,7 @@
                             <p></p>
                         @enderror
                     </div>
-                    <div class="col-3">
+                    <div class="col-lg-3 col-md-3">
                         <div class="form-floating">
                             <select class="form-select" id="governorateSelect" onchange="getDirectorates()">
                                 <option selected disabled>اختر المحافظة</option>
@@ -76,20 +76,21 @@
                             <label for="floatingSelect-g">المحافظة</label>
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-lg-3 col-md-3">
                         <div class="form-floating">
                             <select class="form-select" id="directorateSelect" aria-label="State" name="directorate_id">
                             </select>
                             <label for="floatingSelect-d">المديرية</label>
                         </div>
-                        @error('directorate_id')
-                            <p>يجب اختيار المديريه</p>
-                        @enderror
+
                     </div>
-                    <div class="col-1">
+                    <div class="col-lg-1 col-md-1">
                         <button type="submit" class=" search-box-btn w-100">بحث</button>
                     </div>
                 </div>
+                @error('directorate_id')
+                    <p class="error-message ps-5 ms-5 text-start">يجب اختيار المديريه</p>
+                @enderror
             </form>
         </div>
     </div>

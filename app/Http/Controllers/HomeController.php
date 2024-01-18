@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\SearchRequest;
+use App\Models\content\socialMedia;
 use Illuminate\Http\Request;
 use App\Models\Location\Governorate;
 use App\Models\Location\Directorate;
@@ -12,6 +13,10 @@ use App\Models\maqar\workspace;
 use App\Models\maqar\workspaceType;
 use App\Models\maqar\WorkspaceDuration;
 use App\Models\maqar\workspaceOffer;
+use App\Models\file\File;
+use App\ViewModels\workspaceImage;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -28,25 +33,51 @@ class HomeController extends Controller
         $validatedData = $request->validated();
         $workspaceOffers = WorkspaceOffer::where('workspaceDuration_id', $request->workspaceDuration_id)
             ->whereHas('workspace', function ($query) use ($request) {
-                $query->where('workspaceType_id', $request->workspace_type);
+                $query->where('workspaceType_id', $request->workspace_type)
+                    ->whereHas('provider', function ($query) use ($request) {
+                        $query->whereHas('directorate', function ($query) use ($request) {
+                            $query->where('directorate_id', $request->directorate_id);
+                        });
+                    });
             })
-            ->with('workspace')
+            ->with(['workspace' => function ($query) use ($request) {
+                $query->where('workspaceType_id', $request->workspace_type)
+                    ->with(['provider' => function ($query) {
+                        $query->with('directorate');
+                    }]);
+            }])
             ->get();
-
-        return view('site/workspaces', compact('workspaceOffers'));
+        $currentDate = Carbon::now()->toDateString();
+        $workspaceImages = [];
+        foreach ($workspaceOffers as $key => $workspaceOffer) {
+            $workspaceoffer = $workspaceOffer;
+            $workspace = $workspaceOffer->workspace;
+            $image = File::where('target_id', $workspaceOffer->Workspace->id)
+                ->where('type', 'workspace')
+                ->first()->path ?? '20240118_062834_pexels-max-rahubovskiy-7534224.jpg';
+            $workspaceImage = new workspaceImage; // إنشاء كائن workspaceImage جديد لكل عنصر
+            $workspaceImage->save($workspaceoffer, $workspace, $image);
+            $workspaceImages[] = $workspaceImage;
+        }
+        return view('site/workspaces', compact('workspaceImages', 'currentDate'));
     }
 
     public function details(Request $request)
     {
         $workspaceOffer = workspaceOffer::where('id', $request->id)->first();
-        // $workspace = Workspace::where('name', $request->name)->first();
-        // $workspaceDuration = WorkspaceDuration::where('id', $request->duration)->first()->name;
-        // session()->put('workspaceDuration', $workspaceDuration);
-        // dd($workspaceOffer->workspace->name);
+
         return view('site.workspaceDetiles', compact('workspaceOffer'));
     }
 
+    public function providerSite()
+    {
+        $provider = Provider::where('user_id', auth()->user()->id)->first();
+        $images = File::where('Target_id', $provider->id)->where('type', 'provider')
+            ->get();
+        $socialAccounts = socialMedia::where('user_id', auth()->user()->id)->get();
 
+        return view('tenant/home', compact('provider', 'images', 'socialAccounts'));
+    }
 
 
     public function getDirectorates(Request $request)
@@ -57,5 +88,23 @@ class HomeController extends Controller
         $directorates = Directorate::where('governorate_id', $governorateId)->get();
 
         return response()->json($directorates);
+    }
+    public function aboutMagar()
+    {
+
+        return view('site.aboutMagar');
+    }
+    public function viewDetails(Request $request)
+    {
+        if (Auth::check()) {
+            $isBooked = -1;
+            $workspaceOffer = workspaceOffer::find($request->id);
+            $images = File::where('target_id', $workspaceOffer->Workspace->id)
+                ->where('type', 'workspace')
+                ->get();
+            return view('site.workspaceDetiles', compact('workspaceOffer', 'isBooked', 'images'));
+        } else {
+            return view('site.account.signin');
+        }
     }
 }

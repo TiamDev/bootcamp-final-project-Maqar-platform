@@ -42,7 +42,7 @@ class JoinRequestController extends Controller
         $user = User::where("id", $provider_obj->user_id)->first();
         if ($provider > 0) {
             return redirect()->back()->with('success', 'تم قبول الطلب بنجاح ');
-            // Mail::to($user->email)->send(new WelcomeEmail($user));
+            Mail::to('fatimabakar707@gmail.com')->send(new RejectMail('تم قبول الطلب بنجاح '));
         } elseif ($provider === 0) {
             return redirect()->route('platform.joinRequest')->with('error', 'هناك خطا ما');
         } else {
@@ -56,7 +56,7 @@ class JoinRequestController extends Controller
         $user = User::where("id", $provider_obj->user_id)->first();
         if ($provider > 0) {
             return redirect()->back()->with('success', 'تم رفض الطلب بنجاح ');
-            // Mail::to($user->email)->send(new RejectMail($request->rejectMessage));
+            Mail::to('fatimabakar707@gmail.com')->send(new RejectMail($request->rejectMessage));
         } elseif ($provider === 0) {
             return redirect()->route('platform.joinRequest')->with('error', 'هناك خطا ما');
         } else {
@@ -132,8 +132,8 @@ class JoinRequestController extends Controller
         // $filename_tradeDocument = $file_tradeDocument->getClientOriginalName() . '_' . Carbon::now()->timestamp;
         // $path_tradeDocument = $file_tradeDocument->storeAs('public/upload/provider', $filename_tradeDocument);
 
-        // $user = User::where('user_id', $request->id)->first();
-        // dd($user->name);
+        // $user = User::where('id', $request->id)->first();
+        // dd(Auth::user());
         Provider::create([
             'name' => $request->name,
             'title' => $request->title,

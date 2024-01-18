@@ -32,8 +32,9 @@ class WorkspaceController extends Controller
     public function view(string $name)
     {
         $Workspace = Workspace::where('name', $name)->first();
-        $images = File::where('target_id', $Workspace->id)->get();
-
+        $images = File::where('target_id', $Workspace->id)
+            ->where('type', 'workspace')
+            ->get();
         return view('tenant.spaces.view', compact('Workspace', 'images'));
     }
     public function edit(string $name)
@@ -106,9 +107,6 @@ class WorkspaceController extends Controller
     }
     public function create(Request $request)
     {
-
-        // dd($request);
-
         $newWorkspace = Workspace::create([
             'title' => $request->title,
             'name' => $request->name,
@@ -150,7 +148,6 @@ class WorkspaceController extends Controller
                     'price' => $priceInput,
                     // Add more fields as needed
                 ]);
-                // dd($x);
             }
         }
 

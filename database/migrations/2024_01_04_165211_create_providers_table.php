@@ -28,6 +28,8 @@ return new class extends Migration
             $table->enum('state', ['step1', 'approved', 'complete', 'reject']);
             $table->integer('startWorkHour')->nullable();
             $table->integer('endWorkHour')->nullable();
+            $table->enum('startWorkDay', ["السبت", 'الاحد', 'الاثنين', 'الثلاثاء', 'الاربعاء', 'الخميس', 'الجمعة']);
+            $table->enum('endWorkDay', ["السبت", 'الاحد', 'الاثنين', 'الثلاثاء', 'الاربعاء', 'الخميس', 'الجمعة']);
             $table->timestamps();
         });
     }

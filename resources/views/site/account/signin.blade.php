@@ -36,6 +36,17 @@
         </div>
         <div class="card card-login" dir="rtl">
             <div class="card-body">
+
+                @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+                @if (session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
                 <div class="text-center">
                     <img src="{{ asset('admin/img/logo.png') }}" width="200" alt="">
                     <h5 class="card-title">تسجيل الدخول</h5>

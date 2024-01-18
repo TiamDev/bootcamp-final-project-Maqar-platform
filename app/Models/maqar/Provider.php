@@ -8,7 +8,7 @@ use App\Models\maqar\feature;
 use App\Models\content\content;
 
 use App\Models\Location\directorate;
-
+use App\Models\reservation\reservation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -58,5 +58,9 @@ class Provider extends Model
     public function contents()
     {
         return $this->hasMany(Content::class, 'provider_id');
+    }
+    public function reservations()
+    {
+        return $this->hasMany(reservation::class);
     }
 }

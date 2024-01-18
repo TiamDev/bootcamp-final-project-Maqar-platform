@@ -2,12 +2,12 @@
 @section('content')
     <main id="main">
         <div class="pagetitle">
-            <h1>بيانات الحجز</h1>
             <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item active"> <a href="index.html"> بيانات الحجز</a></li>
-                    <li class="breadcrumb-item "> <a href="index.html">الحجوزات</a></li>
-                    <li class="breadcrumb-item"><a href="index.html">الرئيسية</a></li>
+                    <li class="breadcrumb-item active"> بيانات الحجز</li>
+                    <li class="breadcrumb-item "> <a
+                            href="{{ route('tenant.Reservations', ['site' => Auth()->id()]) }}">الحجوزات</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('tenant.dashboard') }}">الرئيسية</a></li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
@@ -200,7 +200,7 @@
                             <div class="col">
                                 <button type="submit" class="btn-dasMain">تأكيد الحجز</button>
                                 <button type="submit" class="btn-dasSecond">رفض </button>
-                                <a type="submit" href="{{ route('tenant.booking') }}" class="btn-dasSecond">رجوع </a>
+                                {{-- <a type="submit" href="{{ route('tenant.booking') }}" class="btn-dasSecond">رجوع </a> --}}
                             </div>
                         </div>
         </form>
