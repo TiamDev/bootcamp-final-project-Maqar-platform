@@ -7,7 +7,31 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+# Project Name
+
+Maqar Platform
+
+## Getting Started
+
+1. Make sure you have PHP and Composer installed on your machine.
+
+2. Download the Maqar Platform project from its GitHub repository to your local machine.
+
+3. Open your favorite text editor and navigate to the project folder.
+
+4. Install all the required dependencies using Composer by running the following command:
+   <code>composer install</code>
+5. Create an .env file by duplicating the .env.example file provided in the project. Make sure to set your database information in this file.
+
+6. Run the following command to generate a secret key for your Laravel application: php artisan key:generate
+
+7. Run the following command to execute the migrations and create the database structure: php artisan migrate
+
+8. Run the following command to start the built-in Laravel development server: php artisan serve
+
+The MySQL database file (script.sql) can be found at the path database/script.sql.
+
+<!-- ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
@@ -63,4 +87,4 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT). -->
