@@ -9,7 +9,16 @@
 
 # Project Name
 
+<div align="center">
+
+<img src="public/site/img/logo/logo2.png" width="300px">
+</div>
+
+<div align="center">
+<h1 style="color:#53ad90;font-size:40px">
 Maqar Platform
+</h1>
+</div>
 
 ## Getting Started
 
