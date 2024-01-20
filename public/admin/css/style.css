@@ -1038,7 +1038,7 @@ h6 {
 # Profie Page
 --------------------------------------------------------------*/
 .profile .profile-card img {
-  max-width: 120px;
+  max-width: 190px;
 }
 
 .profile .profile-card .img-spase {
@@ -1368,19 +1368,23 @@ card office
 */
 
 .mycontainer {
-  height: 60vh;
-  margin-inline: 1.5rem;
+  height: 320px;
   display: grid;
   place-items: center;
   direction: ltr;
 }
-
+.mycontainerx{
+  height: 400px;
+  display: grid;
+  place-items: center;
+  direction: ltr;
+}
 .mycard {
   position: relative;
   width: 286px;
   background-color:white;
   padding: 1.25rem 2rem 3rem;
-  border-radius: 1.5rem;
+  border-radius: 1rem;
   text-align: center;
   box-shadow: 0 4px 16px hsla(29, 75%, 8%, 0.2);
 }
@@ -1962,17 +1966,20 @@ dash-section
 box-sizing: border-box;
 margin: 0;
 }
-.dash-box{
-  direction: rtl;
-  margin-bottom: 30px;
-  border: none;
-  border-radius: 10px;
-  box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;
-  height: 265px;
-  width: 100%;
-  background-color: white;
-  padding: 30px;
+  .dash-box {
+    box-sizing: border-box;
+    direction: rtl;
+    margin-bottom: 30px;
+    border: none;
+    border-radius: 10px;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;
+    height: 265px;
+    width: 96.5%;
+    background-color: white;
+    padding: 30px;
+    margin: 20px;
 }
+
 
 
 /* 
@@ -2026,16 +2033,26 @@ margin: 0;
 .card-home {
   margin: 20px;
   padding: 20px;
-  width: 320px;
+  width: 360px;
   min-height: 200px;
   display: grid;
-  grid-template-rows: 20px 50px 1fr 50px;
+  grid-template-rows: 20px 0px 60px ;
   border-radius: 10px;
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
   transition: all 0.2s;
   direction: rtl;
 }
+.card-home2 {
+  margin: 20px;
+  padding: 20px;
+  width: 360px;
+  min-height: 200px;
 
+  border-radius: 10px;
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
+  transition: all 0.2s;
+  direction: rtl;
+}
 .card-home:hover {
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.4);
   transform: scale(1.01);
@@ -2075,16 +2092,23 @@ margin: 0;
 }
 
 .card__title {
-  grid-row: 3/4;
-  font-weight: 400;
+  grid-row: 2/4;
+  font-weight: 600;
   color: #ffffff;
+  text-align: center;
 }
 
 .card__apply {
-  grid-row: 4/5;
+  grid-row: 5/5;
   align-self: center;
 }
-
+.card__apply2 {
+  align-self: center;
+  color: white;
+  font-size: 30px;
+  font-weight: 600;
+  text-align: center;
+}
 /* CARD BACKGROUNDS */
 
 .card-1 {

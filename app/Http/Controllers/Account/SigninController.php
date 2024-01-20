@@ -95,7 +95,7 @@ class SigninController extends Controller
                         return redirect()->route('platform.joinRequest.underReview');
                         // }
                     } elseif ($providerStatus == 'approved') {
-                        return redirect()->route('providerDetails');
+                        return redirect()->route('tenant.dashboard');
                     } elseif ($providerStatus == 'reject') {
                         return "تم رفض طلبك ارجو مراجعة الايميل";
                     } elseif ($providerStatus == 'complete') {

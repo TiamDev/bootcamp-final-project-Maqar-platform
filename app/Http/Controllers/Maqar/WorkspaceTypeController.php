@@ -12,7 +12,7 @@ class WorkspaceTypeController extends Controller
     public function index()
     {
         // $types = WorkspaceType::all();
-        $types = WorkspaceType::paginate(2);
+        $types = WorkspaceType::all();
 
         return view('platform.workspaceType.index', compact('types'));
     }

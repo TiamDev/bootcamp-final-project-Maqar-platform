@@ -56,13 +56,19 @@
                                 aria-selected="false">توصل معنا</button>
                         </li>
                         <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="pills-bank-tab" data-bs-toggle="pill" data-bs-target="#pills-bank"
+                                type="button" role="tab" aria-controls="pills-bank" aria-selected="false">الحسابات
+                                البنكيه</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
                             <button class="nav-link" id="pills-links-tab" data-bs-toggle="pill"
                                 data-bs-target="#pills-links" type="button" role="tab" aria-controls="pills-links"
                                 aria-selected="false"> حسابات التواصل الاجتماعي </button>
                         </li>
                     </ul>
                     <div class="card tab-content pt-2" id="myTabContent">
-                        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="logo-tab">
+                        <div class="tab-pane fade show active" id="pills-home" role="tabpanel"
+                            aria-labelledby="logo-tab">
                             <h3 class="tab-heading">الرئيسية</h3>
                             <p class="paragraph">
                                 يمكنك اضافة و تغيير محتوى صفحتك التي يراها مستخدمي منصة مقر
@@ -184,7 +190,7 @@
                                                 </div>
                                             @endforeach
                                         @else
-                                            <a href="{{ route('content') }}" class="mainColor">يرجى اضافة
+                                            <a href="{{ route('content.addFeature') }}" class="mainColor">يرجى اضافة
                                                 مرافق</a>
                                         @endif
                                     </div>
@@ -218,17 +224,14 @@
                                                                         {{ $service->price }}
                                                                         {{ $provider->currency }}</p>
                                                                 </div>
-
-                                                                <a href=""><i
-                                                                        class="bi bi-x-octagon text-danger"></i></a>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             @endforeach
                                         @else
-                                            <a href="{{ route('workspaces.add') }}" class="mainColor">يرجى اضافة
-                                                مرافق</a>
+                                            <a href="{{ route('content.addService') }}" class="mainColor">يرجى اضافة
+                                                خدمات</a>
                                         @endif
                                     </div>
                                 </div>
@@ -256,6 +259,46 @@
                                 </div>
                                 <a href="" class="btn-dasMain">حفظ التغييرات</a>
                             </form>
+                        </div>
+                        <div class="tab-pane fade" id="pills-bank" role="tabpanel" aria-labelledby="bank-tab">
+                            {{-- <form> --}}
+                            <div class="">
+                                <div class="col-8 w-100">
+                                    <div class="d-flex justify-content-between">
+                                        <h3 class="tab-heading"> حسابات البنكية</h3>
+                                        <a href="{{ route('content.addBankAccount') }}" class="dash-btn das-show"><i
+                                                class="bi bi-plus-square fs-4"></i></a>
+                                        </a>
+                                    </div>
+                                    <p class="paragraph text-secondary">
+                                        من اجل عملية الايداع من قبل المستاجرين يجب اضافة حسابتك البنكية والتاكد من صحة
+                                        الرقم.
+                                    </p>
+                                    <div class="row">
+                                        @if (count($payments) > 0)
+                                            @foreach ($payments as $payment)
+                                                <div class="col-lg-4">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <div class="d-flex justify-content-between">
+                                                                <div>
+                                                                    <h5> {{ $payment->name }} </h5>
+
+                                                                </div>
+                                                                <p class="m-0 mainColor">
+                                                                    {{ $payment->number }}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        @else
+                                            <a href="{{ route('content.addBankAccount') }}" class="mainColor">يرجى اضافة
+                                                حساب</a>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div> {{-- </form> --}}
                         </div>
                         <div class="tab-pane fade" id="pills-links" role="tabpanel" aria-labelledby="links-tab">
                             <h3 class="tab-heading"> حسابات التواصل الاجتماعي </h3>
@@ -372,7 +415,7 @@
                 reader.readAsDataURL(file);
             }
 
-            if (files && files.length === 4) { // Check if 5 files are selected
+            if (files && files.length === 5) { // Check if 5 files are selected
                 // Remove current images from the div
                 preview.innerHTML = '';
 
@@ -387,7 +430,7 @@
 
                 // Display an error message
                 var errorMessage = document.createElement('p');
-                errorMessage.textContent = 'يرجى اختيار 4 صور';
+                errorMessage.textContent = 'يرجى اختيار 5 صور';
                 preview.appendChild(errorMessage);
             }
         }

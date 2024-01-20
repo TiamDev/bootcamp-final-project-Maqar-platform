@@ -103,14 +103,14 @@
                                 <div>{{ $message }}</div>
                             @enderror
                             <label for="inputState" class="form-label">السجل التجاري </label>
-                            <input type="file" name="tradeDocument" class="form-control" id="inputName5"
-                                fdprocessedid="tpewl" value="">
+                            <input type="file" class="form-control" name="tradeDocument" required=""
+                                id="logo-input1">
                             @error('tradeDocument')
                                 <div>{{ $message }}</div>
                             @enderror
                             <label for="inputState" class="form-label">شعار الشركة</label>
-                            <input type="file" name="logo" class="form-control" id="inputName5"
-                                fdprocessedid="tpewl">
+                            <input type="file" class="form-control" name="logo" required=""
+                                id="logo-input1">
                             @error('logo')
                                 <div>{{ $message }}</div>
                             @enderror

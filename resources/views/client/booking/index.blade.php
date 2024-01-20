@@ -690,5 +690,7 @@
                 <!-- offer card -->
             </div>
         </div>
+        @include('common.pagination', ['paginator' => $reservations])
+
     </main>
 @endsection

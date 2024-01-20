@@ -13,6 +13,8 @@ use App\Models\reservation\order;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Models\Reservation\Reservation;
+use App\Models\Reservation\state as Mystate;
+
 use App\Models\File\file;
 use DateTime;
 use Illuminate\Http\Request;
@@ -20,6 +22,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
+use NunoMaduro\Collision\Adapters\Phpunit\State;
 
 class ReservationController extends Controller
 {
@@ -66,27 +69,14 @@ class ReservationController extends Controller
                     $dateTimeEnd = $dateTimeStart->copy()->addHours($repeatDuration);
                 } elseif ($request->duration == 'day') {
                     $dateTimeEnd = $dateTimeStart->copy()->addDays($repeatDuration);
+                    $dateTimeEnd = $dateTimeEnd->copy()->setTimeFromTimeString($provider->endWorkHour);
                 } elseif ($request->duration == 'week') {
                     $dateTimeEnd = $dateTimeStart->copy()->addWeeks($repeatDuration);
+                    $dateTimeEnd = $dateTimeEnd->copy()->setTimeFromTimeString($provider->endWorkHour);
                 } elseif ($request->duration == 'month') {
                     $dateTimeEnd = $dateTimeStart->copy()->addMonths($repeatDuration);
+                    $dateTimeEnd = $dateTimeEnd->copy()->setTimeFromTimeString($provider->endWorkHour);
                 }
-                //التحقق من التاريخ  ************************************** 
-                // $reservations = DB::table('reservations')
-                //     ->where('workspaceoffer_id', $request->workspaceOffer_id)
-                //     ->where(function ($query) use ($dateTimeStart, $dateTimeEnd) {
-                //         $query->where(function ($query) use ($dateTimeStart, $dateTimeEnd) {
-                //             $query->where('start_date', '>=', $dateTimeStart)
-                //                 ->where('start_date', '<=', $dateTimeEnd);
-                //         })->orWhere(function ($query) use ($dateTimeStart, $dateTimeEnd) {
-                //             $query->where('end_date', '>=', $dateTimeStart)
-                //                 ->where('end_date', '<=', $dateTimeEnd);
-                //         })->orWhere(function ($query) use ($dateTimeStart, $dateTimeEnd) {
-                //             $query->where('start_date', '<=', $dateTimeStart)
-                //                 ->where('end_date', '>=', $dateTimeEnd);
-                //         });
-                //     })
-                //     ->get();
                 $reservations = DB::table('reservations')
                     ->where('workspaceoffer_id', $request->workspaceOffer_id)
                     ->where(function ($query) use ($dateTimeStart, $dateTimeEnd) {
@@ -159,8 +149,8 @@ class ReservationController extends Controller
                             ->where('provider_id', $provider->id);
                     });
             })->get();
-
-            return view('tenant.booking.index', compact('reservations'));
+            $states = Mystate::all();
+            return view('tenant.booking.index', compact('reservations', 'states'));
         } else {
             // المزود غير موجود
         }
@@ -216,8 +206,10 @@ class ReservationController extends Controller
     }
     public function myReservations()
     {
-        $reservations = Reservation::where('user_id', auth()->user()->id)->paginate(10);
-        // dd($reservations);
+        // $reservations = Reservation::where('user_id', auth()->user()->id)->paginate(10);
+        $reservations = Reservation::where('user_id', auth()->user()->id)
+            ->latest() // يجلب الحجوزات الأحدث أولاً
+            ->paginate(10);
         return view('client.booking.myReservations', compact('reservations'));
     }
 }

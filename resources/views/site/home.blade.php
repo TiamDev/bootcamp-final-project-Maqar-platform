@@ -10,7 +10,6 @@
                     <h2 data-aos="fade-up" data-aos-delay="400"> احصل على المساحة التي تريدها، بدءًا من مكتب واحد وصولًا إلى
                         مبنى
                         بأكمله. الخيار لك.
-
                     </h2>
                     <div data-aos="fade-up" data-aos-delay="600" class="d-flex ">
                         <div class="text-center text-lg-start">
@@ -26,13 +25,9 @@
                     data-aos-delay="200">
                     <img src="{{ asset('/site/img/ill/3d-casual-life-young-colleagues-are-working-together-on-a-project.png') }}"
                         class="img-fluid " alt="">
-
                 </div>
             </div>
-
-
         </div>
-
     </section><!-- End Hero -->
     <!-- search start -->
     <div class="container ">
@@ -306,12 +301,8 @@
                                     </div>
 
                                     <p>يمكن للمستاجرين حجز المساحة في اي وقت واي مكان دون الحاجة الى الحضور .</p>
-
                                 </div>
                             </div>
-
-
-
                         </div>
                     </div>
 

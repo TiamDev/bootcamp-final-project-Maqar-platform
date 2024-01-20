@@ -6,11 +6,10 @@
     <main id="main" class="main">
 
         <div class="pagetitle">
-            <h1>طلبات الانضمام</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item active">طلبات الانضمام</li>
-                    <li class="breadcrumb-item"><a href="index.html">الرئيسية</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('platform.dashboard') }}">الرئيسية</a></li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
@@ -54,7 +53,15 @@
                                             <td>{{ $counter }}</td>
                                             <td>{{ $provider->title }}</td>
                                             <td>{{ $provider->email }}</td>
-                                            <td>{{ $provider->state }}</td>
+                                            <td>
+                                                @if ($provider->state == 'step1')
+                                                    جديد
+                                                @elseif ($provider->state == 'approved')
+                                                    تمت الموافقة
+                                                @elseif ($provider->state == 'reject')
+                                                    تم الرفض
+                                                @endif
+                                            </td>
                                             <!-- operation -->
                                             <td class="text-center">
                                                 <a href="{{ route('platform.joinRequest.view', ['name' => $provider->name]) }}"

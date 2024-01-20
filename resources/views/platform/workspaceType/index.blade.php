@@ -94,10 +94,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                            @include('common.pagination', ['paginator' => $types])
-
                             <!-- End Table with hoverable rows -->
-
                         </div>
                     </div>
                 </div>

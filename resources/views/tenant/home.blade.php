@@ -23,7 +23,10 @@
                     @endforeach
                 </div>
                 <div class="large-image">
-                    <img id="main-image" src="{{ asset('storage/galary/' . $images[0]->path) }}">
+
+                    @if (!empty($images) && isset($images[0]))
+                        <img id="main-image" src="{{ asset('storage/galary/' . $images[0]->path) }}">
+                    @endif
                 </div>
             </div>
         </div>

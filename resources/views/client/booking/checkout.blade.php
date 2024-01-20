@@ -98,7 +98,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card " dir="rtl">
+                    <div class="card" dir="rtl">
                         <section class=" ">
                             <h6 class="main-title"> الفاتورة </h6>
                             <table class="table" id="invoice">
@@ -214,43 +214,48 @@
                             </div>
                         </div>
                     </div>
-                    <form
-                        action="{{ route('offer.checkout', ['name' => $reservation->workspaceOffer->workspace->name]) }}"
-                        method="post">
-                        @csrf
-                        <input type="hidden" name="reservation_id" value="{{ $reservation->id }}">
-                        <div class="" dir="rtl">
-                            <h6 class="main-title">السند</h6>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <p>يجب ارفاق السند لتأكيد الحجز.</p>
-                                    <div class="form-group">
-                                        <input type="file" class="form-control" name="voucher" id="voucher-input">
+                    @if ($reservation->state->id == 1)
+                        <form
+                            action="{{ route('offer.checkout', ['name' => $reservation->workspaceOffer->workspace->name]) }}"
+                            method="post">
+                            @csrf
+                            <input type="hidden" name="reservation_id" value="{{ $reservation->id }}">
+                            <div class="" dir="rtl">
+                                <h6 class="main-title">السند</h6>
+                                @if ($errors->any())
+                                    <div class="alert alert-danger text-end">
+                                        @foreach ($errors->all() as $error)
+                                            {{ $error }}
+                                        @endforeach
+                                    </div>
+                                @endif
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <p>يجب ارفاق السند لتأكيد الحجز.</p>
+                                        <div class="form-group">
+                                            <input type="file" class="form-control" name="voucher"
+                                                id="voucher-input">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div id="voucher-image" class="voucher-img"></div>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <div id="voucher-image" class="voucher-img"></div>
+                            </div>
+
+                            <div class="row" dir="rtl">
+                                <div class="col">
+                                    <div class="d-flex justify-content-start">
+                                        <button type="submit" class="btn-dasMain">تأكيد الحجز</button>
+                                        <button type="button" class="btn-dasSecond" data-bs-toggle="modal"
+                                            data-bs-target="#staticBackdrop">
+                                            الغاء الحجز </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        @if ($errors->any())
-                            <div class="alert alert-danger text-end">
-                                @foreach ($errors->all() as $error)
-                                    {{ $error }}
-                                @endforeach
-                            </div>
-                        @endif
-                        <div class="row" dir="rtl">
-                            <div class="col">
-                                <div class="d-flex justify-content-start">
-                                    <button type="submit" class="btn-dasMain">تأكيد الحجز</button>
-                                    <button type="button" class="btn-dasSecond" data-bs-toggle="modal"
-                                        data-bs-target="#staticBackdrop">
-                                        الغاء الحجز </button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                        </form>
+                    @endif
+
                     <!-- Modal -->
                     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
                         tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

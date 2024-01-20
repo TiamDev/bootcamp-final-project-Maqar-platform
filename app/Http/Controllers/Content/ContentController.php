@@ -15,6 +15,7 @@ use App\Models\Maqar\Provider;
 use App\Models\maqar\Provider as MaqarProvider;
 use App\Models\maqar\Service;
 use App\Models\Maqar\Workspace;
+use App\Models\payment\payment as paymentAcount;
 use Illuminate\Support\Facades\Validator;
 use App\Models\File\File;
 use Illuminate\Http\Request;
@@ -35,13 +36,14 @@ class ContentController extends Controller
         $governorates = Governorate::all();
         $socialAccounts = SocialMedia::where('user_id', $id)->get();
         $contents = ProviderContent::where('provider_id', $provider->id)->get();
+        $payments = paymentAcount::where('provider_id', $provider->id)->get();
         $Galary = File::where('target_id', $provider->id)
             ->where('type', 'provider')
             ->get();
         $logo = File::where('target_id', $provider->id)
             ->where('type', 'logo')
             ->first();
-        return view('tenant.content.index', compact('provider', 'features', 'services', 'governorates', 'contents', 'Galary', 'logo', 'socialAccounts'));
+        return view('tenant.content.index', compact('provider', 'features', 'services', 'governorates', 'contents', 'Galary', 'logo', 'socialAccounts', 'payments'));
     }
 
 
@@ -241,5 +243,38 @@ class ContentController extends Controller
         $provider->state = 'complete';
         $provider->save();
         return redirect()->back()->with('success', 'تمت نشر الموقع بنجاح.');
+    }
+    public function addBankAccount(Request $request)
+    {
+        $id = auth()->user()->id;
+        $provider = Provider::where('user_id', $id)->first();
+        return view('tenant.content.addBankAccount', compact('provider'));
+    }
+    public function createBankAccount(Request $request)
+    {
+        // $rules = [
+        //     'name' => 'required|min:5',
+        //     'price' => 'required|numeric'
+        // ];
+
+        // $messages = [
+        //     'name.required' => 'حقل الاسم مطلوب.',
+        //     'name.min' => 'يجب أن يكون طول الاسم على الأقل 5 أحرف.',
+        //     'number.required' => 'حقل  مطلوب.',
+        //     'number.numeric' => 'قيمة غير صالحة، يرجى إدخال قيمة عددية .',
+        // ];
+        // $validator = Validator::make($request->all(), $rules, $messages);
+
+        // // Check if validation fails
+        // if ($validator->fails()) {
+        //     return redirect()->back()->withErrors($validator)->withInput();
+        // }
+        paymentAcount::create([
+            'name' => $request->name,
+            'number' => $request->number,
+            'provider_id' => $request->provider_id,
+
+        ]);
+        return redirect()->back()->with('success', 'تمت اضافة الحساب بنجاح');
     }
 }

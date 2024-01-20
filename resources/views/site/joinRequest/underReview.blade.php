@@ -41,11 +41,14 @@
                     <h5 class="card-title"></h5>
                 </div>
                 <h3> </h3>
-                <p>سنقوم بإبلاغك بأي تحديثات تتعلق بطلب الانضمام الخاص بك عبر البريد الإلكتروني.
+                <p class="text-center">سنقوم بإبلاغك بأي تحديثات تتعلق بطلب الانضمام الخاص بك عبر البريد الإلكتروني.
                 </p>
-                <a href="{{ route('home') }}" class="btn-dashMain">الرجوع الى الرئيسية<i
-                        class="bi bi-arrow-left-short"></i>
-                </a>
+                <div class="text-center">
+                    <a href="{{ route('home') }}" class="btn-dashMain">الرجوع الى الرئيسية<i
+                            class="bi bi-arrow-left-short"></i>
+                    </a>
+                </div>
+
             </div>
         </div>
     </div>

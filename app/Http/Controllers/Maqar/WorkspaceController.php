@@ -45,19 +45,64 @@ class WorkspaceController extends Controller
         $WorkspaceDuration = WorkspaceDuration::all();
         return view('tenant.spaces.edit', compact('Workspace', 'WorkspaceTypes', 'WorkspaceDuration'));
     }
+    // public function update(Request $request)
+    // {
+    //     // dd($request);
+    //     $durations = WorkspaceDuration::all();
+    //     foreach ($durations as $duration) {
+    //         // dd($request->input(`$duration->name-check`));
+    //         if ($request->has(`$duration->name-check`) && $request->input(`$duration->name-check`) == 'on') {
+    //             $monthInput = $request->input(`$duration->name-input`);
+    //             $existingWorkspaceOffer = WorkspaceOffer::where('workspaceDuration_id', $duration)
+    //                 ->where('workspace_id', $request->id)
+    //                 ->first();
+    //             if ($existingWorkspaceOffer) {
+    //                 // Update the existing workspace offer
+    //                 $existingWorkspaceOffer->update([
+    //                     // Update the necessary fields with the new values from the request
+    //                     'price' => $monthInput,
+    //                     // Add more fields as needed
+    //                 ]);
+    //             }
+    //             // Create a new workspace offer
+    //             WorkspaceOffer::create([
+    //                 'workspaceDuration_id' => $duration,
+    //                 'workspace_id' => $request->id,
+    //                 'price' => $monthInput,
+    //                 // Add more fields as needed
+    //             ]);
+    //         }
+    //     }
+    //     $workspace = workspace::find($request->id);
+    //     $workspace->update([
+    //         'label' => $request->input('label'),
+    //         'description' => $request->input('description')
+    //     ]);
+    //     return redirect()->back()->with('message', 'تم التعديل بنجاح');
+
+    //     // if ($request->has('month-check') && $request->input('month-check') == 'on') {
+    //     //     $monthInput = $request->input('month-input');
+    //     // }
+    //     // $workspace = Workspace::find($request->id)->first();
+
+    //     // if (!$workspace) {
+    //     //     return redirect()->back()->with('error', 'نوع مساحة العمل غير موجود.');
+    //     // }
+    //     // $workspace->update([
+    //     //     'label' => $request->input('label'),
+    //     //     'description' => $request->input('description')
+    //     // ]);
+
+    // }
     public function update(Request $request)
     {
-        // dd($request);
         $durations = WorkspaceDuration::all();
         foreach ($durations as $duration) {
-            dd($request->input(`$duration->name-check`));
-
-            if ($request->has(`$duration->name-check`) && $request->input(`$duration->name-check`) == 'on') {
-                $monthInput = $request->input(`$duration->name-input`);
-                $existingWorkspaceOffer = WorkspaceOffer::where('workspaceDuration_id', $duration)
+            if ($request->has($duration->name . '-check') && $request->input($duration->name . '-check') == 'on') {
+                $monthInput = $request->input($duration->name . '-input');
+                $existingWorkspaceOffer = WorkspaceOffer::where('workspaceDuration_id', $duration->id)
                     ->where('workspace_id', $request->id)
                     ->first();
-
                 if ($existingWorkspaceOffer) {
                     // Update the existing workspace offer
                     $existingWorkspaceOffer->update([
@@ -65,31 +110,30 @@ class WorkspaceController extends Controller
                         'price' => $monthInput,
                         // Add more fields as needed
                     ]);
+                } else {
+                    // Create a new workspace offer
+                    WorkspaceOffer::create([
+                        'workspaceDuration_id' => $duration->id,
+                        'workspace_id' => $request->id,
+                        'price' => $monthInput,
+                        // Add more fields as needed
+                    ]);
                 }
-                // Create a new workspace offer
-                WorkspaceOffer::create([
-                    'workspaceDuration_id' => $duration,
-                    'workspace_id' => $request->id,
-                    'price' => $monthInput,
-                    // Add more fields as needed
-                ]);
             }
         }
+
+        $workspace = Workspace::find($request->id);
+        if (!$workspace) {
+            return redirect()->back()->with('error', 'نوع مساحة العمل غير موجود.');
+        }
+
+        $workspace->update([
+            'name' => $request->input('name'),
+            'label' => $request->input('label'),
+            'description' => $request->input('description')
+        ]);
+
         return redirect()->back()->with('message', 'تم التعديل بنجاح');
-
-        // if ($request->has('month-check') && $request->input('month-check') == 'on') {
-        //     $monthInput = $request->input('month-input');
-        // }
-        // $workspace = Workspace::find($request->id)->first();
-
-        // if (!$workspace) {
-        //     return redirect()->back()->with('error', 'نوع مساحة العمل غير موجود.');
-        // }
-        // $workspace->update([
-        //     'label' => $request->input('label'),
-        //     'description' => $request->input('description')
-        // ]);
-
     }
     public function add()
     {

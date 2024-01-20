@@ -22,18 +22,22 @@ class JoinRequestController extends Controller
 {
     public function index()
     {
-        $providers = Provider::paginate(5);
+        $providers = Provider::where('state', '!=', 'complete')->paginate(16);
+
         return view('platform.JoinRequest.index', compact('providers'));
     }
     public function view(string $name)
     {
-        $provider = Provider::where('name', $name)->first();;
-        $user = User::findOrFail($provider->user_id);
-        $directorate = Directorate::findOrFail($provider->directorate_id)->first();
-        $governorate = Governorate::findOrFail($directorate->governorate_id)->first();
-        $viewModel = new joinVM($user, $provider, $directorate, $governorate);
+        // $provider = Provider::where('name', $name)->first();;
+        // $user = User::findOrFail($provider->user_id);
+        // $directorate = Directorate::findOrFail($provider->directorate_id)->first();
+        // $governorate = Governorate::findOrFail($directorate->governorate_id)->first();
+        // $viewModel = new joinVM($user, $provider, $directorate, $governorate);
 
-        return view('platform.JoinRequest.view', compact('viewModel'));
+        // return view('platform.JoinRequest.view', compact('viewModel'));
+        $provider = Provider::where('name', $name)->first();
+        $user = User::find($provider->user_id);
+        return view('platform.JoinRequest.view', compact('provider', 'user'));
     }
     public function confirm($name)
     {
@@ -134,6 +138,20 @@ class JoinRequestController extends Controller
 
         // $user = User::where('id', $request->id)->first();
         // dd(Auth::user());
+        if ($request->hasFile('logo')) {
+            $logo = $request->file('logo');
+            $extension = $logo->getClientOriginalExtension();
+            $currentDate = Carbon::now()->format('Ymd_His');
+            $newImageNameLogo = $currentDate . '_' . $logo->getClientOriginalName();
+            $logo->storeAs('logo', $newImageNameLogo, 'public');
+        }
+        if ($request->hasFile('tradeDocument')) {
+            $tradeDocument = $request->file('tradeDocument');
+            $extension = $tradeDocument->getClientOriginalExtension();
+            $currentDate = Carbon::now()->format('Ymd_His');
+            $newImageNametrade = $currentDate . '_' . $tradeDocument->getClientOriginalName();
+            $tradeDocument->storeAs('tradeDocument', $newImageNametrade, 'public');
+        }
         Provider::create([
             'name' => $request->name,
             'title' => $request->title,
@@ -141,9 +159,9 @@ class JoinRequestController extends Controller
             'address' => $request->address,
             'identity_NO' => $request->identity_NO,
             'phone' => $request->phone,
-            'tradeDocument' => "", // $request->file('tradeDocument')->getClientOriginalName(),
+            'tradeDocument' => $newImageNametrade,
             'user_id' => Auth::id(),
-            'logo' => "", //$request->file('logo')->getClientOriginalName(),
+            'logo' => $newImageNameLogo,
             'directorate_id' => $request->input('directorate'),
             'state' => "step1",
 

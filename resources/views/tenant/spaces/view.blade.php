@@ -124,8 +124,8 @@
                                                             <div class="col-lg-10 col-md-8">
                                                                 {{ $Workspace->workspaceType->description }} </div>
                                                         </div>
-                                                        <a href="{{ route('workspaces.edit', ['name' => $Workspace->name]) }}"
-                                                            class="btn-dasMain">تعديل</i></a>
+                                                        <a href="{{ route('workspaces') }}"
+                                                            class="btn-dasMain">رجوع</i></a>
                                                     </div>
                                                 </div><!-- End Bordered Tabs -->
                                             </div>

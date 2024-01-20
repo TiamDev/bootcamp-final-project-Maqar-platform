@@ -90,15 +90,25 @@
                         </li>
 
                         <li>
-                            <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                                @if ($roleName === 'admin')
+                            @if ($roleName === 'admin')
+                                <a class="dropdown-item d-flex align-items-center"
+                                    href="{{ route('tenant.dashboard') }}">
                                     <i class="bi  bi-buildings ps-2"></i>
                                     <span>ملف مقر {{ $user->provider->title }} </span>
-                                @else
+                                </a>
+                            @elseif ($roleName === 'super-admin')
+                                <a class="dropdown-item d-flex align-items-center"
+                                    href="{{ route('platform.dashboard') }}">
+                                    <i class="bi  bi-buildings ps-2"></i>
+                                    <span>ملف مقر </span>
+                                </a>
+                            @else
+                                <a class="dropdown-item d-flex align-items-center"
+                                    href="{{ route('client.dashboard') }}">
                                     <i class="bi bi-person ps-2"></i>
                                     <span>ملفي الشخصي</span>
-                                @endif
-                            </a>
+                                </a>
+                            @endif
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -129,7 +139,7 @@
 
             @if ($user)
                 @if ($user->hasRole('super-admin'))
-                    <li class="text-secondary">
+                    <li class="text-secondary my-3">
                         المنصه
                     </li>
                     <li class="nav-item">
@@ -140,23 +150,31 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link  @if (!(Route::currentRouteName() === 'platform.offices')) collapsed @endif"
-                            href="{{ route('platform.offices') }}">
-                            <i class="bi bi-buildings"></i>
-                            <span>المكاتب </span>
+                        <a class="nav-link  @if (!(Route::currentRouteName() === 'platform.provider' || Route::currentRouteName() === 'platform.view')) collapsed @endif"
+                            href="{{ route('platform.provider') }}">
+                            <i class="bi bi-grid"></i>
+                            <span> مقار </span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link  @if (!(Route::currentRouteName() === 'WorkspaceType')) collapsed @endif"
+                        <a class="nav-link  @if (
+                            !(Route::currentRouteName() === 'WorkspaceType' ||
+                                Route::currentRouteName() === 'WorkspaceType.add' ||
+                                Route::currentRouteName() === 'WorkspaceType.view' ||
+                                Route::currentRouteName() === 'WorkspaceType.delete'
+                            )) collapsed @endif"
                             href="{{ route('WorkspaceType') }}">
-                            <i class="bi bi-buildings"></i>
+                            <i class="bi bi-boxes"></i>
                             <span>انواع المساحات </span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link  @if (!(Route::currentRouteName() === 'platform.joinRequest')) collapsed @endif"
+                        <a class="nav-link  @if (
+                            !(Route::currentRouteName() === 'platform.joinRequest' ||
+                                Route::currentRouteName() === 'platform.joinRequest.view'
+                            )) collapsed @endif"
                             href="{{ route('platform.joinRequest') }}">
-                            <i class="bi bi-buildings"></i>
+                            <i class="bi bi-building-add"></i>
                             <span>طلبات الانضمام </span>
                         </a>
                     </li>
@@ -171,7 +189,7 @@
 
                 <!-- المزود -->
                 @if ($user->hasRole('admin'))
-                    <li class="text-secondary">
+                    <li class="text-secondary my-3">
                         المزود
                     </li>
                     <li class="nav-item">
@@ -189,7 +207,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link collapsed @if (Route::currentRouteName() === 'tenant.content') active @endif"
+                        <a class="nav-link  collapsed @if (
+                            !(Route::currentRouteName() === 'content' 
+                            // &&
+                            //     Route::currentRouteName() === 'content.addFeature' &&
+                            //     Route::currentRouteName() === 'content.addService' &&
+                            //     Route::currentRouteName() === 'content.addBankAccount'
+                            )) active @endif"
                             href="{{ route('content') }}">
                             <i class="bi bi-layout-text-sidebar-reverse"></i>
                             <span> ادارة المحتوى</span>

@@ -24,7 +24,7 @@
         <div class="row" dir="rtl">
             @foreach ($workspaces as $space)
                 <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="mycontainer">
+                    <div class="mycontainerx">
                         <div class="mycard2">
                             <div class="card__border2">
                                 <img src="{{ asset('site/img/office/pexels-max-rahubovskiy-7534232.jpg') }}"
@@ -48,11 +48,11 @@
                                             title="تعديل المكتب">
                                             <i class="bi bi-pencil-square "style="margin-bottom: -3px; "></i>
                                         </a>
-                                        <a href="{{ route('workspaces.delete', ['name' => $space->name]) }}"
+                                        {{-- <a href="{{ route('workspaces.delete', ['name' => $space->name]) }}"
                                             class="card__social-link" data-bs-toggle="tooltip" data-bs-placement="top"
                                             title="حذف المكتب">
                                             <i class="bi bi-x-octagon "style="margin-bottom: -3px; "></i>
-                                        </a>
+                                        </a> --}}
                                     </ul>
                                 </div>
                             </div>

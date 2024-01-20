@@ -95,8 +95,11 @@
                             <li>
                                 <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
                                     @if ($roleName === 'admin')
-                                        <i class="bi  bi-buildings ps-2"></i>
-                                        <span>ملف مقر {{ $user->provider->title }} </span>
+                                        <a href="{{ route('tenant.dashboard') }}" class="justify-content-start">
+                                            <i class="bi  bi-buildings ps-2"></i>
+                                            <span> لوحة التحكم
+                                            </span>
+                                        </a>
                                     @else
                                         <span class="text-end">
                                             <a href="{{ route('client.dashboard') }}" class="justify-content-start">
