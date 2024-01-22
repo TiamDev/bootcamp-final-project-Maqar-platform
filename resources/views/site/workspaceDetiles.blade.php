@@ -72,6 +72,9 @@
                             @if ($isBooked == 0)
                                 <p class="conform-text">المساحة محجوزة ارجو اختيار فترة اخرى</p>
                             @endif
+                            @if ($isBooked == 5)
+                                <p class="conform-text">عدد الافراد اكتمل</p>
+                            @endif
 
                         </div>
                         <div class=" p-4" dir="rtl">

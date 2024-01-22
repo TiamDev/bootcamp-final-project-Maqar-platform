@@ -7,7 +7,7 @@
                     <li class="breadcrumb-item active"> بيانات الحجز</li>
                     <li class="breadcrumb-item "> <a
                             href="{{ route('tenant.Reservations', ['site' => Auth()->id()]) }}">العروض</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('tenant.dashboard') }}">الرئيسية</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('tenant') }}">الرئيسية</a></li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
@@ -211,109 +211,126 @@
                                         </p>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <h6 class="main-title">حسابات
+                                        {{ $reservation->workspaceOffer->workspace->provider->title }} البنكية </h6>
+
+                                    @foreach ($reservation->workspaceOffer->workspace->provider->payments as $payment)
+                                        <div class="col-lg-3 col-md-4 sub-title ">
+                                            <p>
+                                                {{ $payment->name }}
+                                            </p>
+                                        </div>
+                                        <div class="col-lg-3 col-md-8">
+                                            <p> {{ $payment->number }}
+                                            <p>
+                                        </div>
+                                    @endforeach
+
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    @if ($reservation->state->id == 1)
-                        <form
-                            action="{{ route('offer.checkout', ['name' => $reservation->workspaceOffer->workspace->name]) }}"
-                            method="post">
-                            @csrf
-                            <input type="hidden" name="reservation_id" value="{{ $reservation->id }}">
-                            <div class="" dir="rtl">
-                                <h6 class="main-title">السند</h6>
-                                @if ($errors->any())
-                                    <div class="alert alert-danger text-end">
-                                        @foreach ($errors->all() as $error)
-                                            {{ $error }}
-                                        @endforeach
-                                    </div>
-                                @endif
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <p>يجب ارفاق السند لتأكيد الحجز.</p>
-                                        <div class="form-group">
-                                            <input type="file" class="form-control" name="voucher"
-                                                id="voucher-input">
+                        @if ($reservation->state->id == 1)
+                            <form enctype="multipart/form-data"
+                                action="{{ route('offer.checkout', ['name' => $reservation->workspaceOffer->workspace->name]) }}"
+                                method="post">
+                                @csrf
+                                <input type="hidden" name="reservation_id" value="{{ $reservation->id }}">
+                                <div class="" dir="rtl">
+                                    <h6 class="main-title">السند</h6>
+                                    @if ($errors->any())
+                                        <div class="alert alert-danger text-end">
+                                            @foreach ($errors->all() as $error)
+                                                {{ $error }}
+                                            @endforeach
+                                        </div>
+                                    @endif
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <p>يجب ارفاق السند لتأكيد الحجز.</p>
+                                            <div class="form-group">
+                                                <input type="file" class="form-control" name="voucher"
+                                                    id="voucher-input">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div id="voucher-image" class="voucher-img"></div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
-                                        <div id="voucher-image" class="voucher-img"></div>
+                                </div>
+
+                                <div class="row" dir="rtl">
+                                    <div class="col">
+                                        <div class="d-flex justify-content-start">
+                                            <button type="submit" class="btn-dasMain">تأكيد الحجز</button>
+                                            <button type="button" class="btn-dasSecond" data-bs-toggle="modal"
+                                                data-bs-target="#staticBackdrop">
+                                                الغاء الحجز </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
+                        @endif
 
-                            <div class="row" dir="rtl">
-                                <div class="col">
-                                    <div class="d-flex justify-content-start">
-                                        <button type="submit" class="btn-dasMain">تأكيد الحجز</button>
-                                        <button type="button" class="btn-dasSecond" data-bs-toggle="modal"
-                                            data-bs-target="#staticBackdrop">
-                                            الغاء الحجز </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+                            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content" dir="rtl">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="staticBackdropLabel">إلغاء الحجز
+                                        </h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                     </div>
-                                </div>
-                            </div>
-                        </form>
-                    @endif
+                                    <div class="modal-body">
+                                        هل انت متاكد من إلغاء الحجز !!
+                                    </div>
+                                    <div class="modal-footer justify-content-start">
+                                        <form
+                                            action="{{ route('offer.cansel', ['name' => $reservation->workspaceOffer->workspace->name]) }}"
+                                            method="post">
+                                            @csrf
+                                            <input type="hidden" name="reservation_id" value="{{ $reservation->id }}">
 
-                    <!-- Modal -->
-                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
-                        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content" dir="rtl">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">إلغاء الحجز
-                                    </h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    هل انت متاكد من إلغاء الحجز !!
-                                </div>
-                                <div class="modal-footer justify-content-start">
-                                    <form
-                                        action="{{ route('offer.cansel', ['name' => $reservation->workspaceOffer->workspace->name]) }}"
-                                        method="post">
-                                        @csrf
-                                        <input type="hidden" name="reservation_id" value="{{ $reservation->id }}">
+                                            <button type="submit" class="btn-dasMain">تاكيد</button>
+                                        </form>
+                                        <button type="button" class="btn-dasSecond"
+                                            data-bs-dismiss="modal">الغاء</button>
 
-                                        <button type="submit" class="btn-dasMain">تاكيد</button>
-                                    </form>
-                                    <button type="button" class="btn-dasSecond" data-bs-dismiss="modal">الغاء</button>
-
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <script>
-                        var logoInput = document.getElementById('voucher-input');
-                        var logoImage = document.getElementById('voucher-image');
+                        <script>
+                            var logoInput = document.getElementById('voucher-input');
+                            var logoImage = document.getElementById('voucher-image');
 
-                        logoInput.addEventListener('change', function(event) {
-                            if (event.target.files.length > 0) {
-                                var file = event.target.files[0];
-                                var reader = new FileReader();
-                                reader.onload = function(e) {
-                                    var imgElement = document.createElement('img');
-                                    imgElement.src = e.target.result;
-                                    imgElement.classList.add('voucher-img');
+                            logoInput.addEventListener('change', function(event) {
+                                if (event.target.files.length > 0) {
+                                    var file = event.target.files[0];
+                                    var reader = new FileReader();
+                                    reader.onload = function(e) {
+                                        var imgElement = document.createElement('img');
+                                        imgElement.src = e.target.result;
+                                        imgElement.classList.add('voucher-img');
 
-                                    // إزالة الصورة السابقة إذا كانت موجودة
+                                        // إزالة الصورة السابقة إذا كانت موجودة
+                                        while (logoImage.firstChild) {
+                                            logoImage.removeChild(logoImage.firstChild);
+                                        }
+
+                                        // إضافة الصورة الجديدة إلى عنصر الـ div
+                                        logoImage.appendChild(imgElement);
+                                    };
+                                    reader.readAsDataURL(file);
+                                } else {
+                                    // قم بإزالة الصورة إذا تمت إزالة الملف المحدد
                                     while (logoImage.firstChild) {
                                         logoImage.removeChild(logoImage.firstChild);
                                     }
-
-                                    // إضافة الصورة الجديدة إلى عنصر الـ div
-                                    logoImage.appendChild(imgElement);
-                                };
-                                reader.readAsDataURL(file);
-                            } else {
-                                // قم بإزالة الصورة إذا تمت إزالة الملف المحدد
-                                while (logoImage.firstChild) {
-                                    logoImage.removeChild(logoImage.firstChild);
                                 }
-                            }
-                        });
-                    </script>
+                            });
+                        </script>
     </main>
 @endsection

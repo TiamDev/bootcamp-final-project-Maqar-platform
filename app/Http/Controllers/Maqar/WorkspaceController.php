@@ -13,6 +13,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\File\File;
+use App\ViewModels\workspaceImage;
 
 class WorkspaceController extends Controller
 {
@@ -25,9 +26,16 @@ class WorkspaceController extends Controller
         $id = auth()->user()->id;
         $provider = Provider::where('user_id', $id)->first();
         $workspaces = workspace::where('provider_id', $provider->id)->get();
+        foreach ($workspaces as $key => $workspace) {
+            $image = File::where('target_id', $workspace->id)
+                ->where('type', 'workspace')
+                ->first()->path ?? '20240118_062834_pexels-max-rahubovskiy-7534224.jpg';
+            $workspaceImage = new workspaceImage;
+            $workspaceImage->save($workspace, $image);
+            $workspaceImages[] = $workspaceImage;
+        };
         // $spaces = workspace::paginate(6);
-        // dd($workspaces);
-        return view('tenant.spaces.index', compact('workspaces', 'provider'));
+        return view('tenant.spaces.index', compact('workspaceImages', 'provider'));
     }
     public function view(string $name)
     {
@@ -96,6 +104,8 @@ class WorkspaceController extends Controller
     // }
     public function update(Request $request)
     {
+        $id = $request->input('id');
+        $workspace = Workspace::findOrFail($id);
         $durations = WorkspaceDuration::all();
         foreach ($durations as $duration) {
             if ($request->has($duration->name . '-check') && $request->input($duration->name . '-check') == 'on') {
@@ -104,34 +114,25 @@ class WorkspaceController extends Controller
                     ->where('workspace_id', $request->id)
                     ->first();
                 if ($existingWorkspaceOffer) {
-                    // Update the existing workspace offer
                     $existingWorkspaceOffer->update([
-                        // Update the necessary fields with the new values from the request
                         'price' => $monthInput,
-                        // Add more fields as needed
                     ]);
                 } else {
-                    // Create a new workspace offer
                     WorkspaceOffer::create([
                         'workspaceDuration_id' => $duration->id,
                         'workspace_id' => $request->id,
                         'price' => $monthInput,
-                        // Add more fields as needed
                     ]);
                 }
             }
         }
-
-        $workspace = Workspace::find($request->id);
-        if (!$workspace) {
-            return redirect()->back()->with('error', 'نوع مساحة العمل غير موجود.');
-        }
-
-        $workspace->update([
-            'name' => $request->input('name'),
-            'label' => $request->input('label'),
-            'description' => $request->input('description')
-        ]);
+        $workspace->title = $request->input('title');
+        $workspace->name = $request->input('name');
+        $workspace->description = $request->input('description');
+        $workspace->maxPeople = $request->input('maxPeople');
+        $workspace->area = $request->input('area');
+        $workspace->workspaceType_id = $request->input('workspaceType_id');
+        $workspace->save();
 
         return redirect()->back()->with('message', 'تم التعديل بنجاح');
     }

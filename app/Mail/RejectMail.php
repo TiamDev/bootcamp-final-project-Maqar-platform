@@ -12,44 +12,18 @@ use Illuminate\Queue\SerializesModels;
 class RejectMail extends Mailable
 {
     use Queueable, SerializesModels;
-
-    /**
-     * Create a new message instance.
-     */
-    public $reason;
-    public function __construct($reason)
+    protected $reply;
+    protected $email;
+    public function __construct($email, $reply)
     {
-        //
-        $this->reason = $reason;
+        $this->reply = $reply;
+        $this->email = $email;
     }
-
-    /**
-     * Get the message envelope.
-     */
-    public function envelope(): Envelope
+    public function build()
     {
-        return new Envelope(
-            subject: 'رفض طلب الانضمام',
-        );
-    }
-
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            // view('emails.reject')->with('reason', $this->reason)
-        );
-    }
-
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [];
+        return $this->view('emails.reject')
+            ->subject('رفض  طلب انضمام')
+            ->to($this->email, 'Me')
+            ->with(['reply' => $this->reply]);
     }
 }

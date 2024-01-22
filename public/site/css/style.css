@@ -1699,118 +1699,6 @@ transition: all 0.2s;
 .recent-blog-posts .post-box:hover .post-img img {
   transform: rotate(6deg) scale(1.2);
 }
-
-/*--------------------------------------------------------------
-# Contact
---------------------------------------------------------------*/
-/*
-.contact .info-box {
-  color: #444444;
-  background: #fafbff;
-  padding: 30px;
-}
-
-.contact .info-box i {
-  font-size: 38px;
-  line-height: 0;
-  color: var(--mainColor);
-}
-
-.contact .info-box h3 {
-  font-size: 20px;
-  color: var(--darkColor);
-  font-weight: 700;
-  margin: 20px 0 10px 0;
-} */
-
-/* .contact .info-box p {
-  padding: 0;
-  line-height: 24px;
-  font-size: 14px;
-  margin-bottom: 0;
-} */
-
-/* .contact .php-email-form {
-  background: #fafbff;
-  padding: 30px;
-  height: 100%;
-}
-
-.contact .php-email-form .error-message {
-  display: none;
-  color: #fff;
-  background: #ed3c0d;
-  text-align: left;
-  padding: 15px;
-  margin-bottom: 24px;
-  font-weight: 600;
-}
-
-.contact .php-email-form .sent-message {
-  display: none;
-  color: #fff;
-  background: #18d26e;
-  text-align: center;
-  padding: 15px;
-  margin-bottom: 24px;
-  font-weight: 600;
-}
-
-.contact .php-email-form .loading {
-  display: none;
-  background: #fff;
-  text-align: center;
-  padding: 15px;
-  margin-bottom: 24px;
-}
-
-.contact .php-email-form .loading:before {
-  content: "";
-  display: inline-block;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  margin: 0 10px -6px 0;
-  border: 3px solid #18d26e;
-  border-top-color: #eee;
-  animation: animate-loading 1s linear infinite;
-}
-
-.contact .php-email-form input,
-.contact .php-email-form textarea {
-  border-radius: 0;
-  box-shadow: none;
-  font-size: 14px;
-  border-radius: 0;
-}
-
-.contact .php-email-form input:focus,
-.contact .php-email-form textarea:focus {
-  border-color: var(--mainColor);
-}
-
-.contact .php-email-form input[type=text],
-.contact .php-email-form input[type=email] {
-  padding: 10px 15px;
-}
-
-.contact .php-email-form textarea {
-  padding: 12px 15px;
-}
-
-.contact .php-email-form button[type=submit] {
-  background: black;
-  border: 0;
-  padding: 10px 30px;
-  color: #fff;
-  transition: 0.4s;
-  border-radius: 4px;
-}
-
-.contact .php-email-form button[type=submit]:hover {
-  background: --;
-} */
-
 @keyframes animate-loading {
   0% {
     transform: rotate(0deg);
@@ -2421,7 +2309,6 @@ transition: all 0.2s;
   font-weight: 700;
   letter-spacing: 1px;
   color: var(--darkColor);
-  /* font-family: "Nunito", sans-serif; */
   margin-top: 3px;
 }
 
@@ -2429,7 +2316,6 @@ transition: all 0.2s;
   font-size: 14px;
   line-height: 24px;
   margin-bottom: 0;
-  /* font-family: "Nunito", sans-serif; */
 }
 
 .footer .footer-top .social-links a {
@@ -2642,40 +2528,6 @@ padding-inline: 10%;
    **********************office******************
   
   */
-  /* .gallery-office {
-    display: flex;
-    flex-wrap: wrap;
-    margin-bottom: 100px;
-    box-sizing: border-box;
-  }
-
-  .gallery-office .main-image {
-    flex-basis: 50%; 
-    height: 400px;
-  }
-  .gallery-office .main-image img {
-    height: 400px;
-  }
-  .gallery-office .side-image img {
-    height: 200px;
-  }
-  .gallery-office .side-images {
-    flex-basis: 50%; 
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  .gallery-office .side-image {
-    flex-basis: 50%; 
-    box-sizing: border-box;
-  }
-
-  .gallery-office img {
-    width: 100%;
-    object-fit: cover;
-  height: auto; **
-  } */
-
   .office-name{
     text-align: end;
     color: black;
@@ -2789,13 +2641,10 @@ provider
     /*--------------------------------------------------------------
 # Contact
 --------------------------------------------------------------*/
-p{
-  color: black !important;
-}
 .contact .card{
   padding: 20px;
-  border-color: none !important;
-  --bs-card-border-color:rgba(213, 212, 212, 0.267);
+  border: none;
+  box-shadow: 0px 2px 11px 5px #dddddd85;
 }
 .contact .social-links{
   display: flex;
@@ -2976,4 +2825,33 @@ height: 55px;
 }
 .price-element-h5{
   text-wrap: nowrap;
+}
+.email-icon{
+  font-size: 80px;
+  opacity: 0.7;
+}
+.form-control:focus {
+  color: var(--bs-body-color);
+  background-color: var(--bs-body-bg);
+  border-color: #ddd;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(220, 220, 220, 0.426);
+}
+
+/* 404 page */
+.centered-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.image-container {
+  text-align: center;
+}
+.image-container img{
+  margin-top: 150px;
+  padding-left: 50px;
+  margin-bottom: -50px;
 }

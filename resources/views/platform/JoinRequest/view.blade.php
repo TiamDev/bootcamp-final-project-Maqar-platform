@@ -25,6 +25,11 @@
                                                 <div class="tpt-2">
                                                     <div class=" profile-overview" id="profile-overview">
                                                         <h4 class="card-title">تفاصيل المقر</h4>
+                                                        @if (session('success'))
+                                                            <div class="alert alert-success">
+                                                                {{ session('success') }}
+                                                            </div>
+                                                        @endif
                                                         <div class="row">
                                                             <div class="col-lg-3 col-md-4 label "> الاسم </div>
                                                             <div class="col-lg-9 col-md-8">{{ $provider->title }}</div>
@@ -55,13 +60,7 @@
                                                                     src="{{ asset('storage/tradeDocument/' . $provider->tradeDocument) }}"
                                                                     alt="Profile" class="w-100"></div>
                                                         </div>
-                                                        @if ($provider->state == 'reject')
-                                                            <a href="{{ route('platform.joinRequest') }}"
-                                                                class="btn-dasMain mt-3">الرجوع
-                                                                الى
-                                                                الرئيسية<i class="bi bi-arrow-left-short "></i>
-                                                            </a>
-                                                        @else
+                                                        @if ($provider->state == 'step1')
                                                             <div class="d-flex">
                                                                 <form class=""
                                                                     action="{{ route('platform.joinRequest.confirm', ['name' => $provider->name]) }}"
@@ -110,6 +109,11 @@
                                                                 </div>
                                                             </div>
                                                         @endif
+                                                        <a href="{{ route('platform.joinRequest') }}"
+                                                            class="btn-dasMain mt-3">الرجوع
+                                                            الى
+                                                            الرئيسية<i class="bi bi-arrow-left-short "></i>
+                                                        </a>
                                                     </div>
                                                 </div><!-- End Bordered Tabs -->
                                             </div>

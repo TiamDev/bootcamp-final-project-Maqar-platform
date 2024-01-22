@@ -6,7 +6,7 @@ use App\Models\Account\User;
 use App\Models\maqar\service;
 use App\Models\maqar\feature;
 use App\Models\content\content;
-
+use App\Models\payment\payment;
 use App\Models\Location\directorate;
 use App\Models\reservation\reservation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -62,5 +62,9 @@ class Provider extends Model
     public function reservations()
     {
         return $this->hasMany(reservation::class);
+    }
+    public function payments()
+    {
+        return $this->hasMany(payment::class);
     }
 }

@@ -44,6 +44,9 @@ return [
             'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
+            'auth_mode'  => null,
+            'verify_peer' => false,
+
         ],
 
         'ses' => [
@@ -59,7 +62,7 @@ return [
 
         'postmark' => [
             'transport' => 'postmark',
-            // 'message_stream_id' => null,
+            'message_stream_id' => null,
             // 'client' => [
             //     'timeout' => 5,
             // ],
@@ -114,12 +117,7 @@ return [
     | of the emails. Or, you may simply stick with the Laravel defaults!
     |
     */
-    // 'stream' => [
-    //     'ssl' => [
-    //         'verify_peer' => false,
-    //         'verify_peer_name' => false,
-    //     ],
-    // ],
+
 
     'markdown' => [
         'theme' => 'default',

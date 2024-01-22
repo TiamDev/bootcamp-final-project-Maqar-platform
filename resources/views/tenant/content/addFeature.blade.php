@@ -7,7 +7,7 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item active">إضافة مرفق</li>
                     <li class="breadcrumb-item "><a href="{{ route('content') }}">المرافق</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('tenant.dashboard') }}">الرئيسية</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('tenant') }}">لوحة التحكم</a></li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->

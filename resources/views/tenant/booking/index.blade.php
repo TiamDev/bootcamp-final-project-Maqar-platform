@@ -6,7 +6,7 @@
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item active">ادارة الحجوزات</li>
-                    <li class="breadcrumb-item"><a href="{{ route('tenant.dashboard') }}">الرئيسية</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('tenant') }}">لوحة التحكم</a></li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
@@ -56,7 +56,10 @@
                                 <thead>
                                     <tr>
                                         <th>
-                                            اسم المستاجر
+                                            المستاجر
+                                        </th>
+                                        <th>
+                                            الرقم المرجعي
                                         </th>
                                         <th>
                                             المساحة
@@ -76,6 +79,7 @@
                                     @foreach ($reservations as $reservation)
                                         <tr>
                                             <td>{{ $reservation->user->name }}</td>
+                                            <td>{{ $reservation->id }}</td>
                                             <td>{{ $reservation->workspaceOffer->workspace->title }}</td>
                                             <td>{{ $reservation->workspaceOffer->workspaceDuration->title }}</td>
                                             <td>{{ $reservation->start_date }}</td>
@@ -93,9 +97,6 @@
                                                 <a href="{{ route('tenant.Reservations.ReservationView', ['site' => $reservation->workspaceOffer->workspace->provider->name, 'id' => $reservation->id]) }}"
                                                     class="dash-btn das-show"><i class="bi bi-link fs-4"
                                                         title="عرض التفاصيل"></i></a>
-                                                <a href="{{ route('tenant.Reservations.ReservationReject', ['site' => $reservation->workspaceOffer->workspace->provider->name, 'id' => $reservation->id]) }}"
-                                                    class="dash-btn das-delete" title="رفض"><i
-                                                        class="bi bi-x-octagon"></i>
                                             </td>
                                             </td>
                                         </tr>
@@ -107,6 +108,7 @@
 
                 </div>
         </section>
+        @include('common.pagination', ['paginator' => $reservations])
 
     </main><!-- End #main -->
     <script>

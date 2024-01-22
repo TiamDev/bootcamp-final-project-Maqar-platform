@@ -174,13 +174,10 @@ class ContentController extends Controller
     }
     public function Galary(Request $request)
     {
-
         $provider = Provider::where('id', $request->provider_id)->first();
-
         if ($request->hasFile('images')) {
             // حذف الصور السابقة
             File::where('Target_id', $provider->id)->where('type', 'provider')->delete();
-
             foreach ($request->file('images') as $image) {
                 $extension = $image->getClientOriginalExtension();
                 $currentDate = Carbon::now()->format('Ymd_His');
@@ -193,7 +190,6 @@ class ContentController extends Controller
                     'type' => 'provider',
                 ]);
             }
-
             return redirect()->back()->with('success', 'تم حفظ الصور بنجاح');
         }
     }
@@ -207,7 +203,6 @@ class ContentController extends Controller
                 'link' => $request->input('Twitter'),
             ]);
         }
-
         if ($request->has('Instagram_check')) {
             $socialAccount = SocialMedia::firstOrCreate([
                 'user_id' => auth()->user()->id,
@@ -236,6 +231,15 @@ class ContentController extends Controller
         }
         // dd($request);
         return redirect()->back()->with('success', 'تمت إضافة الرابط بنجاح.');
+    }
+    public function  workTime(Request $request)
+    {
+        $provider = Provider::where('user_id', auth()->user()->id)->first();
+        // dd($request->startWorkHour);
+        $provider->startWorkHour = $request->startWorkHour;
+        $provider->endWorkHour = $request->endWorkHour;
+        $provider->save();
+        return redirect()->back()->with('success', 'تمت تغير اوقات الدوام بنجاح.');
     }
     public function publish(Request $request)
     {

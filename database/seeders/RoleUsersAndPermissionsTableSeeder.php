@@ -114,35 +114,11 @@ class RoleUsersAndPermissionsTableSeeder extends Seeder
             $permission->save();
         }
 
-        // // Assign roles to the permission
-        // $permissionName = 'edit-any-content';
-        // $permission = Permission::where('name', $permissionName)->first();
-        // $permission->roles()->attach(Role::where('name', 'admin')->first()->id);
-        // $permission->save();
-
-        //
         // Assign roles to the user
-        $email1 = 'fatima@example.com';
+        $email1 = 'fatimabakar707@gmail.com';
         $user1 = User::where('email', $email1)->first();
         $user1->roles()->attach(Role::where('name', 'super-admin')->first()->id);
         $user1->save();
-        $email3 = 'ragad@example.com';
-        $user3 = User::where('email', $email3)->first();
-        $user3->roles()->attach(Role::where('name', 'client')->first()->id);
-        $user3->save();
-        //مزودي خدمة
-        $email2 = 'rawaa@example.com';
-        $user2 = User::where('email', $email2)->first();
-        $user2->roles()->attach(Role::where('name', 'admin')->first()->id);
-        $user2->save();
-        $email3 = 'fofo1@example.com';
-        $user3 = User::where('email', $email3)->first();
-        $user3->roles()->attach(Role::where('name', 'admin')->first()->id);
-        $user3->save();
-        $email3 = 'soso1@example.com';
-        $user3 = User::where('email', $email3)->first();
-        $user3->roles()->attach(Role::where('name', 'admin')->first()->id);
-        $user3->save();
     }
 
     private function getPermissionIds(array $permissionNames)

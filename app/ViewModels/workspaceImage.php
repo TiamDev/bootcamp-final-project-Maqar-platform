@@ -15,10 +15,13 @@ class workspaceImage
 
 
 
-  public function save($workspaceoffer, $workspace, $image)
+  public function save($workspace, $image, $workspaceoffer = null)
   {
     $this->image = $image;
     $this->workspace = $workspace;
-    $this->workspaceoffer = $workspaceoffer;
+
+    if ($workspaceoffer !== null) {
+      $this->workspaceoffer = $workspaceoffer;
+    }
   }
 }

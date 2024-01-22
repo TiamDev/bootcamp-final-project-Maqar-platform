@@ -260,10 +260,8 @@
         </section> --}}
         <!-- End Pricing Section -->
 
-
         <section dir="rtl" class="address-provider">
             <div class="container">
-
                 <div class="row">
                     <div class="col-lg-10 box-info">
                         <h2 class="text-dark mb-4">
@@ -316,14 +314,16 @@
                 </div>
             </div>
         </section>
+        <!-- contact us section -->
+
         <section id="contact" class="contact">
             <div class="container " data-aos="fade-up">
                 <div class="row gy-4 ">
                     <div class="col-lg-8" dir="rtl">
                         <div class="card mt-3">
-                            {{-- <h4 class="text-center pb-2">يمكنك التوصل معنا عن طريق الموقع</h4> --}}
-                            <form action="{{ route('message.send') }}" method="post">
+                            <form action="{{ route('messages.storeTenant') }}" method="post">
                                 @csrf
+                                <input type="hidden" name="provider" value="{{ $provider->user_id }}">
                                 <div class="row gy-4">
                                     <div class="col-6">
                                         <h5 class="form-label">اسم </h5>
@@ -345,12 +345,9 @@
                                         <h5>الرسالة </h5>
                                         <textarea class="form-control" name="message" rows="6" placeholder="" required></textarea>
                                     </div>
-
                                     <div class="col-12">
                                         <button type="submit" class="btn-dasMain w-100">ارسال</button>
-
                                     </div>
-                                    {{-- <button type="submit" class="btn-dasMain">ارسال</button> --}}
                                 </div>
                             </form>
                         </div>

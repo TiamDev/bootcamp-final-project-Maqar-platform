@@ -8,7 +8,11 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use App\Models\Account\User;
+use App\Models\Location\governorate;
 use App\Models\maqar\Provider;
+use App\Models\maqar\WorkspaceDuration;
+use App\Models\Maqar\WorkspaceType;
+use App\Models\reservation\reservation;
 use App\Models\Role;
 
 use App\Services\Account\AccountService;
@@ -76,8 +80,11 @@ class SigninController extends Controller
             $request->session()->regenerate();
             // $user = Auth::user();
             if ($user->roles->contains('name', 'super-admin')) {
-                // User has the 'super-admin' role, allow access to the admin dashboard
-                return view('platform.dashboard');
+                $userCount = User::count();
+                $providersCount = Provider::count();
+                $reservationCount = reservation::count();
+                return view('platform.dashboard', compact('userCount', 'providersCount', 'reservationCount'));
+                // return view('platform.dashboard');
             } else if ($user->roles->contains('name', 'admin')) {
                 $exists = Provider::where('user_id', $user->id)->exists();
                 if (!$exists) {
@@ -89,33 +96,35 @@ class SigninController extends Controller
                     // $user = User::find(Auth::id());
                     $providerStatus = $user->provider->state;
                     if ($providerStatus == 'step1') {
-                        // dd($user);
-                        // if (Auth::attempt($credentials)) {
-                        //     $request->session()->regenerate();
+                        Auth::logout();
                         return redirect()->route('platform.joinRequest.underReview');
-                        // }
                     } elseif ($providerStatus == 'approved') {
-                        return redirect()->route('tenant.dashboard');
+                        return redirect()->route('tenant');
                     } elseif ($providerStatus == 'reject') {
-                        return "تم رفض طلبك ارجو مراجعة الايميل";
+                        Auth::logout();
+                        // return redirect()->route('tenant');
+                        return view('site.joinRequest.rejectMessage');
                     } elseif ($providerStatus == 'complete') {
                         if (Auth::attempt($credentials)) {
                             $request->session()->regenerate();
-                            return redirect()->route('tenant.dashboard');
+                            return redirect()->route('tenant');
                         }
                     }
                 }
             } else if ($user->roles->contains('name', 'reception')) {
                 // User has the 'admin' role, show an error message or redirect
-                return view('tenant.dashboard');
+                return redirect()->route('tenant');
             } else if ($user->roles->contains('name', 'content-admin')) {
                 // User has the 'admin' role, show an error message or redirect
-                return view('tenant.dashboard');
+                return redirect()->route('tenant');
             } else if ($user->roles->contains('name', 'client')) {
                 // User has the 'admin' role, show an error message or redirect
                 if (Auth::attempt($credentials)) {
                     $request->session()->regenerate();
-                    return view('client.dashboard');
+                    $workspaceTypes = WorkspaceType::all();
+                    $workspaceDurations = WorkspaceDuration::all();
+                    $governorates = governorate::all();
+                    return view('client.dashboard', compact('workspaceTypes', 'workspaceDurations', 'governorates'));
                 }
             }
         }

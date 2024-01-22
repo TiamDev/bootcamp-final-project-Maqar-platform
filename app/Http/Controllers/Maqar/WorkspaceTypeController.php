@@ -55,13 +55,10 @@ class WorkspaceTypeController extends Controller
             return redirect()->back()->with('error', 'نوع مساحة العمل غير موجود.');
         }
         $type->update([
-            // 'name' => $request->input('name'),
             'label' => $request->input('label'),
             'description' => $request->input('description')
         ]);
-        // $type->label = $request->label;
-        // $type->description = $request->description;
-        // $type->save();
+
 
         return redirect()->route('WorkspaceType')->with('success', 'تم تحديث نوع مساحة العمل بنجاح.');
     }
@@ -71,9 +68,6 @@ class WorkspaceTypeController extends Controller
         // Delete the record
         $record->delete();
         return redirect()->back()->with('success', 'Record deleted successfully');
-
-
-        // return view('delete_confirmation', ['item' => $item]);
     }
     public function add()
     {

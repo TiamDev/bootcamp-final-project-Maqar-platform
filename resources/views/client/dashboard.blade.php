@@ -99,8 +99,7 @@
                 <div class="cards" dir="rtl">
                     @foreach ($workspaceTypes as $workspaceType)
                         <div class="card-home card-{{ $count }}">
-                            {{-- <div class="card__icon"><i class="bi bi-grid"></i></div>
-                            <p class="card__exit"><i class="bi bi-x"></i></p> --}}
+
                             <h2 class="card__title">{{ $workspaceType->label }}
                             </h2>
                             <p class="card__apply">{{ $workspaceType->description }} </p>

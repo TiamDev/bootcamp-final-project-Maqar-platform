@@ -90,25 +90,11 @@
                         </li>
 
                         <li>
-                            @if ($roleName === 'admin')
-                                <a class="dropdown-item d-flex align-items-center"
-                                    href="{{ route('tenant.dashboard') }}">
-                                    <i class="bi  bi-buildings ps-2"></i>
-                                    <span>ملف مقر {{ $user->provider->title }} </span>
-                                </a>
-                            @elseif ($roleName === 'super-admin')
-                                <a class="dropdown-item d-flex align-items-center"
-                                    href="{{ route('platform.dashboard') }}">
-                                    <i class="bi  bi-buildings ps-2"></i>
-                                    <span>ملف مقر </span>
-                                </a>
-                            @else
-                                <a class="dropdown-item d-flex align-items-center"
-                                    href="{{ route('client.dashboard') }}">
-                                    <i class="bi bi-person ps-2"></i>
-                                    <span>ملفي الشخصي</span>
-                                </a>
-                            @endif
+
+                            <a class="dropdown-item d-flex align-items-center" href="{{ route('profile') }}">
+                                <i class="bi bi-person ps-2"></i>
+                                <span>ملفي الشخصي</span>
+                            </a>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -133,36 +119,31 @@
 
     <!-- ======= Sidebar ======= -->
     <aside id="sidebar" class="sidebar">
-
         <ul class="sidebar-nav" id="sidebar-nav" dir="rtl">
-
-
             @if ($user)
                 @if ($user->hasRole('super-admin'))
                     <li class="text-secondary my-3">
                         المنصه
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link  @if (!(Route::currentRouteName() === 'platform.dashboard')) collapsed @endif"
+                        <a class="nav-link  @if (Route::currentRouteName() === 'platform.dashboard') @else collapsed @endif"
                             href="{{ route('platform.dashboard') }}">
                             <i class="bi bi-cast"></i>
                             <span>لوحة التحكم</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link  @if (!(Route::currentRouteName() === 'platform.provider' || Route::currentRouteName() === 'platform.view')) collapsed @endif"
+                        <a class="nav-link  @if (Route::currentRouteName() == 'platform.provider' || Route::currentRouteName() == 'platform.view') @else collapsed @endif"
                             href="{{ route('platform.provider') }}">
                             <i class="bi bi-grid"></i>
-                            <span> مقار </span>
+                            <span> المقار </span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link  @if (
-                            !(Route::currentRouteName() === 'WorkspaceType' ||
+                        <a class="nav-link  @if (Route::currentRouteName() === 'WorkspaceType' ||
                                 Route::currentRouteName() === 'WorkspaceType.add' ||
                                 Route::currentRouteName() === 'WorkspaceType.view' ||
-                                Route::currentRouteName() === 'WorkspaceType.delete'
-                            )) collapsed @endif"
+                                Route::currentRouteName() === 'WorkspaceType.delete') @else collapsed @endif"
                             href="{{ route('WorkspaceType') }}">
                             <i class="bi bi-boxes"></i>
                             <span>انواع المساحات </span>
@@ -186,72 +167,57 @@
                         </a>
                     </li>
                 @endif
-
                 <!-- المزود -->
                 @if ($user->hasRole('admin'))
                     <li class="text-secondary my-3">
                         المزود
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link  @if (!(Route::currentRouteName() === 'tenant.dashboard')) collapsed @endif"
-                            href="{{ route('tenant.dashboard') }}">
+                        <a class="nav-link  @if (Route::currentRouteName() == 'tenant') @else collapsed @endif"
+                            href="{{ route('tenant') }}">
                             <i class="bi bi-cast"></i>
                             <span>لوحة التحكم</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link collapsed @if (Route::currentRouteName() === 'tenant.site') active @endif"
+                        <a class="nav-link  @if (Route::currentRouteName() == 'tenant.site') @else collapsed @endif"
                             href="{{ route('tenant.site', ['site' => $user->provider->name]) }}">
                             <i class="bi bi-app-indicator"></i>
                             <span> موقعي </span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link  collapsed @if (
-                            !(Route::currentRouteName() === 'content' 
-                            // &&
-                            //     Route::currentRouteName() === 'content.addFeature' &&
-                            //     Route::currentRouteName() === 'content.addService' &&
-                            //     Route::currentRouteName() === 'content.addBankAccount'
-                            )) active @endif"
+                        <a class="nav-link  @if (Route::currentRouteName() == 'content' ||
+                                Route::currentRouteName() == 'content.addFeature' ||
+                                Route::currentRouteName() == 'content.addService' ||
+                                Route::currentRouteName() == 'content.addBankAccount') @else collapsed @endif"
                             href="{{ route('content') }}">
                             <i class="bi bi-layout-text-sidebar-reverse"></i>
                             <span> ادارة المحتوى</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link collapsed @if (Route::currentRouteName() === 'workspaces' ||
-                                Route::currentRouteName() === 'workspace.add' ||
-                                Route::currentRouteName() === 'workspace.edit' ||
-                                Route::currentRouteName() === 'workspace.view' ||
-                                Route::currentRouteName() === 'workspace.delete') active @endif"
+                        <a class="nav-link  @if (Route::currentRouteName() == 'workspaces' ||
+                                Route::currentRouteName() == 'workspaces.add' ||
+                                Route::currentRouteName() == 'workspaces.edit' ||
+                                Route::currentRouteName() == 'workspaces.view') @else collapsed @endif"
                             href="{{ route('workspaces') }}">
                             <i class="bi bi-building-gear"></i>
                             <span>المساحات</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link collapsed"
+                        <a class="nav-link @if (Route::currentRouteName() == 'tenant.Reservations' ||
+                                Route::currentRouteName() == 'tenant.Reservations.ReservationView') @else collapsed @endif"
                             href="{{ route('tenant.Reservations', ['site' => $user->provider->name]) }}">
                             <i class="bi bi-person-lines-fill"></i>
                             <span>الحجوزات</span>
                         </a>
                     </li>
-                    {{-- <li class="nav-item">
-                <a class="nav-link collapsed" href="pages-contact.html">
-                    <i class="bi bi-collection"></i>
-                    <span>العروض</span>
-                </a>
-            </li> --}}
-                    {{-- <li class="nav-item">
-                <a class="nav-link collapsed" href="pages-contact.html">
-                    <i class="bi bi-ticket-detailed"></i>
-                    <span>مواعيد الزيارات</span>
-                </a>
-            </li> --}}
+
                     <li class="nav-item">
-                        <a class="nav-link @if (!(Route::currentRouteName() === 'tenant.messages')) collapsed @endif"
-                            href="{{ route('tenant.messages') }}">
+                        <a class="nav-link @if (Route::currentRouteName() == 'tenant.messages') @else collapsed @endif"
+                            href="{{ route('platform.messages') }}">
                             <i class="bi bi-envelope"></i>
                             <span>الرسائل</span>
                         </a>
@@ -263,63 +229,40 @@
                         المستاجر
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link  @if (!(Route::currentRouteName() === 'client.dashboard')) collapsed @endif"
+                        <a class="nav-link  @if (Route::currentRouteName() == 'client.dashboard') @else collapsed @endif"
                             href="{{ route('client.dashboard') }}">
                             <i class="bi bi-cast"></i>
                             <span>لوحة التحكم</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link collapsed @if (!(Route::currentRouteName() === 'client.booking')) collapsed @endif"
-                            href="{{ route('client.booking') }}">
+                    {{-- <li class="nav-item">
+                        <a class="nav-link @if (!(Route::currentRouteName() == 'client.search')) @else collapsed @endif"
+                            href="{{ route('client.search') }}">
                             <i class="bi bi-bookmark-plus"></i>
                             <span>حجز مساحة</span>
                         </a>
-                    </li>
-                    {{-- <li class="nav-item">
-                <a class="nav-link collapsed @if (!(Route::currentRouteName() === 'client.booking')) collapsed @endif"
-                    href="{{ route('client.booking') }}">
-                    <i class="bi bi-envelope"></i>
-                    <span>حجوزاتي</span>
-                </a>
-            </li> --}}
+                    </li> --}}
                     <li class="nav-item">
-                        <a class="nav-link collapsed @if (!(Route::currentRouteName() === 'client.myReservations')) collapsed @endif"
+                        <a class="nav-link  @if (Route::currentRouteName() == 'client.myReservations' ||
+                                Route::currentRouteName() == 'tenant.Reservations.ReservationView') @else collapsed @endif"
                             href="{{ route('client.myReservations') }}">
                             <i class="bi bi-stack"></i>
                             <span>الحجوزات</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link collapsed @if (!(Route::currentRouteName() === 'client.bill')) collapsed @endif"
-                            href="{{ route('client.bill') }}">
+                        <a class="nav-link  @if (Route::currentRouteName() == 'client.invoice' || Route::currentRouteName() == 'client.invoice.view') @else collapsed @endif"
+                            href="{{ route('client.invoice') }}">
                             <i class="bi bi-journal-text"></i>
                             <span>الفواتير</span>
                         </a>
                     </li>
                 @endif
-
             @endif
-
         </ul>
-
     </aside><!-- End Sidebar-->
 
     @yield('content')
-
-    <!-- ======= Footer ======= -->
-    {{-- <footer id="footer" class="footer">
-    <div class="copyright">
-      &copy; Copyright <strong><span>Fatima Bakran</span></strong>. All Rights Reserved
-    </div>
-    <div class="credits">
-      <!-- All the links in the footer should remain intact. -->
-      <!-- You can delete the links only if you purchased the pro version. -->
-      <!-- Licensing information: https://bootstrapmade.com/license/ -->
-      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by <a href="https://bootstrapmade.com/">Fatima Bakran</a>
-    </div>
-  </footer><!-- End Footer --> --}}
 
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
             class="bi bi-arrow-up-short"></i></a>

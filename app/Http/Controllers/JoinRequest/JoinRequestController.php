@@ -4,6 +4,9 @@ namespace App\Http\Controllers\JoinRequest;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\JoinRequest;
+use App\Mail\AcceptRequestEmail;
+use App\Mail\ApproveEmail;
+use App\Mail\RejectedEmail;
 use Illuminate\Http\Request;
 use App\Models\Location\Governorate;
 use App\Models\Location\Directorate;
@@ -45,8 +48,8 @@ class JoinRequestController extends Controller
         $provider_obj = Provider::where('name', $name)->first();
         $user = User::where("id", $provider_obj->user_id)->first();
         if ($provider > 0) {
+            Mail::to($user->email)->send(new ApproveEmail($user->email, $provider_obj->title));
             return redirect()->back()->with('success', 'تم قبول الطلب بنجاح ');
-            Mail::to('fatimabakar707@gmail.com')->send(new RejectMail('تم قبول الطلب بنجاح '));
         } elseif ($provider === 0) {
             return redirect()->route('platform.joinRequest')->with('error', 'هناك خطا ما');
         } else {
@@ -59,8 +62,8 @@ class JoinRequestController extends Controller
         $provider_obj = Provider::where('name', $name)->first();
         $user = User::where("id", $provider_obj->user_id)->first();
         if ($provider > 0) {
+            Mail::to($user->email)->send(new RejectedEmail($user->emails, $request->rejectMessage));
             return redirect()->back()->with('success', 'تم رفض الطلب بنجاح ');
-            Mail::to('fatimabakar707@gmail.com')->send(new RejectMail($request->rejectMessage));
         } elseif ($provider === 0) {
             return redirect()->route('platform.joinRequest')->with('error', 'هناك خطا ما');
         } else {

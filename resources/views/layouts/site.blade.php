@@ -35,11 +35,16 @@
             </a>
             <nav id="navbar" class="navbar">
                 <ul dir="ltr" style="padding-left:300px">
-                    <li><a class="nav-link scrollto active" href="#hero"> ملاك المساحات</a></li>
-                    <li><a class="nav-link scrollto active" href="#hero">ماتقدمه مقر</a></li>
-                    <li><a class="nav-link scrollto" href="#contact">تواصل معنا</a></li>
-                    <li><a class="nav-link scrollto" href="{{ route('aboutMagar') }}">نبذه عن مقر</a></li>
-                    <li><a class="nav-link scrollto active" href="#hero">الرئيسية</a></li>
+                    <li><a class="nav-link scrollto @if (Route::currentRouteName() === 'home' && Str::contains(URL::current(), '#above')) active @endif"
+                            href="{{ route('home') }}#clients">مزودينا</a></li>
+                    <li><a class="nav-link scrollto @if (Route::currentRouteName() === 'home' && Str::contains(URL::current(), '#above')) active @endif"
+                            href="{{ route('home') }}#above">ماتقدمه مقر</a></li>
+                    <li><a class="nav-link scrollto @if (Route::currentRouteName() === 'home') active @endif"
+                            href="{{ route('home') }}#contact">تواصل معنا</a></li>
+                    <li><a class="nav-link scrollto @if (Route::currentRouteName() === 'aboutMagar') active @endif"
+                            href="{{ route('aboutMagar') }}">نبذه عن مقر</a></li>
+                    <li><a class="nav-link scrollto @if (Route::currentRouteName() === 'home') active @endif"
+                            href="{{ route('home') }}#hero">الرئيسية</a></li>
                 </ul>
                 @php
                     $user = auth()->user();
@@ -95,7 +100,7 @@
                             <li>
                                 <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
                                     @if ($roleName === 'admin')
-                                        <a href="{{ route('tenant.dashboard') }}" class="justify-content-start">
+                                        <a href="{{ route('tenant') }}" class="justify-content-start">
                                             <i class="bi  bi-buildings ps-2"></i>
                                             <span> لوحة التحكم
                                             </span>
@@ -176,11 +181,11 @@
                                 <i class="bi bi-chevron-left"></i>
                             </li>
                             <li>
-                                <a href="#">مالكي المساحات</a>
+                                <a href="#clients">مزودينا </a>
                                 <i class="bi bi-chevron-left"></i>
                             </li>
                             <li>
-                                <a href="#">تواصل معنا</a>
+                                <a href="#contact">تواصل معنا</a>
                                 <i class="bi bi-chevron-left"></i>
                             </li>
                         </ul>

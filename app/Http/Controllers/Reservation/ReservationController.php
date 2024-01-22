@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Reservation;
 
 use App\Http\Controllers\Controller;
+use App\Mail\AcceptRequestEmail;
+use App\Mail\RejectRequestEmail;
 use App\Models\Account\User;
 use App\Models\maqar\Provider;
 use App\Models\maqar\Service;
@@ -21,6 +23,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use NunoMaduro\Collision\Adapters\Phpunit\State;
 
@@ -28,22 +31,6 @@ class ReservationController extends Controller
 {
     public function reservationCheck(Request $request)
     {
-        // $rules = [
-        //     'dateStart' => 'required',
-        //     'dateEnd' => 'required',
-        //     'repeatDuration' => 'required',
-        // ];
-        // $messages = [
-        //     'dateStart.required' => ' .الحقل مطلوب',
-        //     'dateEnd.required' => ' .الحقل مطلوب',
-        //     'repeatDuration.required' => ' .الحقل مطلوب',
-
-        // ];
-        // $validator = Validator::make($request->all(), $rules, $messages);
-        // if ($validator->fails()) {
-        //     return redirect()->back()->withErrors($validator)->withInput();
-        // }
-        // dd($request);
         $services = $request->input('services');
         $dateStart = $request->input('dateStart');
         $timeStart = $request->timeStart;
@@ -96,10 +83,45 @@ class ReservationController extends Controller
                             ->orWhere('state_id', 5);
                     })
                     ->get();
+                $count = $reservations->count();
                 if ($reservations->count() > 0) {
                     // المساحة محجوزة خلال الفترة المحددة
-                    $isBooked = 0;
-                    return view('site.workspaceDetiles', compact('workspaceOffer', 'isBooked', 'images'));
+                    if ($workspaceOffer->workspace->workspaceType_id == 2 && $count < $workspaceOffer->workspace->maxPeople) {
+                        // عدد الأفراد الحاجزين أقل من maxPeople
+                        $repeatDuration = floatval($request->repeatDuration);
+                        $offerPrice = floatval($workspaceOffer->price);
+                        $totalOfferPrice = $offerPrice * $repeatDuration;
+
+                        $reservation = Reservation::create([
+                            'user_id' => Auth()->id(),
+                            'workspaceoffer_id' => $request->workspaceOffer_id,
+                            'state_id' => 1,
+                            'start_date' => $dateTimeStart,
+                            'end_date' => $dateTimeEnd,
+                            'officPrice' => doubleval($totalOfferPrice)
+                        ]);
+
+                        $selectedServices = $request->input('servises');
+                        if (!empty($selectedServices)) {
+                            foreach ($selectedServices as $serviceId) {
+                                $service = Service::find($serviceId);
+                                Order::create([
+                                    'service_id' => $serviceId,
+                                    'reservation_id' => $reservation->id,
+                                    'price' => $service->price,
+                                ]);
+                            }
+                        }
+
+                        $isBooked = 1;
+                        return Redirect::route('offer.showDetials', ['name' => $workspace->name, 'id' => $reservation->id]);
+                    } else {
+                        // عدد الأفراد الحاجزين أكبر من أو يساوي maxPeople
+                        $isBooked = 5;
+                        return view('site.workspaceDetiles', compact('workspaceOffer', 'isBooked', 'images'));
+                    }
+                    // $isBooked = 0;
+                    // return view('site.workspaceDetiles', compact('workspaceOffer', 'isBooked', 'images'));
                 } else {
                     // المساحة غير محجوزة خلال الفترة المحددة
                     $repeatDuration = floatval($request->repeatDuration);
@@ -107,12 +129,11 @@ class ReservationController extends Controller
                     $offerPrice = floatval($Offer->price);
                     $totalOfferPrice = $offerPrice * $repeatDuration;
                     $reservation = Reservation::create([
-                        'user_id' => Auth()->id(), // قم بتعيين قيمة user_id هنا
-                        'workspaceoffer_id' => $request->workspaceOffer_id, // قم بتعيين قيمة workspaceoffer_id هنا
-                        'state_id' => 1, // قم بتعيين قيمة state_id هنا
-                        //'voucher_id' => 4, // قم بتعيين قيمة voucher_id هنا
-                        'start_date' => $dateTimeStart, // قم بتعيين قيمة start_date هنا
-                        'end_date' => $dateTimeEnd, // قم بتعيين قيمة end_date هنا
+                        'user_id' => Auth()->id(),
+                        'workspaceoffer_id' => $request->workspaceOffer_id,
+                        'state_id' => 1,
+                        'start_date' => $dateTimeStart,
+                        'end_date' => $dateTimeEnd,
                         'officPrice' => doubleval($totalOfferPrice)
                     ]);
                     $selectedServicesop = $request->input('servises');
@@ -127,7 +148,6 @@ class ReservationController extends Controller
                         }
                     }
                     $isBooked = 1;
-                    // return view('client.booking.checkout', compact('reservation'));
                     return Redirect::route('offer.showDetials', ['name' => $workspace->name, 'id' => $reservation->id]);
                 }
             }
@@ -148,19 +168,42 @@ class ReservationController extends Controller
                             ->from('workspaces')
                             ->where('provider_id', $provider->id);
                     });
-            })->get();
+            })->latest()->paginate(10);
+
+
             $states = Mystate::all();
             return view('tenant.booking.index', compact('reservations', 'states'));
         } else {
             // المزود غير موجود
         }
     }
-    public function ReservationView()
+    public function ReservationView($site, $id)
     {
-        return view('tenant.booking.view');
+        $reservation = Reservation::find($id);
+
+        return view('tenant.booking.view', compact('reservation'));
     }
-    public function ReservationReject()
+    public function Reservationconfirm($site, $id)
     {
+        $reservation = Reservation::find($id);
+        // dd($reservation);
+        $user = User::find($reservation->user_id);
+        $reservation->state_id = 3;
+        $reservation->save();
+        $email = new AcceptRequestEmail($user->email, "تم قبول  حجزك بنجاح", 'قبول طلب الحجز', $reservation);
+        Mail::to($user->email)->send($email);
+        return redirect()->back()->with('done', 'تم تاكيد الحجز بنجاح');
+    }
+    public function ReservationReject(Request $request)
+    {
+        $reservation = Reservation::find($request->id);
+        // dd($reservation);
+        $user = User::find($reservation->user_id);
+        $reservation->state_id = 5;
+        $reservation->save();
+        $email = new RejectRequestEmail($user->email, $request->reply, $reservation);
+        Mail::to($user->email)->send($email);
+        return redirect()->back()->with('reject', 'تم رفض الحجز بنجاح');
     }
 
     public function showDetials($name, $id)
@@ -174,25 +217,34 @@ class ReservationController extends Controller
     public function checkout(Request $request)
     {
         $rules = [
-            'voucher' => 'required',
+            'voucher' => 'required|file|mimes:jpeg,png,jpg|max:2048',
         ];
 
         $messages = [
             'voucher.required' =>  'يجب ادخال السند',
+            'voucher.mimes' =>  'يجب ادخال صورة او ملف pdf',
+            'voucher.max' =>  'حجم الصورة كبيرة',
+
+
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
-
         // Check if validation fails
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-        $reservation = Reservation::find($request->reservation_id);
-        if ($reservation) {
-            $reservation->state_id = 2;
-            $reservation->voucher = $request->voucher;
-            $reservation->save();
-            return view('client.booking.underReview');
+        if ($request->hasFile('voucher')) {
+            $voucher = $request->file('voucher');
+            $currentDate = Carbon::now()->format('Ymd_His');
+            $newImageName = $currentDate . '_' . $voucher->getClientOriginalName();
+            $voucher->storeAs('voucher', $newImageName, 'public');
+            $reservation = Reservation::find($request->reservation_id);
+            if ($reservation) {
+                $reservation->state_id = 2;
+                $reservation->voucher = $newImageName;
+                $reservation->save();
+                return view('client.booking.underReview');
+            }
         }
     }
     public function cansel(Request $request)
@@ -208,7 +260,14 @@ class ReservationController extends Controller
     {
         // $reservations = Reservation::where('user_id', auth()->user()->id)->paginate(10);
         $reservations = Reservation::where('user_id', auth()->user()->id)
-            ->latest() // يجلب الحجوزات الأحدث أولاً
+            ->latest() // يجيب الحجوزات الأحدث أولاً
+            ->paginate(10);
+        return view('client.booking.myReservations', compact('reservations'));
+    }
+    public function search()
+    {
+        $reservations = Reservation::where('user_id', auth()->user()->id)
+            ->latest() // يجيب الحجوزات الأحدث أولاً
             ->paginate(10);
         return view('client.booking.myReservations', compact('reservations'));
     }

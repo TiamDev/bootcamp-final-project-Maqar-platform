@@ -1,25 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
-    <title></title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
-
-    <!-- Favicons -->
-    <link href="{{ asset('admin/vendor/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
-    <link href="{{ asset('admin/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('admin/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
-    <!-- Template Main CSS File -->
-    <link href="{{ asset('admin/css/style.css') }}" rel="stylesheet">
-    <link href="{{ asset('site/css/sign.css') }}" rel="stylesheet">
-</head>
-
-<body>
-
+@extends('layouts.front')
+@section('content')
     <section>
         <div class="card card-join">
             <div class="text-center">
@@ -92,8 +72,7 @@
 
                                     <div class="col-8">
                                         <div class="form-group pb-3">
-                                            <input type="text" class="form-control" name="bank[]"
-                                                placeholder="البنك">
+                                            <input type="text" class="form-control" name="bank[]" placeholder="البنك">
                                         </div>
                                     </div>
                                     <div class="col-4">
@@ -197,11 +176,5 @@
             </div>
         </div>
     </section>
-
-
-
     <script src="{{ asset('admin/js/profider.js') }}"></script>
-
-</body>
-
-</html>
+@endsection

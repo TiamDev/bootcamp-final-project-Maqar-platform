@@ -13,7 +13,7 @@
                     <div class="row">
 
                         <div class="col-xl-4 text-center" data-aos="fade-right" data-aos-delay="100">
-                            <img src="assets/img/ill/3d-casual-life-office-building.png" class="img-fluid p-4"
+                            <img src="{{ asset('site/img/ill/3d-casual-life-office-building.png') }}" class="img-fluid p-4"
                                 alt="">
                         </div>
 
@@ -49,7 +49,7 @@
                     <div class="row">
 
                         <div class="col-xl-4 text-center" data-aos="fade-right" data-aos-delay="100">
-                            <img src="assets/img/ill/3d-casual-life-monitor-and-other-office-stuff.png"
+                            <img src="{{ asset('site/img/ill/3d-casual-life-monitor-and-other-office-stuff.png') }}"
                                 class="img-fluid p-4" alt="">
                         </div>
 

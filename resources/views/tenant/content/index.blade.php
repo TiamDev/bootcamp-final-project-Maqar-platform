@@ -5,21 +5,15 @@
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item active">ادارة المحتوى</li>
-                    <li class="breadcrumb-item"><a href="{{ route('tenant.dashboard') }}">الرئيسية</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('tenant') }}">لوحة التحكم</a></li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
-
         <section class="section dashboard mytable">
-
-
             <div class="" dir="rtl">
                 <div class="">
-                    {{-- <h5 class="card-title">ادارة محتوى موقعك</h5> --}}
-
                     <!-- Pills Tabs -->
                     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
                                 data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home"
@@ -56,6 +50,11 @@
                                 aria-selected="false">توصل معنا</button>
                         </li>
                         <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="pills-work-tab" data-bs-toggle="pill" data-bs-target="#pills-work"
+                                type="button" role="tab" aria-controls="pills-work" aria-selected="false">اوقات
+                                الدوام</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
                             <button class="nav-link" id="pills-bank-tab" data-bs-toggle="pill" data-bs-target="#pills-bank"
                                 type="button" role="tab" aria-controls="pills-bank" aria-selected="false">الحسابات
                                 البنكيه</button>
@@ -84,7 +83,6 @@
                                     <button class="btn-dasMain">نشر الموقع </button>
                                 @endif
                             </form>
-
                         </div>
                         <div class="tab-pane fade" id="pills-logo" role="tabpanel" aria-labelledby="logo-tab">
                             <form action="{{ route('content.logo') }}" method="POST" enctype="multipart/form-data">
@@ -126,14 +124,46 @@
                                         </div>
                                         <button type="submit" class="btn-dasMain">حفظ التغييرات</button>
                                     </div>
-
                                     <div class="col-lg-12 my-auto" id="image-preview">
                                         @foreach ($Galary as $image)
                                             <img src="{{ asset('storage/galary/' . $image->path) }}"
                                                 class="d-block  img-spase">
                                         @endforeach
                                     </div>
-
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="pills-work" role="tabpanel" aria-labelledby="work-tab">
+                            <form action="{{ route('content.workTime') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <h3 class="tab-heading">اوقات الدوام</h3>
+                                        <p class="paragraph">
+                                            من خلال توفير أوقات الدوام، يمكن للمستخدم والآخرين التعرف على أوقات تواجدك
+                                            وتوافر المساحات. </p>
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <label for="inputState" class="form-label">بداية الدوام</label>
+                                                <input type="number" min="1" max="24" class="form-control"
+                                                    name="startWorkHour" fdprocessedid="tpewl"
+                                                    value="{{ $provider->startWorkHour }}">
+                                            </div>
+                                            <div class="col-3">
+                                                <label for="inputState" class="form-label"> نهاية الدوام</label>
+                                                <input type="number" min="1" max="24" class="form-control"
+                                                    name="endWorkHour" fdprocessedid="tpewl"
+                                                    value="{{ $provider->endWorkHour }}">
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn-dasMain">حفظ التغييرات</button>
+                                    </div>
+                                    <div class="col-lg-12 my-auto" id="image-preview">
+                                        @foreach ($Galary as $image)
+                                            <img src="{{ asset('storage/galary/' . $image->path) }}"
+                                                class="d-block  img-spase">
+                                        @endforeach
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -283,7 +313,6 @@
                                                             <div class="d-flex justify-content-between">
                                                                 <div>
                                                                     <h5> {{ $payment->name }} </h5>
-
                                                                 </div>
                                                                 <p class="m-0 mainColor">
                                                                     {{ $payment->number }}</p>

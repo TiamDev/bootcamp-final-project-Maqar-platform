@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\SearchRequest;
+use App\Models\Account\User;
 use App\Models\content\socialMedia;
 use Illuminate\Http\Request;
 use App\Models\Location\Governorate;
@@ -26,7 +27,8 @@ class HomeController extends Controller
         // $directorates = Directorate::where('governorate_id', 1);
         $workspaceTypes = workspaceType::all();
         $workspaceDurations = WorkspaceDuration::all();
-        return view('/site/home', compact('governorates', 'workspaceDurations', 'workspaceTypes'));
+        $providers = Provider::where('state', 'complete')->get();
+        return view('/site/home', compact('governorates', 'workspaceDurations', 'workspaceTypes', 'providers'));
     }
     public function search(SearchRequest $request)
     {
@@ -47,6 +49,8 @@ class HomeController extends Controller
                     }]);
             }])
             ->get();
+
+
         $currentDate = Carbon::now()->toDateString();
         $workspaceImages = [];
         foreach ($workspaceOffers as $key => $workspaceOffer) {
@@ -55,8 +59,8 @@ class HomeController extends Controller
             $image = File::where('target_id', $workspaceOffer->Workspace->id)
                 ->where('type', 'workspace')
                 ->first()->path ?? '20240118_062834_pexels-max-rahubovskiy-7534224.jpg';
-            $workspaceImage = new workspaceImage; // إنشاء كائن workspaceImage جديد لكل عنصر
-            $workspaceImage->save($workspaceoffer, $workspace, $image);
+            $workspaceImage = new workspaceImage;
+            $workspaceImage->save($workspace, $image, $workspaceoffer);
             $workspaceImages[] = $workspaceImage;
         }
         return view('site/workspaces', compact('workspaceImages', 'currentDate'));
@@ -64,22 +68,31 @@ class HomeController extends Controller
 
     public function details(Request $request)
     {
-        $workspaceOffer = workspaceOffer::where('id', $request->id)->first();
 
         return view('site.workspaceDetiles', compact('workspaceOffer'));
     }
 
-    public function providerSite()
+    public function providerSite($name)
     {
-        $provider = Provider::where('user_id', auth()->user()->id)->first();
-        $images = File::where('Target_id', $provider->id)->where('type', 'provider')
-            ->get();
-        $socialAccounts = socialMedia::where('user_id', auth()->user()->id)->get();
-
+        $provider = Provider::where('name', $name)->first();
+        if ($provider) {
+            $user = User::find($provider->user_id);
+            if ($user) {
+                $images = File::where('Target_id', $provider->id)->where('type', 'provider')
+                    ->get();
+                $socialAccounts = socialMedia::where('user_id', $user->id)->get();
+            } else {
+                return response()->view('errors.404', [
+                    'message' => 'الصفحة غير موجودة',
+                ], 404);
+            }
+        } else {
+            return response()->view('errors.404', [
+                'message' => 'الصفحة غير موجودة',
+            ], 404);
+        }
         return view('tenant/home', compact('provider', 'images', 'socialAccounts'));
     }
-
-
     public function getDirectorates(Request $request)
     {
         $governorateId = $request->input('governorate_id');
@@ -91,7 +104,6 @@ class HomeController extends Controller
     }
     public function aboutMagar()
     {
-
         return view('site.aboutMagar');
     }
     public function viewDetails(Request $request)
@@ -99,10 +111,16 @@ class HomeController extends Controller
         if (Auth::check()) {
             $isBooked = -1;
             $workspaceOffer = workspaceOffer::find($request->id);
-            $images = File::where('target_id', $workspaceOffer->Workspace->id)
-                ->where('type', 'workspace')
-                ->get();
-            return view('site.workspaceDetiles', compact('workspaceOffer', 'isBooked', 'images'));
+            if ($workspaceOffer) {
+                $images = File::where('target_id', $workspaceOffer->Workspace->id)
+                    ->where('type', 'workspace')
+                    ->get();
+                return view('site.workspaceDetiles', compact('workspaceOffer', 'isBooked', 'images'));
+            } else {
+                return response()->view('errors.404', [
+                    'message' => 'الصفحة غير موجودة',
+                ], 404);
+            }
         } else {
             return view('site.account.signin');
         }

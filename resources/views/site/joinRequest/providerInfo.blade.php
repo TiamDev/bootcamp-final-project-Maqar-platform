@@ -1,27 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
-    <title></title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
-
-    <!-- Favicons -->
-    <link href="{{ asset('admin/vendor/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
-    <link href="{{ asset('admin/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('admin/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
-    <!-- Template Main CSS File -->
-    <link href="{{ asset('admin/css/style.css') }}" rel="stylesheet">
-    <link href="{{ asset('site/css/sign.css') }}" rel="stylesheet">
-
-
-</head>
-
-<body>
-
+@extends('layouts.front')
+@section('content')
     <section>
         <div class="card card-join">
             <div class="text-center">
@@ -40,20 +18,20 @@
                     <div class="row">
                         <div class="col-6">
                             <label for="inputState" class="form-label">اسم الشركة (انجليزي)</label>
-                            <input type="text" name="name" class="form-control" id="inputName5"
-                                fdprocessedid="tpewl" value="{{ old('name') }}">
+                            <input type="text" name="name" class="form-control" id="inputName5" fdprocessedid="tpewl"
+                                value="{{ old('name') }}">
                             @error('name')
                                 <div>{{ $message }}</div>
                             @enderror
                             <label for="inputState" class="form-label">(العربي)اسم الشركة</label>
-                            <input type="text" name="title" class="form-control" id="inputName5"
-                                fdprocessedid="tpewl" value="{{ old('title') }}">
+                            <input type="text" name="title" class="form-control" id="inputName5" fdprocessedid="tpewl"
+                                value="{{ old('title') }}">
                             @error('title')
                                 <div>{{ $message }}</div>
                             @enderror
                             <label for="inputState" class="form-label"> رقم الهاتف/الجوال</label>
-                            <input type="text" name="phone" class="form-control" id="inputName5"
-                                fdprocessedid="tpewl" value="{{ old('phone') }}">
+                            <input type="text" name="phone" class="form-control" id="inputName5" fdprocessedid="tpewl"
+                                value="{{ old('phone') }}">
                             @error('phone')
                                 <div>{{ $message }}</div>
                             @enderror
@@ -83,16 +61,16 @@
                                 </div>
                             </div>
                             <label for="inputState" class="form-label">العنوان</label>
-                            <input type="text" name="address" class="form-control" id="inputName5"
-                                fdprocessedid="tpewl" value="{{ old('address') }}">
+                            <input type="text" name="address" class="form-control" id="inputName5" fdprocessedid="tpewl"
+                                value="{{ old('address') }}">
                         </div>
                         @error('address')
                             <div>{{ $message }}</div>
                         @enderror
                         <div class="col-6">
                             <label for="inputState" class="form-label">ايميل الشركة</label>
-                            <input type="text" name="email" class="form-control" id="inputName5"
-                                fdprocessedid="tpewl" value="{{ old('email') }}">
+                            <input type="text" name="email" class="form-control" id="inputName5" fdprocessedid="tpewl"
+                                value="{{ old('email') }}">
                             @error('email')
                                 <div>{{ $message }}</div>
                             @enderror
@@ -103,14 +81,12 @@
                                 <div>{{ $message }}</div>
                             @enderror
                             <label for="inputState" class="form-label">السجل التجاري </label>
-                            <input type="file" class="form-control" name="tradeDocument" required=""
-                                id="logo-input1">
+                            <input type="file" class="form-control" name="tradeDocument" required="" id="logo-input1">
                             @error('tradeDocument')
                                 <div>{{ $message }}</div>
                             @enderror
                             <label for="inputState" class="form-label">شعار الشركة</label>
-                            <input type="file" class="form-control" name="logo" required=""
-                                id="logo-input1">
+                            <input type="file" class="form-control" name="logo" required="" id="logo-input1">
                             @error('logo')
                                 <div>{{ $message }}</div>
                             @enderror
@@ -122,6 +98,4 @@
             </div>
         </div>
     </section>
-</body>
-
-</html>
+@endsection

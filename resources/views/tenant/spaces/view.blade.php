@@ -7,7 +7,7 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item active">عرض المساحة</li>
                     <li class="breadcrumb-item "><a href="{{ route('workspaces') }}">المساحات</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('tenant.dashboard') }}">الرئيسية</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('tenant') }}">لوحة التحكم</a></li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
@@ -122,7 +122,7 @@
                                                         <div class="row">
                                                             <div class="col-lg-2 col-md-4 label">الوصف</div>
                                                             <div class="col-lg-10 col-md-8">
-                                                                {{ $Workspace->workspaceType->description }} </div>
+                                                                {{ $Workspace->description }} </div>
                                                         </div>
                                                         <a href="{{ route('workspaces') }}"
                                                             class="btn-dasMain">رجوع</i></a>

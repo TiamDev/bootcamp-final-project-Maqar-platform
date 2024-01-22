@@ -371,13 +371,13 @@ h6 {
 
 .nav-tabs-bordered .nav-link:hover,
 .nav-tabs-bordered .nav-link:focus {
-  color: #4154f1;
+  color: var(--mainColor);
 }
 
 .nav-tabs-bordered .nav-link.active {
   background-color: #fff;
-  color: #4154f1;
-  border-bottom: 2px solid #4154f1;
+  color :var(--mainColor);
+  border-bottom: 2px solid var(--mainColor);
 }
 
 /*--------------------------------------------------------------
@@ -866,7 +866,7 @@ h6 {
 }
 
 .dashboard .revenue-card .card-icon {
-  color: #2eca6a;
+  color: #55a774;
   background: #e0f8e9;
 }
 
@@ -1423,6 +1423,7 @@ card office
 }
 .card__img2 {
   width: 100%;
+  height: 220px;
 }
 .card__name {
   color:black;
@@ -2031,7 +2032,7 @@ margin: 0;
 }
 
 .card-home {
-  margin: 20px;
+  margin: 10px;
   padding: 20px;
   width: 360px;
   min-height: 200px;
@@ -2043,7 +2044,7 @@ margin: 0;
   direction: rtl;
 }
 .card-home2 {
-  margin: 20px;
+  margin: 10px;
   padding: 20px;
   width: 360px;
   min-height: 200px;
@@ -2101,6 +2102,7 @@ margin: 0;
 .card__apply {
   grid-row: 5/5;
   align-self: center;
+  text-align: center;
 }
 .card__apply2 {
   align-self: center;

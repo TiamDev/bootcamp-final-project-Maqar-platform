@@ -7,7 +7,7 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item active">إضافة مساحة</li>
                     <li class="breadcrumb-item "><a href="{{ route('workspaces') }}">المساحات</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('tenant.dashboard') }}">الرئيسية</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('tenant') }}">لوحة التحكم</a></li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
@@ -65,7 +65,8 @@
                                     <label for="inputAddress5" class="form-label">فترات حجز المساحة</label>
                                     @foreach ($WorkspaceDuration as $duration)
                                         <div class="input-group mb-3" dir="ltr">
-                                            <span class="input-group-text" id="basic-addon1">ريال </span>
+                                            <span class="input-group-text" id="basic-addon1">{{ $provider->currency }}
+                                            </span>
                                             <input type="text" class="form-control price" disabled
                                                 name="{{ $duration->name }}-input" placeholder=" سعر المساحة  "
                                                 aria-label="Recipient's username" aria-describedby="basic-addon1"

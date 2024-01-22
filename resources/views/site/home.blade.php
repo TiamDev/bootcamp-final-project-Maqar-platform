@@ -150,7 +150,7 @@
         </section><!-- End Values Section -->
 
         <!-- ======= Features Section ws ======= -->
-        <div id="features" class="features">
+        <div id="above" class="features">
 
             <div class="container mt-5" data-aos="fade-up">
 
@@ -212,7 +212,7 @@
                             <div class="col-md-6" data-aos="zoom-out" data-aos-delay="500">
                                 <div class="feature-box ">
                                     <div class="d-flex align-items-center">
-                                        <i class="bi bi-graph-down-arrow ms-3"></i>
+                                        <i class="bi bi-award ms-3"></i>
                                         <h3>تقديم خدمات تسويقية </h3>
                                     </div>
 
@@ -285,35 +285,29 @@
                                         <h3>
                                             ملف شخصي للمستأجر</h3>
                                     </div>
-
                                     <p> يمكن للمستأجرين إنشاء ملف شخصي يحتوي على تفاصيلهم وتفضيلاتهم وتاريخ الحجوزات
                                         السابقة، مما يسهل
                                         عليهم إدارة عمليات الحجز وتتبع سجلاتهم.
                                     </p>
                                 </div>
                             </div>
-
                             <div class="col-md-6" data-aos="zoom-out" data-aos-delay="500">
                                 <div class="feature-box ">
                                     <div class="d-flex align-items-center">
-                                        <i class="bi bi-graph-down-arrow ms-3"></i>
+                                        <i class="bi bi-calendar-check ms-3"></i>
                                         <h3>المرونة الزمنية</h3>
                                     </div>
-
                                     <p>يمكن للمستاجرين حجز المساحة في اي وقت واي مكان دون الحاجة الى الحضور .</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div> <!-- / row -->
             </div>
-
         </div><!-- End Features Section -->
 
         <!-- ======= Clients Section @======= -->
         <section id="clients" class="clients">
-
             <div class="container" data-aos="fade-up">
                 <header class="section-header">
                     <h2>مزودينا</h2>
@@ -321,44 +315,14 @@
                 </header>
                 <div class="clients-slider swiper">
                     <div class="swiper-wrapper align-items-center">
-                        <div class="swiper-slide"><a href=""><img
-                                    src="{{ asset('/site/img/clients/client-1.png') }}" class="img-fluid"
-                                    alt=""></a>
-                            <!-- <p class="text-center">حاضنة سند</p> -->
-                        </div>
-                        <div class="swiper-slide"><a href=""><img
-                                    src="{{ asset('/site/img/clients/client-2.png') }}" class="img-fluid"
-                                    alt=""></a>
-                            <!-- <p class="text-center">Sixteen Stars</p> -->
-                        </div>
-                        <div class="swiper-slide"><a href=""><img
-                                    src="{{ asset('/site/img/clients/client-3.png') }}" class="img-fluid"
-                                    alt=""></a>
-                            <!-- <p class="text-center">فندق هيلتون</p> -->
-                        </div>
-                        <div class="swiper-slide"><a href=""><img
-                                    src="{{ asset('/site/img/clients/client-4.png') }}" class="img-fluid"
-                                    alt=""></a>
-                            <!-- <p class="text-center">شركة جسر</p> -->
-                        </div>
-                        <div class="swiper-slide"><a href=""><img
-                                    src="{{ asset('/site/img/clients/client-5.png') }}" class="img-fluid"
-                                    alt=""></a>
-                            <!-- <p class="text-center">الجيلاني </p> -->
-                        </div>
-                        <div class="swiper-slide"><a href=""><img
-                                    src="{{ asset('/site/img/clients/client-6.png') }}" class="img-fluid"
-                                    alt=""></a>
-                            <!-- <p class="text-center">مؤسسة سالم</p> -->
-                        </div>
-                        <div class="swiper-slide"><a href=""><img
-                                    src="{{ asset('/site/img/clients/client-7.png') }}" class="img-fluid"
-                                    alt=""></a>
-                            <!-- <p class="text-center">أثر</p> -->
-                        </div>
-                        <div class="swiper-slide"><img src="{{ asset('/site/img/clients/client-8.png') }}"
-                                class="img-fluid" alt="">
-                        </div>
+                        @foreach ($providers as $provider)
+                            <div class="swiper-slide">
+                                <a href="{{ route('tenant.site', ['site' => $provider->name]) }}">
+                                    <img src="{{ asset('/storage/logo/' . $provider->logo) }}" class="img-fluid"
+                                        alt="">
+                                </a>
+                            </div>
+                        @endforeach
                     </div>
                     <div class="swiper-pagination"></div>
                 </div>
@@ -366,10 +330,8 @@
 
         </section><!-- End Clients Section -->
         <!-- ======= Portfolio Section @======= -->
-        <section id="portfolio" class="portfolio">
-
+        {{-- <section id="portfolio" class="portfolio">
             <div class="container" data-aos="fade-up">
-
                 <header class="section-header">
                     <h2>عروض مقر</h2>
                     <!-- <p>تفقد مكاتبنا</p> -->
@@ -547,9 +509,80 @@
 
             </div>
 
-        </section><!-- End Portfolio Section -->
+        </section> --}}
+        <!-- End Portfolio Section -->
 
+        <!-- contact us section -->
 
+        <section id="contact" class="contact">
+            <div class="container " data-aos="fade-up">
+                <div class="row gy-4 ">
+                    <div class="col-lg-6" dir="rtl">
+                        <div class="card mt-3">
+                            <form action="{{ route('messages.store') }}" method="POST">
+                                @csrf
+                                <div class="row gy-4">
+                                    <div class="col-6">
+                                        <h5 class="form-label">اسم </h5>
+                                        <input type="text" class="form-control" id="inputName5" name="name"
+                                            fdprocessedid="tpewl" placeholder=" ">
+                                    </div>
+                                    <div class="col-6">
+                                        <h5>الإيميل </h5>
+                                        <input type="email" name="email" class="form-control" id="inputName5"
+                                            fdprocessedid="tpewl" placeholder=" ">
+                                    </div>
+                                    <div class="col-12">
+                                        <h5>عنوان الرسالة </h5>
+                                        <input type="text" class="form-control" name="subject" id="inputName5"
+                                            fdprocessedid="tpewl" placeholder=" ">
+                                    </div>
+
+                                    <div class="col-12">
+                                        <h5>الرسالة </h5>
+                                        <textarea class="form-control" name="message" rows="6" placeholder="" required></textarea>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn-dasMain w-100">ارسال</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 box-info"dir="rtl">
+                        <div class="text-center w-100">
+                            <img class="w-25" src="{{ asset('site/img/ill/3d-casual-life-signing-contract.png') }}"
+                                alt="">
+                            {{-- <i class="bi bi-envelope-paper mainColor email-icon"></i> --}}
+                        </div>
+                        <h2 class="text-dark mb-4 text-center">
+                            تواصل معنا
+                        </h2>
+
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-6 text-center">
+                                    <div class="info-box ">
+                                        <h3>اتصل بنا</h3>
+                                        <p>+967 735 456 485<br>+967 735 456 123 </p>
+                                    </div>
+                                </div>
+                                <div class="col-6 text-center">
+                                    <div class="info-box">
+                                        <h3>الايميل</h3>
+                                        <p>info@example.com<br>contact@example.com</p>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+        </section><!-- End Contact Section -->
         <!-- ======= F.A.Q Section ======= -->
         <section id="faq" class="faq">
 
