@@ -39,6 +39,8 @@ Maqar Platform
 
 8. Run the following command to start the built-in Laravel development server: php artisan serve
 
+    9.email: fatimabakar707@gmail.com password:123456
+
 The MySQL database file (script.sql) can be found at the path database/script.sql.
 
 <!-- ## About Laravel

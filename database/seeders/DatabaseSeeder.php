@@ -17,19 +17,19 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-        $this->call(PermissionsTableSeeder::class);
-        $this->call(UsersTableSeeder::class);
-        $this->call(RolesTableSeeder::class);
-        $this->call(RoleUsersAndPermissionsTableSeeder::class);
-        $this->call(GovernoratesTableSeeder::class);
+        // //     'email' => 'test@example.com',
+        // // ]);
+        // $this->call(PermissionsTableSeeder::class);
+        // $this->call(UsersTableSeeder::class);
+        // $this->call(RolesTableSeeder::class);
+        // $this->call(RoleUsersAndPermissionsTableSeeder::class);
+        // $this->call(GovernoratesTableSeeder::class);
         $this->call(DirectoratesTableSeeder::class);
-        $this->call(WorkspaceTypesTableSeeder::class);
-        $this->call(ProvidersTableSeeder::class);
-        $this->call(WorkSpacesTableSeeder::class);
-        $this->call(ServicesTableSeeder::class);
-        $this->call(WorkspaceDurationsTableSeeder::class);
-        $this->call(WorkspaceOffersTableSeeder::class);
+        // $this->call(WorkspaceTypesTableSeeder::class);
+        // $this->call(ProvidersTableSeeder::class);
+        // $this->call(WorkSpacesTableSeeder::class);
+        // $this->call(ServicesTableSeeder::class);
+        // $this->call(WorkspaceDurationsTableSeeder::class);
+        // $this->call(WorkspaceOffersTableSeeder::class);
     }
 }
