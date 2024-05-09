@@ -164,6 +164,7 @@ class JoinRequestController extends Controller
             'phone' => $request->phone,
             'tradeDocument' => $newImageNametrade,
             'user_id' => Auth::id(),
+            'currency' => $request->currency,
             'logo' => $newImageNameLogo,
             'directorate_id' => $request->input('directorate'),
             'state' => "step1",
@@ -171,8 +172,6 @@ class JoinRequestController extends Controller
         ]);
         Auth::logout();
         return redirect()->route('platform.joinRequest.joinMessage');
-        // $file = $request->file('logo')->getClientOriginalName();
-        //  return $file;
     }
     public function joinMessage()
     {

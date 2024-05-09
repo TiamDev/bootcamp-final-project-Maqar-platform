@@ -16,9 +16,11 @@
 
 <div align="center">
 <h1 style="color:#53ad90;font-size:40px">
-Maqar Platform
+Maqar Platform 
 </h1>
+<p>is a multitenant platform designed for the management of workspace reservations. It aims to streamline the process of booking and managing workspaces for their owners, providing a comprehensive solution for workspace owners looking to rent out their offices, meeting rooms, or event spaces to potential clients and lessees.</p>
 </div>
+
 <p>create by :Fatima Bakar Bakran </p>
 
 ## Getting Started

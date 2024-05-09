@@ -49,13 +49,13 @@
                         @endphp
                         @if ($aboutUsContent)
                             <div class="about-us">
-                                <p class="fs-5">{{ $aboutUsContent->description }}</p>
+                                <p class="fs-5 mt-3">{{ $aboutUsContent->description }}</p>
                             </div>
                         @endif
                     </div>
                     <div class="col-lg-3">
                         <img src="{{ asset('storage/logo/' . $provider->logo) }}" alt="" srcset=""
-                            style="width: 100%;">
+                            style="width: 60%;">
                     </div>
                 </div>
             </div>

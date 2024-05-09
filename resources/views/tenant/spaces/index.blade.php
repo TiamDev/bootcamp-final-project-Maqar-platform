@@ -22,40 +22,42 @@
             </div>
         @endif
         <div class="row" dir="rtl">
-            @foreach ($workspaceImages as $space)
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="mycontainerx">
-                        <div class="mycard2">
-                            <div class="card__border2">
-                                <img src="{{ asset('storage/images/' . $space->image) }}" alt="card image"
-                                    class="card__img2">
-                            </div>
-                            {{-- bi-plus-circle --}}
-                            <h3 class="card__name">{{ $space->workspace->title }}</h3>
-                            <span class="card__profession">{{ $space->workspace->workspaceType->label }}<i
-                                    class="bi bi-pin-map-fill"></i></span>
-                            <div class="card__social" id="card-social">
-                                <div class="card__social-control">
-                                    <!-- Card social -->
-                                    <ul class="card__social-list2" dir="rtl">
-                                        <a href="{{ route('workspaces.view', ['name' => $space->workspace->name]) }}"
-                                            class="card__social-link  "data-bs-toggle="tooltip" data-bs-placement="top"
-                                            title="تفاصيل المكتب">
-                                            <i class="bi bi-link" style="  margin-bottom: -3px; "></i>
-                                        </a>
-                                        <a href="{{ route('workspaces.edit', ['name' => $space->workspace->name]) }}"
-                                            class="card__social-link" data-bs-toggle="tooltip" data-bs-placement="top"
-                                            title="تعديل المكتب">
-                                            <i class="bi bi-pencil-square "style="margin-bottom: -3px; "></i>
-                                        </a>
+            @if ($workspaceImages)
+                @foreach ($workspaceImages as $space)
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="mycontainerx">
+                            <div class="mycard2">
+                                <div class="card__border2">
+                                    <img src="{{ asset('storage/images/' . $space->image) }}" alt="card image"
+                                        class="card__img2">
+                                </div>
+                                {{-- bi-plus-circle --}}
+                                <h3 class="card__name">{{ $space->workspace->title }}</h3>
+                                <span class="card__profession">{{ $space->workspace->workspaceType->label }}<i
+                                        class="bi bi-pin-map-fill"></i></span>
+                                <div class="card__social" id="card-social">
+                                    <div class="card__social-control">
+                                        <!-- Card social -->
+                                        <ul class="card__social-list2" dir="rtl">
+                                            <a href="{{ route('workspaces.view', ['name' => $space->workspace->name]) }}"
+                                                class="card__social-link  "data-bs-toggle="tooltip" data-bs-placement="top"
+                                                title="تفاصيل المكتب">
+                                                <i class="bi bi-link" style="  margin-bottom: -3px; "></i>
+                                            </a>
+                                            <a href="{{ route('workspaces.edit', ['name' => $space->workspace->name]) }}"
+                                                class="card__social-link" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                title="تعديل المكتب">
+                                                <i class="bi bi-pencil-square "style="margin-bottom: -3px; "></i>
+                                            </a>
 
-                                    </ul>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            @endforeach
+                @endforeach
+            @endif
 
 
         </div>

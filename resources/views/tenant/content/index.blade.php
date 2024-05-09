@@ -158,12 +158,7 @@
                                         </div>
                                         <button type="submit" class="btn-dasMain">حفظ التغييرات</button>
                                     </div>
-                                    <div class="col-lg-12 my-auto" id="image-preview">
-                                        @foreach ($Galary as $image)
-                                            <img src="{{ asset('storage/galary/' . $image->path) }}"
-                                                class="d-block  img-spase">
-                                        @endforeach
-                                    </div>
+
                                 </div>
                             </form>
                         </div>

@@ -23,6 +23,7 @@ class WorkspaceController extends Controller
         if (!Auth::check() || !Auth::user()->roles->contains('name', 'admin')) {
             abort(403, "Unauthorized");
         }
+        $workspaceImages = [];
         $id = auth()->user()->id;
         $provider = Provider::where('user_id', $id)->first();
         $workspaces = workspace::where('provider_id', $provider->id)->get();

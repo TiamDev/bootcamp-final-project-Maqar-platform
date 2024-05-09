@@ -90,6 +90,12 @@
                             @error('logo')
                                 <div>{{ $message }}</div>
                             @enderror
+                            <label for="inputState" class="form-label">العملة</label>
+                            <input type="text" name="currency" class="form-control" id="inputName5" fdprocessedid="tpewl"
+                                value="{{ old('currency') }}">
+                            @error('currency')
+                                <div>{{ $message }}</div>
+                            @enderror
                         </div>
 
                     </div>

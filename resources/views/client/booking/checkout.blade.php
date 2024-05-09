@@ -270,6 +270,11 @@
                                     </div>
                                 </div>
                             </form>
+                        @else
+                            <a href="{{ asset('storage/voucher/' . $reservation->voucher) }}">
+                                <img src="{{ asset('storage/voucher/' . $reservation->voucher) }}" alt=""
+                                    class="w-100">
+                            </a>
                         @endif
 
                         <!-- Modal -->
